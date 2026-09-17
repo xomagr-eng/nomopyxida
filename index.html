@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ΝΟΜΟΠΥΞΙΔΑ 360°</title>
+<meta name="description" content="Νομικός οδηγός & βάση ελληνικής νομοθεσίας — δουλεύει offline.">
+<meta name="author" content="Chronis Makris">
+<!-- © by Chronis Makris -->
+<meta name="theme-color" content="#0e1116">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ΝΟΜΟΠΥΞΙΔΑ">
+<style>
+  :root{
+    --bg:#0e1116; --bg2:#151b23; --panel:#1b232d; --panel2:#212c38;
+    --line:#2c3947; --line2:#3a4a5c;
+    --txt:#eef3f8; --muted:#9fb0c2; --dim:#6f8296;
+    --red:#e63329; --red2:#ff5147; --amber:#ffb020; --amber2:#ffce6a;
+    --blue:#3d9be0; --gold:#d9a441;
+    --shadow:0 6px 24px rgba(0,0,0,.45);
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 80% -10%, #1a2431 0%, var(--bg) 55%) fixed;
+    color:var(--txt);
+    font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--amber2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  h1,h2,h3,h4{margin:0 0 .4em;font-weight:700;letter-spacing:.2px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 18px 90px}
+
+  header.top{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(180deg,rgba(14,17,22,.98),rgba(14,17,22,.9));
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+  }
+  .top-in{max-width:1240px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px;cursor:pointer}
+  .logo{
+    width:46px;height:46px;border-radius:12px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--red),#8f1a14);
+    display:grid;place-items:center;box-shadow:var(--shadow);position:relative;overflow:hidden
+  }
+  .logo svg{width:28px;height:28px}
+  .brand h1{font-size:20px;margin:0;line-height:1.05}
+  .brand .sub{font-size:10.5px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+  .brand .copy{font-size:9.5px;color:var(--dim);letter-spacing:.6px;margin-top:2px}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+  nav.tabs button{
+    background:var(--panel);color:var(--muted);border:1px solid var(--line);
+    padding:9px 13px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:600;
+    display:flex;align-items:center;gap:7px;transition:.15s;
+  }
+  nav.tabs button:hover{color:var(--txt);border-color:var(--line2);background:var(--panel2)}
+  nav.tabs button.active{background:linear-gradient(135deg,var(--red),#a01f18);color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(230,51,41,.35)}
+  @media(max-width:760px){
+    .top-in{gap:8px}
+    .brand h1{font-size:16px}
+    nav.tabs{flex-wrap:nowrap;overflow-x:auto;margin-left:0;width:100%;
+      padding:2px 2px 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    nav.tabs::-webkit-scrollbar{display:none}
+    nav.tabs button{flex:0 0 auto;white-space:nowrap}
+  }
+
+  section.view{display:none;animation:fade .25s ease}
+  section.view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .hero{
+    margin-top:22px;padding:30px;border-radius:var(--r);
+    background:linear-gradient(120deg,#1e2935,#141b23);
+    border:1px solid var(--line);position:relative;overflow:hidden
+  }
+  .hero:before{content:"";position:absolute;inset:0;background:
+     repeating-linear-gradient(45deg,rgba(217,164,65,.05) 0 14px,transparent 14px 28px);pointer-events:none}
+  .hero h2{font-size:30px;margin-bottom:8px;position:relative}
+  .hero p{color:var(--muted);max-width:840px;font-size:15.5px;position:relative}
+
+  .searchbar{margin-top:20px;position:relative;display:flex;gap:10px;flex-wrap:wrap}
+  .searchbar input{
+    flex:1;min-width:240px;background:var(--bg2);border:1px solid var(--line2);color:var(--txt);
+    padding:15px 17px;border-radius:12px;font-size:16px;outline:none
+  }
+  .searchbar input:focus{border-color:var(--red)}
+
+  .btn{border:none;border-radius:11px;padding:13px 20px;font-size:14.5px;font-weight:700;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;transition:.15s}
+  .btn.primary{background:linear-gradient(135deg,var(--red),#a01f18);color:#fff;box-shadow:0 4px 16px rgba(230,51,41,.35)}
+  .btn.primary:hover{transform:translateY(-2px)}
+  .btn.ghost{background:var(--panel);color:var(--txt);border:1px solid var(--line2)}
+  .btn.ghost:hover{background:var(--panel2)}
+  .btn.sm{padding:8px 13px;font-size:13px;border-radius:9px}
+
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:920px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+  .card h3{font-size:16.5px;display:flex;align-items:center;gap:9px}
+
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;cursor:pointer;transition:.15s;position:relative}
+  .tile:hover{border-color:var(--red);transform:translateY(-3px);background:var(--panel2)}
+  .tile .big{font-size:30px}
+  .tile h4{margin:10px 0 4px;font-size:16px}
+  .tile p{margin:0;color:var(--muted);font-size:13px}
+
+  .sectitle{margin:30px 0 14px;font-size:22px;display:flex;align-items:center;gap:10px}
+  .sectitle small{font-size:13px;color:var(--muted);font-weight:500}
+
+  .disclaimer{
+    margin-top:18px;background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.35);
+    border-radius:12px;padding:13px 16px;font-size:13px;color:var(--amber2);display:flex;gap:10px;align-items:flex-start
+  }
+  .disclaimer b{color:var(--amber)}
+
+  /* accordion */
+  .acc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+  .acc>.head{padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;user-select:none}
+  .acc>.head:hover{background:var(--panel2)}
+  .acc>.head .ic{font-size:24px}
+  .acc>.head .t{flex:1}
+  .acc>.head .t h3{margin:0;font-size:16.5px}
+  .acc>.head .t p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+  .acc>.head .chev{color:var(--dim);transition:.2s}
+  .acc.open>.head .chev{transform:rotate(90deg);color:var(--red2)}
+  .acc>.body{display:none;padding:2px 18px 18px;border-top:1px solid var(--line)}
+  .acc.open>.body{display:block}
+
+  .art{border-left:3px solid var(--red);background:var(--bg2);border-radius:0 10px 10px 0;padding:12px 15px;margin:12px 0}
+  .art .num{font-size:12px;font-weight:700;color:var(--red2);text-transform:uppercase;letter-spacing:.5px}
+  .art h4{margin:3px 0 6px;font-size:15.5px}
+  .art p{margin:0;color:var(--muted);font-size:14px}
+  .art .tags{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:11px;background:var(--panel2);border:1px solid var(--line2);color:var(--muted);padding:3px 9px;border-radius:20px}
+  .chip.red{color:var(--red2);border-color:rgba(230,51,41,.4)}
+
+  /* search results */
+  .res{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:11px;cursor:pointer;transition:.14s}
+  .res:hover{border-color:var(--red);background:var(--panel2)}
+  .res .kind{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold)}
+  .res h4{margin:4px 0 5px;font-size:16px}
+  .res p{margin:0;color:var(--muted);font-size:13.5px}
+  .res mark{background:rgba(255,176,32,.25);color:var(--amber2);padding:0 2px;border-radius:3px}
+  .empty{text-align:center;color:var(--dim);padding:50px 20px;font-size:15px}
+
+  /* wizard / situations */
+  .filterbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+  .filterbar button{background:var(--panel);border:1px solid var(--line);color:var(--muted);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600}
+  .filterbar button.active{background:var(--red);color:#fff;border-color:transparent}
+
+  .steps{counter-reset:s;margin:10px 0;padding:0;list-style:none}
+  .steps li{position:relative;padding:8px 0 8px 40px;border-bottom:1px dashed var(--line)}
+  .steps li:last-child{border-bottom:none}
+  .steps li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:7px;width:26px;height:26px;
+    background:var(--red);color:#fff;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700}
+
+  .kv{display:flex;gap:10px;margin:6px 0;font-size:14px}
+  .kv .k{color:var(--gold);font-weight:600;min-width:120px;flex:0 0 auto}
+  .kv .v{color:var(--txt)}
+
+  .lawref{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--line2);color:var(--amber2);
+    padding:5px 11px;border-radius:8px;font-size:12.5px;margin:4px 6px 0 0;cursor:pointer}
+  .lawref:hover{border-color:var(--red)}
+
+  /* wizard */
+  .wiz-q{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);max-width:760px;margin:0 auto}
+  .wiz-q h3{font-size:20px;margin-bottom:18px}
+  .opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--line2);color:var(--txt);
+    padding:15px 17px;border-radius:11px;cursor:pointer;font-size:15.5px;font-weight:600;margin-bottom:10px;transition:.14s}
+  .opt:hover{border-color:var(--red);background:var(--panel2);transform:translateX(3px)}
+  .opt .oi{font-size:23px;flex:0 0 auto}
+  .opt small{display:block;font-weight:500;color:var(--muted);font-size:12.5px;margin-top:2px}
+  .crumbs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px;color:var(--muted);max-width:760px;margin-left:auto;margin-right:auto}
+  .crumbs span{background:var(--bg2);border:1px solid var(--line);padding:5px 10px;border-radius:8px}
+  .crumbs span.cur{color:var(--red2);border-color:rgba(230,51,41,.4)}
+
+  /* templates */
+  .tmpl-body{white-space:pre-wrap;font-family:"Consolas","Courier New",monospace;font-size:13px;background:var(--bg2);
+    border:1px solid var(--line2);border-radius:10px;padding:16px;color:var(--txt);line-height:1.7;max-height:520px;overflow:auto}
+
+  .back{display:inline-flex;align-items:center;gap:7px;color:var(--muted);cursor:pointer;font-size:13.5px;margin-bottom:14px}
+  .back:hover{color:var(--red2)}
+
+  .person{display:flex;gap:14px;align-items:flex-start}
+  .person .pic{font-size:30px;flex:0 0 auto;width:50px;height:50px;display:grid;place-items:center;background:var(--bg2);border-radius:12px;border:1px solid var(--line2)}
+  .person h4{margin:0 0 3px}
+  .person p{margin:0;color:var(--muted);font-size:13px}
+  .person .how{margin-top:6px;font-size:12.5px;color:var(--amber2)}
+
+  .foot{text-align:center;color:var(--dim);font-size:12px;margin-top:40px;line-height:1.8}
+  details.gl{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:9px;padding:0}
+  details.gl summary{padding:13px 16px;cursor:pointer;font-weight:600;font-size:14.5px}
+  details.gl[open] summary{color:var(--red2)}
+  details.gl p{margin:0;padding:0 16px 15px;color:var(--muted);font-size:13.5px}
+  .hl{color:var(--red2);font-weight:700}
+
+  /* safe-area (notch) & PWA install button */
+  header.top{padding-top:env(safe-area-inset-top)}
+  .wrap{padding-left:calc(18px + env(safe-area-inset-left));padding-right:calc(18px + env(safe-area-inset-right))}
+  #installBtn{
+    position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:90;display:none;
+    background:linear-gradient(135deg,var(--red),#a01f18);color:#fff;border:none;border-radius:30px;
+    padding:12px 18px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(230,51,41,.5);
+    align-items:center;gap:8px
+  }
+  #installBtn:hover{transform:translateY(-2px)}
+
+  /* πηγές δικαίου */
+  .srcbox{margin-top:14px;background:var(--bg2);border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+  .srcbox summary{padding:13px 16px;cursor:pointer;font-weight:700;font-size:14px;color:var(--amber2);list-style:none}
+  .srcbox summary::-webkit-details-marker{display:none}
+  .srcbox summary:before{content:"📚 ";}
+  .srcbox[open] summary{border-bottom:1px solid var(--line)}
+  .srcg{padding:8px 16px 4px}
+  .srcg h5{margin:10px 0 6px;font-size:13px;color:var(--gold);font-weight:700}
+  .srcrow{font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px;flex-wrap:wrap}
+  .srcrow:last-child{border-bottom:none}
+  .srcrow .rr{color:var(--txt);font-weight:600;flex:0 0 auto}
+  .srcrow a.rr{color:var(--amber2)}
+  .srcrow a.rr:hover{color:var(--red2)}
+  .srcrow .rt{color:var(--muted)}
+  .fekchip{font-size:10.5px;background:var(--panel2);border:1px solid var(--line2);color:var(--amber2);padding:2px 8px;border-radius:20px;flex:0 0 auto;white-space:nowrap}
+  .fekchip:hover{border-color:var(--red);text-decoration:none}
+  .srcnote{padding:9px 16px 13px;font-size:11.5px;color:var(--dim);border-top:1px solid var(--line);margin-top:4px}
+  .srcnote a{color:var(--amber2)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand" onclick="go('home')">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2.3v1.7M12 20v1.7M2.3 12H4M20 12h1.7"/>
+          <path d="M6 10h12"/>
+          <path d="M12 6.6l1.7 3.4-1.7 3.4-1.7-3.4z" fill="#fff"/>
+          <path d="M12 13.4V16M10 16h4"/>
+          <path d="M6 10l-1.5 2.7M6 10l1.5 2.7M4 12.6q2 2.4 4 0"/>
+          <path d="M18 10l-1.5 2.7M18 10l1.5 2.7M16 12.6q2 2.4 4 0"/>
+        </svg>
+      </div>
+      <div>
+        <h1>ΝΟΜΟΠΥΞΙΔΑ 360°</h1>
+        <div class="sub">Η πυξίδα σου στον νόμο</div>
+        <div class="copy">© by Chronis Makris</div>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="view" id="view-home"></section>
+  <section class="view" id="view-search"></section>
+  <section class="view" id="view-law"></section>
+  <section class="view" id="view-wizard"></section>
+  <section class="view" id="view-advisor"></section>
+  <section class="view" id="view-templates"></section>
+  <section class="view" id="view-people"></section>
+  <section class="view" id="view-glossary"></section>
+  <section class="view" id="view-sources"></section>
+</div>
+
+<script>
+/* ============================================================
+   Ο ΔΙΚΗΓΟΡΟΣ ΤΟΥ ΣΠΙΤΙΟΥ — offline νομικός οδηγός
+   Δεδομένα: JS arrays/objects — εύκολη επέκταση.
+   ΠΡΟΣΟΧΗ: Ενημερωτικό υλικό, ΟΧΙ νομική συμβουλή.
+   ============================================================ */
+
+/* ---------- ΝΟΜΟΘΕΣΙΑ ανά κλάδο ---------- */
+const LAW_AREAS = [
+{
+  id:"syntagma", icon:"🏛️", name:"Σύνταγμα", color:"gold",
+  desc:"Ο θεμελιώδης νόμος του Κράτους — θεμελιώδη δικαιώματα & ελευθερίες.",
+  items:[
+    {n:"Άρθρο 2", t:"Αξία του ανθρώπου", x:"Ο σεβασμός και η προστασία της αξίας του ανθρώπου αποτελούν πρωταρχική υποχρέωση της Πολιτείας. Θεμέλιο όλων των ατομικών δικαιωμάτων."},
+    {n:"Άρθρο 4", t:"Ισότητα των Ελλήνων", x:"Όλοι οι Έλληνες είναι ίσοι ενώπιον του νόμου· έχουν ίσα δικαιώματα και υποχρεώσεις. Άνδρες και γυναίκες έχουν ίσα δικαιώματα. Συνεισφορά στα δημόσια βάρη ανάλογα με τις δυνάμεις καθενός."},
+    {n:"Άρθρο 5", t:"Ελεύθερη ανάπτυξη προσωπικότητας", x:"Καθένας έχει δικαίωμα να αναπτύσσει ελεύθερα την προσωπικότητά του και να συμμετέχει στην κοινωνική/οικονομική/πολιτική ζωή, εφόσον δεν προσβάλλει δικαιώματα άλλων, το Σύνταγμα ή τα χρηστά ήθη. Προστασία ζωής, τιμής, ελευθερίας."},
+    {n:"Άρθρο 5Α", t:"Δικαίωμα στην πληροφόρηση", x:"Καθένας έχει δικαίωμα στην πληροφόρηση και στη συμμετοχή στην Κοινωνία της Πληροφορίας. Η διευκόλυνση πρόσβασης στην ψηφιακή πληροφορία αποτελεί υποχρέωση του Κράτους."},
+    {n:"Άρθρο 9", t:"Άσυλο κατοικίας", x:"Η κατοικία του καθενός είναι άσυλο. Η ιδιωτική και οικογενειακή ζωή προστατεύεται. Καμία έρευνα σε κατοικία χωρίς την παρουσία εκπροσώπων της δικαστικής εξουσίας."},
+    {n:"Άρθρο 9Α", t:"Προστασία προσωπικών δεδομένων", x:"Καθένας έχει δικαίωμα προστασίας από τη συλλογή, επεξεργασία και χρήση των προσωπικών του δεδομένων. Η προστασία διασφαλίζεται από ανεξάρτητη αρχή (ΑΠΔΠΧ)."},
+    {n:"Άρθρο 14", t:"Ελευθερία έκφρασης & Τύπου", x:"Καθένας μπορεί να εκφράζει και να διαδίδει προφορικά, γραπτά και διά του Τύπου τους στοχασμούς του. Ο Τύπος είναι ελεύθερος· η λογοκρισία απαγορεύεται."},
+    {n:"Άρθρο 17", t:"Προστασία ιδιοκτησίας", x:"Η ιδιοκτησία τελεί υπό την προστασία του Κράτους. Κανείς δεν στερείται την ιδιοκτησία του παρά μόνο για δημόσια ωφέλεια, με πλήρη αποζημίωση που καθορίζει το δικαστήριο."},
+    {n:"Άρθρο 20", t:"Δικαστική προστασία & προηγούμενη ακρόαση", x:"Καθένας έχει δικαίωμα να προσφύγει στα δικαστήρια. Το δικαίωμα προηγούμενης ακρόασης ισχύει και για κάθε διοικητική ενέργεια σε βάρος δικαιωμάτων/συμφερόντων του."},
+    {n:"Άρθρο 21", t:"Προστασία οικογένειας, παιδιού, νεότητας", x:"Η οικογένεια, ο γάμος, η μητρότητα και η παιδική ηλικία τελούν υπό την προστασία του Κράτους. Ειδική φροντίδα σε πολύτεκνους, ΑμεΑ, ηλικιωμένους."},
+    {n:"Άρθρο 22", t:"Δικαίωμα στην εργασία", x:"Η εργασία αποτελεί δικαίωμα και προστατεύεται. Όλοι οι εργαζόμενοι δικαιούνται ίση αμοιβή για παρεχόμενη εργασία ίσης αξίας. Ελευθερία συνδικαλισμού."},
+    {n:"Άρθρο 25", t:"Αρχή του κοινωνικού κράτους & αναλογικότητας", x:"Τα δικαιώματα του ανθρώπου τελούν υπό την εγγύηση του Κράτους. Οι περιορισμοί των δικαιωμάτων πρέπει να σέβονται την αρχή της αναλογικότητας (κατάλληλοι, αναγκαίοι, εν στενή εννοία ανάλογοι)."}
+  ],
+  links:[{label:"Πλήρες κείμενο (Βουλή)",url:"https://www.hellenicparliament.gr/Vouli-ton-Ellinon/To-Politevma/Syntagma/"}]
+},
+{
+  id:"astiko", icon:"⚖️", name:"Αστικός Κώδικας", color:"blue",
+  desc:"Δικαιοπραξίες, ενοχές, εμπράγματο, οικογενειακό & κληρονομικό δίκαιο.",
+  items:[
+    {n:"ΑΚ 174 & 178-179", t:"Άκυρες & καταχρηστικές δικαιοπραξίες", x:"Άκυρη η δικαιοπραξία που αντιβαίνει σε απαγορευτική διάταξη νόμου ή στα χρηστά ήθη. Καταχρηστική/υπέρμετρη δέσμευση της ελευθερίας είναι άκυρη."},
+    {n:"ΑΚ 197-198", t:"Ευθύνη κατά τις διαπραγματεύσεις", x:"Στο στάδιο των διαπραγματεύσεων τα μέρη οφείλουν αμοιβαία συμπεριφορά καλής πίστης· όποιος υπαίτια ζημιώσει τον άλλον υποχρεούται σε αποζημίωση, ακόμη κι αν δεν καταρτιστεί σύμβαση."},
+    {n:"ΑΚ 247-249", t:"Παραγραφή αξιώσεων", x:"Η γενική παραγραφή των αξιώσεων είναι 20 έτη (ΑΚ 249). Η παραγραφή αρχίζει όταν γεννηθεί η αξίωση και είναι δυνατή η δικαστική επιδίωξή της."},
+    {n:"ΑΚ 250", t:"Πενταετής παραγραφή", x:"Σε 5 έτη παραγράφονται αξιώσεις εμπόρων/επαγγελματιών για εμπορεύματα-υπηρεσίες, μισθοί, ενοίκια, τόκοι, αμοιβές δικηγόρων/γιατρών κ.λπ. Χρήσιμο σε παλιές οφειλές."},
+    {n:"ΑΚ 288", t:"Καλή πίστη στην εκπλήρωση παροχής", x:"Ο οφειλέτης έχει υποχρέωση να εκπληρώσει την παροχή όπως απαιτεί η καλή πίστη, αφού ληφθούν υπόψη και τα συναλλακτικά ήθη. Βάση για αναπροσαρμογή/επιείκεια."},
+    {n:"ΑΚ 340 & 345", t:"Υπερημερία οφειλέτη & τόκοι", x:"Αν ο οφειλέτης καθυστερεί υπαίτια, περιέρχεται σε υπερημερία μετά από όχληση. Οφείλει τόκους υπερημερίας και αποζημίωση για περαιτέρω ζημία."},
+    {n:"ΑΚ 388", t:"Απρόοπτη μεταβολή συνθηκών", x:"Αν μετά τη σύναψη αμφοτεροβαρούς σύμβασης μεταβλήθηκαν έκτακτα & απρόβλεπτα οι συνθήκες ώστε η παροχή να γίνει υπέρμετρα επαχθής, το δικαστήριο μπορεί να αναπροσαρμόσει ή να λύσει τη σύμβαση."},
+    {n:"ΑΚ 904", t:"Αδικαιολόγητος πλουτισμός", x:"Όποιος έγινε πλουσιότερος χωρίς νόμιμη αιτία από την περιουσία ή με ζημία άλλου υποχρεούται να αποδώσει την ωφέλεια (π.χ. αχρεωστήτως καταβληθέντα)."},
+    {n:"ΑΚ 914 & 932", t:"Αδικοπραξία & ηθική βλάβη", x:"Όποιος ζημιώσει άλλον παράνομα και υπαίτια υποχρεούται σε αποζημίωση. Σε περίπτωση αδικοπραξίας το δικαστήριο επιδικάζει και εύλογη χρηματική ικανοποίηση λόγω ηθικής βλάβης· σε θάνατο, ψυχική οδύνη στους οικείους."},
+    {n:"ΑΚ 1033 & 369", t:"Μεταβίβαση ακινήτου", x:"Για τη μεταβίβαση κυριότητας ακινήτου απαιτείται συμβολαιογραφικό έγγραφο και μεταγραφή/καταχώριση στο Κτηματολόγιο. Χωρίς αυτά δεν επέρχεται η μεταβίβαση."},
+    {n:"ΑΚ 1041 & 1045", t:"Χρησικτησία", x:"Τακτική χρησικτησία: κυριότητα με καλή πίστη + νόμιμο τίτλο + νομή 10 ετών. Έκτακτη: νομή πράγματος επί 20 έτη, χωρίς τίτλο."},
+    {n:"ΑΚ 1710 & 1825", t:"Κληρονομιά & νόμιμη μοίρα", x:"Με τον θάνατο η περιουσία (κληρονομιά) περιέρχεται στους κληρονόμους. Κατιόντες, γονείς και σύζυγος είναι μεριδούχοι: η νόμιμη μοίρα είναι το ½ της εξ αδιαθέτου μερίδας και δεν θίγεται από διαθήκη."},
+    {n:"ΑΚ 1847-1850", t:"Αποδοχή & αποποίηση κληρονομιάς", x:"Ο κληρονόμος μπορεί να αποποιηθεί την κληρονομιά εντός 4 μηνών (1 έτος αν διαμένει στο εξωτερικό ή ο κληρονομούμενος πέθανε στο εξωτερικό). Η προθεσμία αρχίζει από τη γνώση της επαγωγής. Σιωπή = αποδοχή."}
+  ],
+  links:[{label:"Αστικός Κώδικας (kodiko.gr)",url:"https://www.kodiko.gr/nomothesia/document/216337"}]
+},
+{
+  id:"poiniko", icon:"🚨", name:"Ποινικός Κώδικας & Δικονομία", color:"red",
+  desc:"Εγκλήματα, ποινές, μήνυση/έγκληση, αυτόφωρο, δικαιώματα κατηγορουμένου.",
+  items:[
+    {n:"ΠΚ 18", t:"Διάκριση εγκλημάτων", x:"Κακούργημα: πράξη με ποινή κάθειρξης (>5 έτη). Πλημμέλημα: ποινή φυλάκισης ή χρηματική. Η διάκριση καθορίζει προθεσμίες, αρμοδιότητα δικαστηρίου και παραγραφή."},
+    {n:"ΠΚ 22-25", t:"Νόμιμη άμυνα & κατάσταση ανάγκης", x:"Δεν είναι άδικη η πράξη που τελείται σε νόμιμη άμυνα — αναγκαία υπεράσπιση για την αποτροπή άδικης & παρούσας επίθεσης. Ισχύει και η κατάσταση ανάγκης υπό προϋποθέσεις."},
+    {n:"ΠΚ 308", t:"Σωματική βλάβη (απλή)", x:"Όποιος προξενεί σωματική κάκωση ή βλάβη της υγείας άλλου τιμωρείται με φυλάκιση έως 2 έτη ή χρηματική ποινή. Διώκεται κατ' έγκληση (απλή). Επικίνδυνη/βαριά βλάβη τιμωρούνται αυστηρότερα."},
+    {n:"ΠΚ 330 & 333", t:"Παράνομη βία & απειλή", x:"Η εξαναγκαστική άσκηση βίας ή σοβαρή απειλή για να πράξει/παραλείψει κάποιος κάτι τιμωρείται. Η απειλή που προκαλεί τρόμο/ανησυχία διώκεται κατ' έγκληση."},
+    {n:"ΠΚ 361 & 362-363", t:"Εξύβριση & (συκοφαντική) δυσφήμηση", x:"Εξύβριση: προσβολή τιμής με λόγια/έργα. Δυσφήμηση: ισχυρισμός ψευδούς γεγονότος που βλάπτει την τιμή. Συκοφαντική δυσφήμηση (γνώση του ψεύδους) τιμωρείται αυστηρότερα. Διώκονται κατ' έγκληση (3μηνη προθεσμία)."},
+    {n:"ΠΚ 372", t:"Κλοπή", x:"Όποιος αφαιρεί ξένο κινητό πράγμα με σκοπό ιδιοποίησης τιμωρείται με φυλάκιση/χρηματική· κακούργημα αν η αξία είναι ιδιαίτερα μεγάλη ή συντρέχουν επιβαρυντικές περιστάσεις."},
+    {n:"ΠΚ 386", t:"Απάτη", x:"Όποιος με εν γνώσει παράσταση ψευδών γεγονότων πείθει κάποιον σε πράξη που βλάπτει την περιουσία του, με σκοπό παράνομου οφέλους. Κακούργημα σε μεγάλη ζημία ή κατ' επάγγελμα."},
+    {n:"ΠΚ 111-113", t:"Παραγραφή εγκλημάτων", x:"Κακουργήματα παραγράφονται σε 15 ή 20 έτη, πλημμελήματα σε 5 έτη, πταίσματα σε 1-2 έτη. Η παραγραφή αναστέλλεται όσο διαρκεί η κύρια διαδικασία (με ανώτατο όριο)."},
+    {n:"ΚΠΔ 42 & 46", t:"Μήνυση & Έγκληση", x:"Μήνυση: αναφορά αξιόποινης πράξης από οποιονδήποτε. Έγκληση: απαιτείται όταν η πράξη διώκεται κατ' έγκληση (π.χ. εξύβριση, απειλή, απλή σωματική βλάβη) — μόνο από τον παθόντα, εντός 3 μηνών από τη γνώση."},
+    {n:"ΚΠΔ 242-243", t:"Αυτόφωρη διαδικασία", x:"Αυτόφωρο είναι το έγκλημα που τελείται τη στιγμή που γίνεται αντιληπτό ή αμέσως μετά (έως 48 ώρες). Επιτρέπει άμεση σύλληψη και ταχεία εισαγωγή σε δίκη."},
+    {n:"ΚΠΔ 96 & 99", t:"Δικαιώματα κατηγορουμένου", x:"Ο κατηγορούμενος έχει δικαίωμα σε συνήγορο, σε προθεσμία για την απολογία του, σε πλήρη γνώση της δικογραφίας και δικαίωμα σιωπής. Η απολογία δεν μπορεί να αποσπαστεί με εξαναγκασμό."}
+  ],
+  links:[{label:"Ποινικός Κώδικας (kodiko.gr)",url:"https://www.kodiko.gr/"}]
+},
+{
+  id:"ergatiko", icon:"👷", name:"Εργατικό Δίκαιο", color:"amber",
+  desc:"Σύμβαση εργασίας, ωράριο, άδειες, δώρα, απόλυση & αποζημίωση, παρενόχληση.",
+  items:[
+    {n:"Ν.4808/2021", t:"Ωράριο & υπερεργασία/υπερωρία", x:"Νόμιμο ωράριο 8 ώρες/ημέρα, 40 ώρες/εβδομάδα. Υπερεργασία η 41η-45η ώρα (προσαύξηση 20%). Υπερωρία πέραν αυτών (προσαύξηση 40%, παράνομη 120%). Ψηφιακή κάρτα εργασίας."},
+    {n:"ΑΝ 539/1945", t:"Ετήσια άδεια αναψυχής", x:"Πλήρες έτος: 20 εργάσιμες (5ήμερο) ή 24 (6ήμερο), που αυξάνονται με τα έτη υπηρεσίας (έως 26). Καταβάλλεται και επίδομα αδείας (½ μισθού, ανώτατο 13 ημερομίσθια/½ μισθού)."},
+    {n:"Δώρα εορτών", t:"Δώρο Χριστουγέννων & Πάσχα", x:"Δώρο Χριστουγέννων = 1 μηνιαίος μισθός (πλήρες έτος), καταβολή έως 21/12. Δώρο Πάσχα = ½ μισθού, καταβολή έως τη Μ. Τετάρτη. Υπολογισμός αναλογικά για μερική απασχόληση/λιγότερο χρόνο."},
+    {n:"Ν.2112/1920 & Ν.4808", t:"Καταγγελία & αποζημίωση απόλυσης", x:"Η απόλυση υπαλλήλου γίνεται εγγράφως με καταβολή αποζημίωσης που κλιμακώνεται με τα έτη υπηρεσίας (από 2 μηνιαίους μισθούς έως 12+). Με προειδοποίηση η αποζημίωση μειώνεται στο μισό. Απαιτείται αναγγελία στον ΟΑΕΔ/ΔΥΠΑ & ΕΡΓΑΝΗ."},
+    {n:"Έγκυρη απόλυση", t:"Προϋποθέσεις έγκυρης απόλυσης", x:"Έγγραφη, καταβολή (ή προσφορά) της νόμιμης αποζημίωσης και αναγγελία. Η απόλυση δεν πρέπει να είναι καταχρηστική (π.χ. λόγω εγκυμοσύνης, συνδικαλισμού, καταγγελίας παρανομίας). Άκυρη απόλυση → επαναπρόσληψη/μισθοί υπερημερίας."},
+    {n:"ΑΚ 325 (επίσχεση)", t:"Επίσχεση εργασίας", x:"Αν ο εργοδότης δεν καταβάλλει δεδουλευμένους μισθούς, ο εργαζόμενος μπορεί να αρνηθεί την παροχή εργασίας (επίσχεση) μέχρι την εξόφληση, διατηρώντας την αξίωση μισθού. Άσκηση με προσοχή & έγγραφη γνωστοποίηση."},
+    {n:"Εργατικό ατύχημα", t:"Εργατικό ατύχημα", x:"Ατύχημα κατά/με αφορμή την εργασία. Υποχρέωση άμεσης αναγγελίας στον ΕΦΚΑ & Επιθεώρηση Εργασίας εντός 24 ωρών. Δικαίωμα παροχών ΕΦΚΑ και αποζημίωσης (και ηθικής βλάβης) αν υπάρχει υπαιτιότητα/παράβαση μέτρων ασφαλείας."},
+    {n:"Ν.4808/2021 (μέρος ΙΙ)", t:"Παρενόχληση & βία στην εργασία (mobbing)", x:"Κυρώθηκε η Σύμβαση 190 ΔΟΕ. Απαγορεύεται κάθε μορφή βίας/παρενόχλησης (και σεξουαλικής). Ο εργαζόμενος μπορεί να προσφύγει στην Επιθεώρηση Εργασίας, στον Συνήγορο του Πολίτη και στα δικαστήρια· δικαίωμα αποχώρησης χωρίς απώλεια δικαιωμάτων σε σοβαρό κίνδυνο."},
+    {n:"Δεδουλευμένα", t:"Καθυστέρηση μισθών", x:"Η μη εμπρόθεσμη καταβολή δεδουλευμένων είναι ποινικό αδίκημα (ΑΝ 690/1945) και βάση για επίσχεση, μονομερή βλαπτική μεταβολή (θεωρούμενη ως απόλυση) και καταγγελία στην Επιθεώρηση Εργασίας."}
+  ],
+  links:[{label:"Επιθεώρηση Εργασίας",url:"https://www.hli.gov.gr/"},{label:"ΕΡΓΑΝΗ",url:"https://www.ergani.gov.gr/"}]
+},
+{
+  id:"oikogeneiako", icon:"👨‍👩‍👧", name:"Οικογενειακό Δίκαιο", color:"blue",
+  desc:"Γάμος, σύμφωνο συμβίωσης, διαζύγιο, επιμέλεια, διατροφή.",
+  items:[
+    {n:"ΑΚ 1350+", t:"Γάμος (πολιτικός/θρησκευτικός)", x:"Ο γάμος τελείται είτε πολιτικά ενώπιον Δημάρχου είτε θρησκευτικά. Απαιτείται άδεια γάμου από τον Δήμο κατοικίας. Και οι δύο τύποι έχουν ίδια νομικά αποτελέσματα."},
+    {n:"Ν.4356/2015", t:"Σύμφωνο συμβίωσης", x:"Συμβολαιογραφική συμφωνία (και για ομόφυλα ζευγάρια) με κληρονομικά, ασφαλιστικά και οικογενειακά δικαιώματα παρόμοια του γάμου. Λύεται με συμφωνία ή μονομερή συμβολαιογραφική δήλωση."},
+    {n:"ΑΚ 1438-1441", t:"Διαζύγιο", x:"Συναινετικό: με έγγραφη συμφωνία των συζύγων μέσω δικηγόρων και συμβολαιογραφική πράξη (χωρίς δικαστήριο). Κατ' αντιδικία: με αγωγή, λόγω ισχυρού κλονισμού (τεκμαίρεται μετά από 2ετή διάσταση)."},
+    {n:"Ν.4800/2021 & ΑΚ 1510+", t:"Γονική μέριμνα & επιμέλεια", x:"Η γονική μέριμνα ασκείται από κοινού από τους δύο γονείς. Μετά τον χωρισμό, ο νόμος ενισχύει την ουσιαστική συμμετοχή και των δύο γονέων· ο χρόνος επικοινωνίας τεκμαίρεται στο 1/3 εφόσον δεν συμφωνηθεί άλλως."},
+    {n:"ΑΚ 1485-1495", t:"Διατροφή τέκνου", x:"Και οι δύο γονείς υποχρεούνται σε διατροφή του ανήλικου τέκνου ανάλογα με τις δυνάμεις τους. Καθορίζεται βάσει αναγκών τέκνου & εισοδημάτων γονέων· επιδιώκεται δικαστικά (και με ασφαλιστικά μέτρα)."},
+    {n:"ΑΚ 1391 & 1442", t:"Διατροφή συζύγου", x:"Σε διάσταση ή μετά το διαζύγιο, ο ένας σύζυγος μπορεί να δικαιούται διατροφή αν δεν μπορεί να εξασφαλίσει τη συντήρησή του (υπό προϋποθέσεις — ηλικία, υγεία, φροντίδα τέκνων)."},
+    {n:"Ασφαλιστικά μέτρα", t:"Προσωρινή ρύθμιση", x:"Για επείγοντα ζητήματα (προσωρινή επιμέλεια, διατροφή, μετοίκηση, προστασία από ενδοοικογενειακή βία) ζητείται προσωρινή δικαστική προστασία με ασφαλιστικά μέτρα, που εκδικάζονται ταχύτερα."},
+    {n:"Ν.3500/2006", t:"Ενδοοικογενειακή βία", x:"Ποινικοποίηση σωματικής/ψυχολογικής/σεξουαλικής βίας εντός οικογένειας. Δυνατότητα ποινικής δίωξης, περιοριστικών όρων απομάκρυνσης δράστη και ασφαλιστικών μέτρων προστασίας. Γραμμή SOS 15900."}
+  ],
+  links:[{label:"Οικογενειακό δίκαιο (kodiko.gr)",url:"https://www.kodiko.gr/"}]
+},
+{
+  id:"katanalotiko", icon:"🛒", name:"Καταναλωτικό Δίκαιο", color:"amber",
+  desc:"Εγγυήσεις, ελαττωματικά προϊόντα, υπαναχώρηση, αθέμιτες πρακτικές.",
+  items:[
+    {n:"ΑΚ 540 & Οδηγία (ΕΕ) 2019/771", t:"Νόμιμη εγγύηση — ελαττωματικό προϊόν", x:"Ο πωλητής ευθύνεται για πραγματικά ελαττώματα/έλλειψη συνομολογημένων ιδιοτήτων. Ο καταναλωτής δικαιούται: επισκευή, αντικατάσταση, μείωση τιμήματος ή υπαναχώρηση. Η νόμιμη εγγύηση ισχύει τουλάχιστον 2 έτη — ανεξάρτητα από την εμπορική εγγύηση."},
+    {n:"Ν.2251/1994 (άρ.3θ)", t:"Υπαναχώρηση σε εξ αποστάσεως αγορές", x:"Σε αγορές εξ αποστάσεως ή εκτός καταστήματος (online/τηλεφωνικά) ο καταναλωτής μπορεί να υπαναχωρήσει αναιτιολόγητα εντός 14 ημερολογιακών ημερών από την παραλαβή, με επιστροφή χρημάτων. Εξαιρέσεις: προϊόντα κατά παραγγελία, ευπαθή, αποσφραγισμένα υγιεινής κ.λπ."},
+    {n:"Ν.2251/1994 (άρ.9)", t:"Αθέμιτες / παραπλανητικές εμπορικές πρακτικές", x:"Απαγορεύονται παραπλανητικές (ψευδείς πληροφορίες) και επιθετικές πρακτικές. Παράδειγμα: ψευδείς εκπτώσεις, κρυφές χρεώσεις, παραπλανητική διαφήμιση. Καταγγελία στη ΓΓ Εμπορίου & Προστασίας Καταναλωτή."},
+    {n:"Ν.2251/1994 (άρ.2)", t:"Καταχρηστικοί Γενικοί Όροι Συναλλαγών (ΓΟΣ)", x:"Όροι σε συμβάσεις (τράπεζες, τηλεπικοινωνίες, ασφάλειες) που διαταράσσουν υπέρμετρα την ισορροπία εις βάρος του καταναλωτή είναι άκυροι (καταχρηστικοί). Ο καταναλωτής δεν δεσμεύεται από αυτούς."},
+    {n:"Συνήγορος Καταναλωτή", t:"Εξωδικαστική επίλυση διαφορών", x:"Ανεξάρτητη Αρχή για φιλική διευθέτηση διαφορών καταναλωτή-προμηθευτή. Δωρεάν αναφορά online. Εκδίδει συστάσεις. Χρήσιμο πριν από δικαστική οδό ή για μικρές διαφορές."},
+    {n:"Ευθύνη παραγωγού", t:"Ελαττωματικά & επικίνδυνα προϊόντα", x:"Ο παραγωγός ευθύνεται αντικειμενικά για ζημία από ελαττωματικό προϊόν (π.χ. τραυματισμός). Δεν απαιτείται απόδειξη υπαιτιότητας — μόνο του ελαττώματος, της ζημίας και της αιτιώδους συνάφειας."}
+  ],
+  links:[{label:"Συνήγορος του Καταναλωτή",url:"https://www.synigoroskatanaloti.gr/"},{label:"ΓΓ Εμπορίου & Προστ. Καταναλωτή",url:"https://www.mindev.gov.gr/"}]
+},
+{
+  id:"misthoseis", icon:"🏠", name:"Μισθώσεις Ακινήτων", color:"blue",
+  desc:"Ενοικίαση κατοικίας/επαγγελματική, εγγύηση, καταγγελία, έξωση.",
+  items:[
+    {n:"Διάρκεια", t:"Ελάχιστη διάρκεια μίσθωσης κατοικίας", x:"Η μίσθωση κατοικίας ισχύει τουλάχιστον 3 έτη, ακόμη κι αν συμφωνηθεί μικρότερος χρόνος. Μετά τα 3 έτη, αν συνεχιστεί, ανανεώνεται σιωπηρά. Το μισθωτήριο δηλώνεται ηλεκτρονικά στην ΑΑΔΕ."},
+    {n:"Εγγύηση", t:"Εγγύηση (καπάρο)", x:"Συνήθως 1-2 μηνιαία μισθώματα. Επιστρέφεται στο τέλος της μίσθωσης εφόσον δεν υπάρχουν φθορές πέραν της συνήθους χρήσης ή οφειλές. Δεν συμψηφίζεται αυτόματα με τα τελευταία ενοίκια χωρίς συμφωνία."},
+    {n:"Υποχρεώσεις", t:"Υποχρεώσεις εκμισθωτή & μισθωτή", x:"Ο εκμισθωτής παραδίδει & διατηρεί το μίσθιο κατάλληλο για χρήση (μεγάλες επισκευές). Ο μισθωτής πληρώνει το μίσθωμα, το χρησιμοποιεί με επιμέλεια και βαρύνεται με μικροεπισκευές/κοινόχρηστα κατά συμφωνία."},
+    {n:"Καταγγελία", t:"Καταγγελία & λήξη", x:"Πρόωρη αποχώρηση μισθωτή: συνήθως με έγγραφη προειδοποίηση κατά τη σύμβαση· ευθύνη για μισθώματα μέχρι νέα μίσθωση/λήξη, εκτός αντίθετης συμφωνίας. Ο εκμισθωτής μπορεί να καταγγείλει για δυστροπία (μη πληρωμή) ή ιδιόχρηση."},
+    {n:"Διαταγή απόδοσης", t:"Έξωση για μη καταβολή ενοικίου", x:"Σε καθυστέρηση ενοικίου, ο εκμισθωτής επιδίδει εξώδικο και μπορεί να ζητήσει Διαταγή Απόδοσης Μισθίου (ταχεία διαδικασία). Αν ο μισθωτής εξοφλήσει εντός προθεσμίας, μπορεί να αποτραπεί η έξωση (άπαξ)."},
+    {n:"Επαγγελματική μίσθωση", t:"Μίσθωση επαγγελματικής στέγης", x:"Διέπεται από το ΠΔ 34/1995 & νεότερες διατάξεις. Ελεύθερος καθορισμός διάρκειας (ελάχιστο συνήθως 3 έτη). Ειδικοί κανόνες για αναπροσαρμογή μισθώματος και αποζημίωση άυλης εμπορικής αξίας σε ορισμένες περιπτώσεις."}
+  ],
+  links:[{label:"Μισθωτήρια (ΑΑΔΕ)",url:"https://www.aade.gr/"}]
+},
+{
+  id:"trochaia", icon:"🚗", name:"ΚΟΚ & Τροχαία", color:"red",
+  desc:"Κώδικας Οδικής Κυκλοφορίας, παραβάσεις, ατύχημα, φιλικός διακανονισμός.",
+  items:[
+    {n:"Ν.2696/1999 (ΚΟΚ)", t:"Βασικές σοβαρές παραβάσεις", x:"Οδήγηση υπό μέθη, υπερβολική ταχύτητα, παραβίαση ερυθρού, χρήση κινητού, μη χρήση ζώνης/κράνους: επισύρουν πρόστιμα, αφαίρεση διπλώματος/πινακίδων και βαθμούς ποινής (Point System)."},
+    {n:"Μέθη", t:"Όρια αλκοόλ", x:"Γενικό όριο 0,25 mg/l στον εκπνεόμενο αέρα (0,50 g/l αίμα). Άνω των 0,60 mg/l: σοβαρή παράβαση με υψηλό πρόστιμο, αφαίρεση άδειας και ενδεχομένως ποινική δίωξη. Για νέους/επαγγελματίες ισχύουν αυστηρότερα όρια."},
+    {n:"Ατύχημα", t:"Τι κάνω σε τροχαίο ατύχημα", x:"Ακινητοποίηση, τρίγωνο/φώτα, πρώτες βοήθειες & κλήση 100/166 αν υπάρχουν τραυματίες. Ανταλλαγή στοιχείων & ασφαλιστηρίων. Κλήση Τροχαίας αν υπάρχουν τραυματισμοί/διαφωνία. Φωτογραφίες & μάρτυρες. ΠΟΤΕ μη φύγετε (εγκατάλειψη = αδίκημα)."},
+    {n:"Φιλικός διακανονισμός", t:"Δήλωση φιλικού διακανονισμού", x:"Σε υλικές μόνο ζημιές χωρίς διαφωνία υπαιτιότητας, συμπληρώνεται το έντυπο φιλικής δήλωσης τροχαίου ατυχήματος, που επιταχύνει την αποζημίωση από τις ασφαλιστικές, χωρίς Τροχαία."},
+    {n:"Ανασφάλιστο", t:"Ανασφάλιστο όχημα", x:"Η κυκλοφορία ανασφάλιστου οχήματος επισύρει υψηλό πρόστιμο, αφαίρεση πινακίδων & άδειας. Σε ατύχημα με ανασφάλιστο, αποζημιώνει το Επικουρικό Κεφάλαιο, με δικαίωμα αναγωγής κατά του υπαιτίου."},
+    {n:"Ένσταση", t:"Αμφισβήτηση κλήσης", x:"Αν θεωρείτε άδικη μια κλήση, μπορείτε να υποβάλετε ένσταση/αντιρρήσεις εντός της προβλεπόμενης προθεσμίας στην αρμόδια αρχή, και εν συνεχεία προσφυγή στο Διοικητικό Πρωτοδικείο."}
+  ],
+  links:[{label:"Κώδικας Οδικής Κυκλοφορίας",url:"https://www.kodiko.gr/"}]
+},
+{
+  id:"dioikitiko", icon:"🏢", name:"Διοικητικό & Πολίτης–Κράτος", color:"gold",
+  desc:"Σχέσεις με δημόσιο, προθεσμίες διοίκησης, προσφυγές, Συνήγορος Πολίτη.",
+  items:[
+    {n:"Ν.2690/1999 (ΚΔΔ/σίας)", t:"Δικαίωμα αναφοράς & πρόσβασης σε έγγραφα", x:"Ο πολίτης έχει δικαίωμα να υποβάλλει αιτήσεις/αναφορές και να λαμβάνει γνώση διοικητικών εγγράφων που τον αφορούν. Η διοίκηση οφείλει να αιτιολογεί τις πράξεις της."},
+    {n:"50 ημέρες", t:"Προθεσμία απάντησης διοίκησης", x:"Οι δημόσιες υπηρεσίες οφείλουν να απαντούν σε αιτήσεις εντός 50 ημερών (ή μικρότερης ειδικής προθεσμίας). Η μη απάντηση συνιστά σιωπηρή απόρριψη που προσβάλλεται· δυνατή και αποζημίωση για καθυστέρηση."},
+    {n:"Ενδικοφανής προσφυγή", t:"Προσφυγή σε ανώτερο όργανο", x:"Πριν το δικαστήριο, ο νόμος συχνά προβλέπει ενδικοφανή προσφυγή (π.χ. στην ΑΑΔΕ η ενδικοφανής στη ΔΕΔ εντός 30 ημερών). Είναι υποχρεωτικό στάδιο όπου προβλέπεται."},
+    {n:"Αίτηση ακύρωσης", t:"Προσβολή διοικητικής πράξης", x:"Παράνομη ατομική διοικητική πράξη προσβάλλεται με αίτηση ακύρωσης στο ΣτΕ ή στα Διοικητικά Εφετεία, συνήθως εντός 60 ημερών από την κοινοποίηση/γνώση."},
+    {n:"Συνήγορος του Πολίτη", t:"Ανεξάρτητη Αρχή διαμεσολάβησης", x:"Δωρεάν αναφορά για κακοδιοίκηση, καθυστερήσεις ή παραβίαση δικαιωμάτων από το Δημόσιο. Διαμεσολαβεί με τις υπηρεσίες. Δεν εκδίδει δεσμευτικές αποφάσεις αλλά ασκεί ισχυρή πίεση συμμόρφωσης."},
+    {n:"Υπεύθυνη δήλωση & εξουσιοδότηση", t:"Ν.1599/1986", x:"Η υπεύθυνη δήλωση αντικαθιστά πιστοποιητικά και δεσμεύει τον δηλούντα (ψευδής δήλωση = ποινικό αδίκημα). Εκδίδεται και μέσω gov.gr με ισχύ γνήσιου εγγράφου."}
+  ],
+  links:[{label:"Συνήγορος του Πολίτη",url:"https://www.synigoros.gr/"},{label:"gov.gr",url:"https://www.gov.gr/"}]
+},
+{
+  id:"data", icon:"🔒", name:"Προσωπικά Δεδομένα & Ψηφιακά", color:"blue",
+  desc:"GDPR, δικαιώματα, ψηφιακή προσβολή, παραβίαση δεδομένων.",
+  items:[
+    {n:"Καν. (ΕΕ) 2016/679 (GDPR)", t:"Δικαιώματα υποκειμένου", x:"Δικαίωμα ενημέρωσης, πρόσβασης, διόρθωσης, διαγραφής («δικαίωμα στη λήθη»), περιορισμού, φορητότητας και εναντίωσης στην επεξεργασία. Ο υπεύθυνος επεξεργασίας οφείλει να απαντήσει εντός 1 μήνα, δωρεάν."},
+    {n:"Νομιμότητα επεξεργασίας", t:"Νόμιμη βάση & συγκατάθεση", x:"Η επεξεργασία δεδομένων απαιτεί νόμιμη βάση (συγκατάθεση, σύμβαση, έννομη υποχρέωση, έννομο συμφέρον κ.λπ.). Η συγκατάθεση πρέπει να είναι ελεύθερη, ρητή & ανακλητή."},
+    {n:"Παραβίαση", t:"Διαρροή δεδομένων (data breach)", x:"Σε παραβίαση, ο υπεύθυνος ενημερώνει την ΑΠΔΠΧ εντός 72 ωρών και, αν υπάρχει υψηλός κίνδυνος, και τα υποκείμενα. Το θιγόμενο πρόσωπο μπορεί να αξιώσει αποζημίωση (και ηθική βλάβη)."},
+    {n:"Καταγγελία ΑΠΔΠΧ", t:"Προσφυγή στην Αρχή", x:"Αν θεωρείτε ότι παραβιάστηκαν τα δεδομένα σας, μπορείτε να υποβάλετε καταγγελία στην Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα, δωρεάν. Η Αρχή ελέγχει και επιβάλλει κυρώσεις."},
+    {n:"Ψηφιακή προσβολή", t:"Δυσφήμηση/προσβολή στο διαδίκτυο", x:"Προσβλητικά/συκοφαντικά δημοσιεύματα online διώκονται όπως και offline (ΠΚ 361-363) και θεμελιώνουν αστική αποζημίωση. Δικαίωμα αίτησης διαγραφής/αποκατάστασης και προσωρινής δικαστικής προστασίας."},
+    {n:"Revenge porn / εικόνα", t:"Δικαίωμα στην εικόνα & προσωπικά μηνύματα", x:"Η δημοσίευση εικόνων/βίντεο χωρίς συναίνεση προσβάλλει την προσωπικότητα (ΑΚ 57) και μπορεί να στοιχειοθετεί ποινικά αδικήματα. Άμεση καταγγελία στη Δίωξη Ηλεκτρονικού Εγκλήματος."}
+  ],
+  links:[{label:"ΑΠΔΠΧ",url:"https://www.dpa.gr/"},{label:"Δίωξη Ηλεκτρονικού Εγκλήματος",url:"https://www.astynomia.gr/"}]
+},
+{
+  id:"forologiko", icon:"💰", name:"Φορολογικό Δίκαιο", color:"amber",
+  desc:"Κώδικας Φορολογικής Διαδικασίας, έλεγχος, πρόστιμα, ενδικοφανής προσφυγή, ρυθμίσεις.",
+  items:[
+    {n:"Ν.4987/2022 (ΚΦΔ)", t:"Κώδικας Φορολογικής Διαδικασίας", x:"Ο ΚΦΔ (αντικατέστησε τον Ν.4174/2013) ρυθμίζει τη σχέση φορολογουμένου–ΑΑΔΕ: δηλώσεις, βεβαίωση/είσπραξη φόρων, έλεγχοι, πρόστιμα και ένδικα βοηθήματα. Ο φορολογούμενος έχει δικαίωμα ενημέρωσης, προηγούμενης ακρόασης και πρόσβασης στον φάκελό του."},
+    {n:"Φορολογικός έλεγχος", t:"Δικαιώματα κατά τον έλεγχο", x:"Πριν την έκδοση πράξης προσδιορισμού φόρου, κοινοποιείται σημείωμα διαπιστώσεων/προσωρινός προσδιορισμός και δίνεται προθεσμία (συνήθως 20 ημερών) για έγγραφες απόψεις (δικαίωμα ακρόασης). Ο έλεγχος μπορεί να είναι πλήρης ή έμμεσος (τεχνικές ελέγχου)."},
+    {n:"ΚΦΔ άρ.63", t:"Ενδικοφανής προσφυγή στη ΔΕΔ", x:"Πριν προσφύγετε στο δικαστήριο, υποχρεωτικά ασκείτε ενδικοφανή προσφυγή στη Διεύθυνση Επίλυσης Διαφορών (ΔΕΔ) εντός 30 ημερών από την κοινοποίηση της πράξης. Η ΔΕΔ αποφασίζει εντός 120 ημερών· η σιωπηρή απόρριψη ανοίγει τον δρόμο για το Διοικητικό Δικαστήριο."},
+    {n:"Πρόστιμα & προσαυξήσεις", t:"Κυρώσεις ΚΦΔ", x:"Προβλέπονται πρόστιμα για εκπρόθεσμες/ανακριβείς δηλώσεις, μη έκδοση στοιχείων, τόκοι εκπρόθεσμης καταβολής και πρόσθετοι φόροι. Σε φοροδιαφυγή άνω ορίων στοιχειοθετείται και ποινικό αδίκημα (έγκλημα φοροδιαφυγής)."},
+    {n:"Παραγραφή", t:"Παραγραφή φορολογικών αξιώσεων", x:"Κατά κανόνα 5 έτη από το τέλος του έτους της προθεσμίας δήλωσης. Παρατείνεται (10 έτη) σε συμπληρωματικά στοιχεία και έως 15/20 έτη σε ειδικές περιπτώσεις (π.χ. μη υποβολή δήλωσης, φοροδιαφυγή). Πάντα ελέγχετε το ισχύον καθεστώς ανά χρήση."},
+    {n:"Ρύθμιση οφειλών", t:"Ρυθμίσεις & δόσεις", x:"Ληξιπρόθεσμες οφειλές στην ΑΑΔΕ ρυθμίζονται με πάγια ρύθμιση (έως 24 δόσεις, ή 48 για μη φορολογικές/έκτακτες). Η μη τήρηση επιφέρει απώλεια ρύθμισης & αναγκαστικά μέτρα (κατασχέσεις, δεσμεύσεις)."}
+  ],
+  links:[{label:"ΑΑΔΕ",url:"https://www.aade.gr/"},{label:"ΚΦΔ (kodiko.gr)",url:"https://www.kodiko.gr/"}]
+},
+{
+  id:"trapezika", icon:"🏦", name:"Τραπεζικά & Δάνεια (Κόκκινα)", color:"red",
+  desc:"Ρύθμιση οφειλών, εξωδικαστικός, πλειστηριασμοί, servicers, καταχρηστικοί όροι.",
+  items:[
+    {n:"Ν.4738/2020", t:"Εξωδικαστικός Μηχανισμός Ρύθμισης Οφειλών", x:"Ψηφιακή πλατφόρμα για συνολική ρύθμιση οφειλών (σε τράπεζες, Δημόσιο, ΕΦΚΑ) με έως 240/420 δόσεις, βάσει αυτοματοποιημένου αλγορίθμου. Απευθύνεται σε φυσικά & νομικά πρόσωπα με οικονομική αδυναμία."},
+    {n:"Κώδικας Δεοντολογίας (ΤτΕ)", t:"Διαδικασία Επίλυσης Καθυστερήσεων (ΔΕΚ)", x:"Πριν από αναγκαστικά μέτρα, η τράπεζα/servicer οφείλει να ακολουθήσει τον Κώδικα Δεοντολογίας: ενημέρωση, αξιολόγηση, πρόταση κατάλληλης ρύθμισης. Ο δανειολήπτης χαρακτηρίζεται «συνεργάσιμος» αν ανταποκρίνεται εγγράφως & εμπρόθεσμα."},
+    {n:"Ευάλωτοι & πρώτη κατοικία", t:"Προστασία κύριας κατοικίας", x:"Οι «ευάλωτοι οφειλέτες» (εισοδηματικά/περιουσιακά κριτήρια) προστατεύονται μέσω του φορέα απόκτησης & επαναμίσθωσης ακινήτων και επιδόματος στέγασης. Δεν υπάρχει πλέον ο παλιός «νόμος Κατσέλη» για νέες αιτήσεις — ισχύει το πλαίσιο του Ν.4738/2020."},
+    {n:"Servicers (Ν.4354/2015)", t:"Εταιρείες Διαχείρισης Απαιτήσεων", x:"Τα «κόκκινα» δάνεια συχνά μεταβιβάζονται/διαχειρίζονται από εταιρείες (funds/servicers). Ο οφειλέτης διατηρεί όλα τα δικαιώματα & ενστάσεις που είχε έναντι της τράπεζας· ο servicer πρέπει να αποδεικνύει τη νομιμοποίησή του και το ύψος της οφειλής."},
+    {n:"Πλειστηριασμός", t:"Αναγκαστική εκτέλεση & ανακοπή", x:"Πριν τον πλειστηριασμό προηγείται επιταγή προς εκτέλεση & κατάσχεση. Ο οφειλέτης μπορεί να ασκήσει ανακοπή (άρ.933 ΚΠολΔ) και αίτηση αναστολής εντός σύντομων προθεσμιών. Οι ηλεκτρονικοί πλειστηριασμοί διεξάγονται μέσω eauction.gr."},
+    {n:"Καταχρηστικοί όροι", t:"ΓΟΣ δανείων & υπερχρέωση", x:"Καταχρηστικοί όροι σε δανειακές συμβάσεις (π.χ. αδιαφανείς χρεώσεις, όροι σε δάνεια ελβετικού φράγκου) είναι άκυροι. Δικαίωμα ελέγχου του ανατοκισμού & των πραγματικών επιτοκίων. Καταγγελία και στην ΤτΕ / Συνήγορο Καταναλωτή."},
+    {n:"Τειρεσίας", t:"Δεδομένα οικονομικής συμπεριφοράς", x:"Έχετε δικαίωμα πρόσβασης στα δεδομένα σας στον Τειρεσία και διόρθωσης/διαγραφής εσφαλμένων εγγραφών. Οι εγγραφές (ακάλυπτες επιταγές, καταγγελίες δανείων) τηρούνται για ορισμένο χρόνο και μετά διαγράφονται."}
+  ],
+  links:[{label:"Εξωδικαστικός (ΚΕΑΟ/gov.gr)",url:"https://www.gov.gr/"},{label:"Τράπεζα της Ελλάδος",url:"https://www.bankofgreece.gr/"}]
+},
+{
+  id:"asfalistiko", icon:"👵", name:"Ασφαλιστικό & Συντάξεις", color:"gold",
+  desc:"ΕΦΚΑ, προϋποθέσεις σύνταξης, είδη, διαδοχική ασφάλιση, ενστάσεις.",
+  items:[
+    {n:"Ν.4387/2016 & Ν.4670/2020", t:"Δομή σύνταξης (εθνική + ανταποδοτική)", x:"Η κύρια σύνταξη αποτελείται από την εθνική σύνταξη (χρηματοδοτούμενη από τον προϋπολογισμό, με 40 έτη διαμονής & 15+ έτη ασφάλισης) και την ανταποδοτική (βάσει συντάξιμων αποδοχών & ποσοστών αναπλήρωσης ανά έτη ασφάλισης). Ενιαίος φορέας: ΕΦΚΑ."},
+    {n:"Όρια συνταξιοδότησης", t:"Πότε παίρνω σύνταξη γήρατος", x:"Πλήρης σύνταξη: κατά κανόνα 67 ετών με 15 έτη (4.500 ημέρες), ή 62 ετών με 40 έτη ασφάλισης. Μειωμένη: 62 ετών με 15 έτη υπό προϋποθέσεις. Ισχύουν ειδικά όρια για βαρέα-ανθυγιεινά, μητέρες ανηλίκων, ΑμεΑ."},
+    {n:"Είδη συντάξεων", t:"Γήρατος / αναπηρίας / θανάτου", x:"Γήρατος (λόγω ηλικίας & ασφάλισης), αναπηρίας (ποσοστό αναπηρίας από ΚΕΠΑ), θανάτου/χηρείας & ορφανικές (στους δικαιοδόχους: σύζυγο, τέκνα υπό προϋποθέσεις)."},
+    {n:"Διαδοχική ασφάλιση", t:"Χρόνος σε πολλά ταμεία", x:"Αν έχετε ασφαλιστεί σε περισσότερα ταμεία, ο χρόνος συνυπολογίζεται (διαδοχική ασφάλιση). Απονέμων φορέας είναι συνήθως ο τελευταίος. Μπορείτε να εξαγοράσετε πλασματικά έτη (στρατός, σπουδές, τέκνα) υπό όρους."},
+    {n:"Ενστάσεις", t:"Προσβολή απόφασης ΕΦΚΑ", x:"Κατά απόφασης ΕΦΚΑ (απόρριψη/ποσό/αναγνώριση χρόνου) ασκείται ένσταση στην Τοπική Διοικητική Επιτροπή (ΤΔΕ) εντός προβλεπόμενης προθεσμίας και, εν συνεχεία, προσφυγή στα Διοικητικά Δικαστήρια."},
+    {n:"Παράλληλη/μετά τη σύνταξη εργασία", t:"Απασχόληση συνταξιούχου", x:"Ο συνταξιούχος που εργάζεται καταβάλλει εισφορές και η σύνταξή του δεν περικόπτεται (κατάργηση παλαιότερης μείωσης 30%/60%), με υποχρέωση δήλωσης της απασχόλησης στον ΕΦΚΑ."}
+  ],
+  links:[{label:"ΕΦΚΑ",url:"https://www.efka.gov.gr/"},{label:"Ασφαλιστικό (kodiko.gr)",url:"https://www.kodiko.gr/"}]
+},
+{
+  id:"poiniki_dikonomia", icon:"👨‍⚖️", name:"Ποινική Δικονομία (σε βάθος)", color:"red",
+  desc:"Στάδια διαδικασίας, δικαιώματα, κράτηση, ένδικα μέσα, πολιτική αγωγή.",
+  items:[
+    {n:"Στάδια", t:"Πορεία ποινικής διαδικασίας", x:"1) Προκαταρκτική εξέταση (διερεύνηση καταγγελίας), 2) Κύρια ανάκριση (σε κακουργήματα) ή απευθείας κλήση, 3) Ακροατήριο (δίκη), 4) Ένδικα μέσα. Ο εισαγγελέας κινεί/κατευθύνει τη δίωξη."},
+    {n:"ΚΠΔ 89-108", t:"Δικαιώματα κατηγορουμένου", x:"Δικαίωμα σε συνήγορο (και διερμηνέα), πλήρη γνώση της δικογραφίας, προθεσμία για απολογία, δικαίωμα σιωπής & μη αυτοενοχοποίησης, τεκμήριο αθωότητας. Ο ύποπτος στην προκαταρκτική έχει επίσης δικαίωμα παράστασης με δικηγόρο."},
+    {n:"ΚΠΔ 282-286", t:"Προσωρινή κράτηση & περιοριστικοί όροι", x:"Η προσωρινή κράτηση είναι έσχατο μέτρο (σε κακουργήματα, με κίνδυνο φυγής/τέλεσης νέων). Εναλλακτικά επιβάλλονται περιοριστικοί όροι (εγγύηση, απαγόρευση εξόδου, εμφάνιση σε ΑΤ, κατ' οίκον περιορισμός με επιτήρηση)."},
+    {n:"ΚΠΔ 462-476", t:"Ένδικα μέσα (έφεση, αναίρεση)", x:"Έφεση κατά καταδικαστικών αποφάσεων (προθεσμίες συνήθως 10-30 ημέρες κατά περίπτωση). Αναίρεση στον Άρειο Πάγο για νομικά σφάλματα. Η εμπρόθεσμη άσκηση αναστέλλει συνήθως την εκτέλεση."},
+    {n:"ΚΠΔ 63-70", t:"Πολιτική αγωγή / υποστήριξη κατηγορίας", x:"Ο παθών μπορεί να παρασταθεί προς υποστήριξη της κατηγορίας (και για χρηματική ικανοποίηση λόγω ηθικής βλάβης), δηλώνοντας παράσταση στην ανάκριση ή στο ακροατήριο."},
+    {n:"Απόλυση υπό όρους / εναλλακτικά", t:"Αναστολή, μετατροπή, κοινωφελής", x:"Ποινές φυλάκισης μπορεί να ανασταλούν, να μετατραπούν σε χρηματική ή σε παροχή κοινωφελούς εργασίας, υπό προϋποθέσεις (ύψος ποινής, ποινικό μητρώο). Επίσης προβλέπεται υφ' όρον απόλυση κρατουμένων."},
+    {n:"ne bis in idem", t:"Δεδικασμένο & αμετάκλητο", x:"Κανείς δεν δικάζεται δύο φορές για την ίδια πράξη. Η αμετάκλητη απόφαση παράγει δεδικασμένο. Δυνατότητα επανάληψης διαδικασίας μόνο εξαιρετικά (π.χ. νέα κρίσιμα στοιχεία υπέρ του καταδικασθέντος)."}
+  ],
+  links:[{label:"Κώδικας Ποινικής Δικονομίας",url:"https://www.kodiko.gr/"},{label:"Άρειος Πάγος",url:"https://www.areiospagos.gr/"}]
+},
+{
+  id:"teloneiako", icon:"🛃", name:"Τελωνειακό Δίκαιο (Ν.5222/2025)", color:"gold",
+  desc:"Νέος Εθνικός Τελωνειακός Κώδικας: παραβάσεις, πολλαπλά τέλη, λαθρεμπορία, κατασχέσεις.",
+  items:[
+    {n:"Ν.5222/2025 (ΦΕΚ Α΄134/28.07.2025)", t:"Νέος Εθνικός Τελωνειακός Κώδικας", x:"Αντικατέστησε τον Ν.2960/2001. Συστηματοποιεί τις τελωνειακές διατάξεις, τη βεβαίωση & είσπραξη εσόδων και τις τελωνειακές διαδικασίες. Ενσωμάτωσε λειτουργίες του ΣΔΟΕ και του ΟΠΕΚΕΠΕ στην ΑΑΔΕ. Περιλαμβάνει 276 άρθρα σε 3 Ενότητες (και συνταξιοδοτικές διατάξεις)."},
+    {n:"άρ.160-167", t:"Κατηγορίες τελωνειακών παραβάσεων", x:"Ορίζονται οι τελωνειακές παραβάσεις (δηλωτικών, διακίνησης, διαμετακόμισης κ.λπ.) και οι αντίστοιχες διοικητικές συνέπειες. Η υπαγωγή μιας πράξης στη σωστή κατηγορία καθορίζει το ύψος των κυρώσεων."},
+    {n:"άρ.168", t:"Πολλαπλό τέλος", x:"Το «πολλαπλό τέλος» επιβάλλεται ως διοικητική κύρωση σε τελωνειακές παραβάσεις/λαθρεμπορία, υπολογιζόμενο ως πολλαπλάσιο των διαφυγόντων δασμών & φόρων, με ελάχιστα/μέγιστα όρια. Είναι διακριτό από την ποινική ευθύνη."},
+    {n:"άρ.170", t:"Διοικητική ανάκριση & καταλογιστική πράξη", x:"Η τελωνειακή αρχή διενεργεί διοικητική ανάκριση και εκδίδει καταλογιστική πράξη (με δικαίωμα προηγούμενης ακρόασης του εμπλεκομένου). Κατά της πράξης χωρεί προσφυγή στα Διοικητικά Δικαστήρια."},
+    {n:"άρ.174-178", t:"Λαθρεμπορία — ορισμός, ποινές, δήμευση", x:"Ορίζεται η λαθρεμπορία (διαφυγή δασμών/φόρων ή διακίνηση χωρίς άδεια), οι ποινικές κυρώσεις και η δήμευση των αντικειμένων. Συνυπάρχει διοικητική (πολλαπλό τέλος) και ποινική διάσταση."},
+    {n:"άρ.179-186", t:"Κατάσχεση, φύλαξη & εκποίηση", x:"Ρυθμίζεται η κατάσχεση εμπορευμάτων/μεταφορικών μέσων, η φύλαξη και η εκποίηση/καταστροφή κατασχεθέντων. Ο ενδιαφερόμενος έχει δικαιώματα ενημέρωσης & προσφυγής."},
+    {n:"ΕΦΚ & τελωνισμός", t:"Ειδικοί Φόροι Κατανάλωσης", x:"Ο Κώδικας διέπει και τους ΕΦΚ (ενέργεια, αλκοόλ, καπνικά) και τις διαδικασίες τελωνισμού (εισαγωγή/εξαγωγή/διαμετακόμιση), σε συνδυασμό με τον Ενωσιακό Τελωνειακό Κώδικα (Καν. ΕΕ 952/2013)."}
+  ],
+  links:[{label:"Ν.5222/2025 (kodiko.gr)",url:"https://www.kodiko.gr/nomothesia/document/1205561/nomos-5222-2025"},{label:"Τελωνεία ΑΑΔΕ",url:"https://www.aade.gr/"},{label:"🎯 Εργαλείο Ελέγχου C.O.S.M.O.S. (τοπικό:5173)",url:"http://localhost:5173"}]
+},
+{
+  id:"eu", icon:"🇪🇺", name:"Ενωσιακό Δίκαιο (ΕΕ)", color:"blue",
+  desc:"Συνθήκες, κανονισμοί, οδηγίες & θεμελιώδεις αρχές του δικαίου της Ευρωπαϊκής Ένωσης.",
+  items:[
+    {n:"Άρθρο 288 ΣΛΕΕ", t:"Πηγές παράγωγου ενωσιακού δικαίου", x:"Κανονισμός: ισχύει άμεσα & εφαρμόζεται αυτούσιος σε όλα τα κράτη. Οδηγία: δεσμεύει ως προς το επιδιωκόμενο αποτέλεσμα, ενσωματώνεται στο εθνικό δίκαιο. Απόφαση: δεσμευτική για τους αποδέκτες της. Συστάσεις & Γνώμες: μη δεσμευτικές."},
+    {n:"Υπεροχή & άμεσο αποτέλεσμα", t:"Σχέση ενωσιακού–εθνικού δικαίου", x:"Το ενωσιακό δίκαιο υπερισχύει του αντίθετου εθνικού (Costa κατά ENEL). Σαφείς & ανεπιφύλακτες διατάξεις παράγουν άμεσο αποτέλεσμα (Van Gend en Loos) και μπορούν να προβληθούν ενώπιον των εθνικών δικαστηρίων."},
+    {n:"Άρθρο 267 ΣΛΕΕ", t:"Προδικαστικό ερώτημα στο ΔΕΕ", x:"Το εθνικό δικαστήριο μπορεί (ή υποχρεούται, αν δικάζει τελεσίδικα) να παραπέμψει στο Δικαστήριο της ΕΕ ερώτημα ερμηνείας ή κύρους ενωσιακής διάταξης· η απόφαση του ΔΕΕ το δεσμεύει."},
+    {n:"Άρθρα 28-30 ΣΛΕΕ", t:"Τελωνειακή ένωση & θεμελιώδεις ελευθερίες", x:"Ελεύθερη κυκλοφορία εμπορευμάτων, προσώπων, υπηρεσιών & κεφαλαίων. Απαγόρευση δασμών και μέτρων ισοδυνάμου αποτελέσματος· κοινό δασμολόγιο έναντι τρίτων χωρών."},
+    {n:"Χάρτης Θεμ. Δικαιωμάτων ΕΕ", t:"Προστασία δικαιωμάτων", x:"Ο Χάρτης έχει την ίδια νομική ισχύ με τις Συνθήκες και δεσμεύει τα όργανα της ΕΕ και τα κράτη μέλη όταν εφαρμόζουν ενωσιακό δίκαιο."}
+  ],
+  links:[{label:"EUR-Lex (ελληνικά)",url:"https://eur-lex.europa.eu/homepage.html?locale=el"},{label:"ΔΕΕ — curia",url:"https://curia.europa.eu/"}]
+}
+];
+
+/* ---------- ΠΗΓΕΣ ΔΙΚΑΙΟΥ ανά κλάδο (νόμοι, κανονισμοί, εγκύκλιοι, ΝΣΚ) ---------- */
+const EU="https://eur-lex.europa.eu/legal-content/EL/TXT/?uri=CELEX:";      // + CELEX
+const ELIB="http://elib.aade.gr/elib/search?s=&type=egk";                    // ΑΑΔΕ εγκύκλιοι/ΠΟΛ
+const ELIBA="http://elib.aade.gr/elib";                                      // ΑΑΔΕ Η.Β.
+const NSKG="https://www.nsk.gr/web/nsk/anazitisi-gnomodoteseon";             // ΝΣΚ γνωμοδοτήσεις
+const KOD="https://www.kodiko.gr/";
+const LEGAL_REFS = {
+  teloneiako:[
+    {g:"🌍 Διεθνείς Συμβάσεις / Συνθήκες", items:[
+      {r:"Σύμβαση Κιότο (αναθεωρημένη)", t:"Απλούστευση & εναρμόνιση τελωνειακών καθεστώτων (Π.Ο.Τ./WCO)", url:"https://eur-lex.europa.eu/legal-content/EL/TXT/HTML/?uri=LEGISSUM:l06025"},
+      {r:"Διεθνής Σύμβαση Εναρμονισμένου Συστήματος (HS)", t:"Περιγραφή & κωδικοποίηση εμπορευμάτων (WCO)", url:"https://www.wcoomd.org/"},
+      {r:"Σύμβαση TIR (Γενεύη 1975)", t:"Διεθνής οδική μεταφορά με δελτία TIR / διαμετακόμιση", url:"https://eur-lex.europa.eu/EL/legal-content/summary/customs-convention-on-the-international-transport-of-goods-under-cover-of-tir-carnets-tir-convention.html"},
+      {r:"Σύμβαση Κωνσταντινούπολης", t:"Προσωρινή εισαγωγή — δελτία ΑΤΑ", url:"https://www.wcoomd.org/"},
+      {r:"Συμφωνία Π.Ο.Ε. (άρ. VII GATT 1994)", t:"Δασμολογητέα αξία εμπορευμάτων", url:"https://www.wto.org/"},
+      {r:"Σύμβαση κοινής διαμετακόμισης (1987)", t:"Καθεστώς κοινής/ενωσιακής διαμετακόμισης", url:null}
+    ]},
+    {g:"🇪🇺 Ενωσιακό Δίκαιο (Κανονισμοί / Οδηγίες)", items:[
+      {r:"Καν. (ΕΕ) 952/2013", t:"Ενωσιακός Τελωνειακός Κώδικας (UCC)", url:EU+"32013R0952"},
+      {r:"Κατ' εξουσ. Καν. (ΕΕ) 2015/2446", t:"Συμπληρωματικός του UCC (DA)", url:EU+"32015R2446"},
+      {r:"Εκτελ. Καν. (ΕΕ) 2015/2447", t:"Εφαρμογή του UCC (IA)", url:EU+"32015R2447"},
+      {r:"Κατ' εξουσ. Καν. (ΕΕ) 2016/341", t:"Μεταβατικές διατάξεις UCC (TDA)", url:EU+"32016R0341"},
+      {r:"Καν. (ΕΟΚ) 2658/87", t:"Δασμολόγιο & Συνδυασμένη Ονοματολογία (TARIC)", url:EU+"31987R2658"},
+      {r:"Καν. (ΕΚ) 1186/2009", t:"Τελωνειακές ατέλειες/απαλλαγές", url:EU+"32009R1186"},
+      {r:"Οδηγία (ΕΕ) 2020/262", t:"Γενικό καθεστώς Ειδικών Φόρων Κατανάλωσης", url:EU+"32020L0262"},
+      {r:"Οδηγία 2011/64/ΕΕ", t:"ΕΦΚ βιομηχανοποιημένων καπνών", url:EU+"32011L0064"},
+      {r:"Οδηγίες 92/83 & 92/84/ΕΟΚ", t:"ΕΦΚ αλκοόλης & αλκοολούχων", url:EU+"31992L0083"},
+      {r:"Οδηγία 2003/96/ΕΚ", t:"Φορολογία ενεργειακών προϊόντων & ηλεκτρισμού", url:EU+"32003L0096"}
+    ]},
+    {g:"📜 Νόμοι", items:[
+      {r:"Ν. 5222/2025", t:"Εθνικός Τελωνειακός Κώδικας (ΦΕΚ Α΄134/28.07.2025)", url:"https://www.kodiko.gr/nomothesia/document/1205561/nomos-5222-2025"},
+      {r:"Ν. 2960/2001", t:"Παλαιός Εθνικός Τελωνειακός Κώδικας (καταργήθηκε)", url:KOD},
+      {r:"Ν. 2859/2000", t:"Κώδικας ΦΠΑ (ΦΠΑ εισαγωγών)", url:KOD},
+      {r:"Ν. 4987/2022", t:"Κώδικας Φορολογικής Διαδικασίας (ΚΦΔ)", url:KOD},
+      {r:"ΝΔ 356/1974", t:"Κώδικας Είσπραξης Δημοσίων Εσόδων (ΚΕΔΕ)", url:KOD}
+    ]},
+    {g:"📋 ΠΔ / ΥΑ / ΚΥΑ / Α.Υ.Ο.", items:[
+      {r:"Α.Υ.Ο. / ΔΕΦΚ / ΔΤΔ / ΔΔΘΤΟΚ", t:"Κανονιστικές αποφάσεις — αναζήτηση στην Η.Β. ΑΑΔΕ (τύπος: Αποφάσεις)", url:"http://elib.aade.gr/elib/search?s=&type=apf"},
+      {r:"ΔΕΦΚ (Ειδικοί Φόροι Κατανάλωσης)", t:"Αποφάσεις για ΕΦΚ ενέργειας/αλκοόλ/καπνικών & απαλλαγές", url:"http://elib.aade.gr/elib/search?s=%CE%94%CE%95%CE%A6%CE%9A"},
+      {r:"ΔΤΔ (Τελωνειακές Διαδικασίες)", t:"Αποφάσεις τελωνισμού, καθεστώτων & απλουστεύσεων", url:"http://elib.aade.gr/elib/search?s=%CE%94%CE%A4%CE%94"},
+      {r:"➕ Οι δικές σας συχνές ΑΥΟ", t:"Στείλτε μου τη λίστα (αριθμοί/τίτλοι) για να ενταχθούν ονομαστικά εδώ", url:null}
+    ]},
+    {g:"📣 Εγκύκλιοι / ΠΟΛ / Οδηγίες", items:[
+      {r:"Η.Β. ΑΑΔΕ — Εγκύκλιοι & ΠΟΛ", t:"Επίσημη αναζήτηση εγκυκλίων/αποφάσεων", url:ELIB},
+      {r:"ΔΔΘΤΟΚ Β 1082376 ΕΞ2016", t:"Οδηγίες για την Καταγωγή εμπορευμάτων (UCC)", url:ELIBA},
+      {r:"TARIC / ICISnet", t:"Ονοματολογία, δασμοί & ηλεκτρονικές τελωνειακές συναλλαγές", url:"https://www.aade.gr/customs/teloneia/taric"}
+    ]},
+    {g:"⚖️ Γνωμοδοτήσεις ΝΣΚ & Νομολογία", items:[
+      {r:"Γνωμοδοτήσεις ΝΣΚ", t:"Αναζήτηση γνωμοδοτήσεων (Τμ. Φορολογικό-Τελωνειακό)", url:NSKG},
+      {r:"Νομολογία ΔΕΕ", t:"Αποφάσεις Δικαστηρίου ΕΕ (τελωνειακά/δασμολογητέα αξία)", url:"https://curia.europa.eu/"},
+      {r:"ΣτΕ / ΑΠ", t:"Εθνική νομολογία (διοικητική & ποινική διάσταση)", url:"https://www.adjustice.gr/"}
+    ]}
+  ],
+  eu:[
+    {g:"🏛️ Ιδρυτικές Συνθήκες", items:[
+      {r:"ΣΕΕ", t:"Συνθήκη για την Ευρωπαϊκή Ένωση (ενοποιημένη)", url:EU+"12016M/TXT"},
+      {r:"ΣΛΕΕ", t:"Συνθήκη για τη Λειτουργία της ΕΕ (ενοποιημένη)", url:EU+"12016E/TXT"},
+      {r:"Χάρτης Θεμ. Δικαιωμάτων ΕΕ", t:"Θεμελιώδη δικαιώματα στην ΕΕ", url:EU+"12012P/TXT"}
+    ]},
+    {g:"🇪🇺 Κύριοι Κανονισμοί / Οδηγίες", items:[
+      {r:"Καν. (ΕΕ) 2016/679", t:"GDPR — προστασία προσωπικών δεδομένων", url:EU+"32016R0679"},
+      {r:"Καν. (ΕΕ) 952/2013", t:"Ενωσιακός Τελωνειακός Κώδικας", url:EU+"32013R0952"},
+      {r:"Οδηγία 2006/112/ΕΚ", t:"Κοινό σύστημα ΦΠΑ", url:EU+"32006L0112"},
+      {r:"Καν. (ΕΕ) 1215/2012", t:"Βρυξέλλες Ια — διεθνής δικαιοδοσία & εκτέλεση αποφάσεων", url:EU+"32012R1215"},
+      {r:"Καν. (ΕΚ) 593/2008", t:"Ρώμη Ι — εφαρμοστέο δίκαιο συμβατικών ενοχών", url:EU+"32008R0593"},
+      {r:"Καν. (ΕΚ) 864/2007", t:"Ρώμη ΙΙ — εφαρμοστέο δίκαιο εξωσυμβατικών ενοχών", url:EU+"32007R0864"},
+      {r:"Καν. (ΕΕ) 2019/1111", t:"Βρυξέλλες ΙΙβ — γαμικές διαφορές & γονική μέριμνα", url:EU+"32019R1111"},
+      {r:"Καν. (ΕΚ) 883/2004", t:"Συντονισμός συστημάτων κοινωνικής ασφάλισης", url:EU+"32004R0883"}
+    ]},
+    {g:"⚖️ Νομολογία & Ενσωμάτωση", items:[
+      {r:"ΔΕΕ — curia", t:"Δικαστήριο & Γενικό Δικαστήριο της ΕΕ", url:"https://curia.europa.eu/"},
+      {r:"EUR-Lex", t:"Επίσημη βάση δικαίου ΕΕ (κείμενα & νομολογία)", url:"https://eur-lex.europa.eu/homepage.html?locale=el"},
+      {r:"Εθνικοί νόμοι κύρωσης Συνθηκών", t:"π.χ. Λισαβόνα (Ν.3671/2008)", url:KOD}
+    ]}
+  ],
+  syntagma:[
+    {g:"📜 Θεμελιώδη κείμενα", items:[
+      {r:"Σύνταγμα 1975", t:"Αναθεωρήσεις 1986/2001/2008/2019", url:"https://www.hellenicparliament.gr/Vouli-ton-Ellinon/To-Politevma/Syntagma/"},
+      {r:"Κανονισμός της Βουλής", t:"Λειτουργία του Κοινοβουλίου", url:"https://www.hellenicparliament.gr/"}
+    ]},
+    {g:"🌍 Διεθνή / Ενωσιακά", items:[
+      {r:"ΕΣΔΑ (ΝΔ 53/1974)", t:"Ευρωπαϊκή Σύμβαση Δικαιωμάτων του Ανθρώπου", url:"https://www.echr.coe.int/documents/convention_ell.pdf"},
+      {r:"Χάρτης Θεμ. Δικαιωμάτων ΕΕ", t:"Θεμελιώδη δικαιώματα στην ΕΕ", url:EU+"12012P/TXT"}
+    ]},
+    {g:"⚖️ Νομολογία", items:[
+      {r:"ΑΕΔ / ΣτΕ Ολομέλεια", t:"Έλεγχος συνταγματικότητας", url:"https://www.adjustice.gr/"},
+      {r:"ΕΔΔΑ (HUDOC)", t:"Νομολογία Ευρωπαϊκού Δικαστηρίου Δικαιωμάτων Ανθρώπου", url:"https://hudoc.echr.coe.int/"}
+    ]}
+  ],
+  astiko:[
+    {g:"📜 Νόμοι / Κώδικες", items:[
+      {r:"Αστικός Κώδικας (ΠΔ 456/1984)", t:"& ΕισΝΑΚ", url:"https://www.kodiko.gr/nomothesia/document/216337"},
+      {r:"ΚΠολΔ (ΠΔ 503/1985)", t:"Κώδικας Πολιτικής Δικονομίας", url:KOD},
+      {r:"Ν. 2251/1994", t:"Προστασία καταναλωτή (αστικές διατάξεις)", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Καν. (ΕΚ) 593/2008", t:"Ρώμη Ι — εφαρμοστέο δίκαιο συμβάσεων", url:EU+"32008R0593"},
+      {r:"Καν. (ΕΚ) 864/2007", t:"Ρώμη ΙΙ — αδικοπραξίες", url:EU+"32007R0864"},
+      {r:"Καν. (ΕΕ) 1215/2012", t:"Βρυξέλλες Ια — δικαιοδοσία & εκτέλεση", url:EU+"32012R1215"}
+    ]},
+    {g:"⚖️ Νομολογία", items:[
+      {r:"Άρειος Πάγος", t:"Νομολογία πολιτικών τμημάτων", url:"https://www.areiospagos.gr/"}
+    ]}
+  ],
+  poiniko:[
+    {g:"📜 Νόμοι / Κώδικες", items:[
+      {r:"Ποινικός Κώδικας (Ν. 4619/2019)", t:"Ισχύων ΠΚ", url:KOD},
+      {r:"Κώδικας Ποινικής Δικονομίας (Ν. 4620/2019)", t:"Ισχύων ΚΠΔ", url:KOD},
+      {r:"Ν. 3500/2006", t:"Αντιμετώπιση ενδοοικογενειακής βίας", url:KOD},
+      {r:"Ν. 4478/2017", t:"Δικαιώματα θυμάτων εγκληματικότητας", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Οδηγία 2012/13/ΕΕ", t:"Δικαίωμα ενημέρωσης στην ποινική διαδικασία", url:EU+"32012L0013"},
+      {r:"Οδηγία 2013/48/ΕΕ", t:"Δικαίωμα πρόσβασης σε δικηγόρο", url:EU+"32013L0048"}
+    ]},
+    {g:"⚖️ Νομολογία", items:[
+      {r:"Άρειος Πάγος (Ποινικά)", t:"Νομολογία ποινικών τμημάτων", url:"https://www.areiospagos.gr/"},
+      {r:"ΕΔΔΑ", t:"Δίκαιη δίκη (άρ. 6 ΕΣΔΑ)", url:"https://hudoc.echr.coe.int/"}
+    ]}
+  ],
+  poiniki_dikonomia:[
+    {g:"📜 Νόμοι / Κώδικες", items:[
+      {r:"Κώδικας Ποινικής Δικονομίας (Ν. 4620/2019)", t:"Στάδια, δικαιώματα, ένδικα μέσα", url:KOD},
+      {r:"Ποινικός Κώδικας (Ν. 4619/2019)", t:"Ουσιαστικό ποινικό δίκαιο", url:KOD},
+      {r:"Ν. 2776/1999", t:"Σωφρονιστικός Κώδικας", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Οδηγία 2016/343/ΕΕ", t:"Τεκμήριο αθωότητας & δικαίωμα παράστασης", url:EU+"32016L0343"},
+      {r:"Οδηγία 2013/48/ΕΕ", t:"Πρόσβαση σε δικηγόρο & ενημέρωση τρίτου", url:EU+"32013L0048"}
+    ]},
+    {g:"⚖️ Νομολογία", items:[
+      {r:"Άρειος Πάγος", t:"Ποινική νομολογία & ένδικα μέσα", url:"https://www.areiospagos.gr/"}
+    ]}
+  ],
+  ergatiko:[
+    {g:"🌍 Διεθνείς Συμβάσεις (ΔΟΕ)", items:[
+      {r:"Σύμβαση ΔΟΕ 190 (2019)", t:"Βία & παρενόχληση στον κόσμο της εργασίας (κυρ. Ν.4808/2021)", url:"https://www.ilo.org/"},
+      {r:"Θεμελιώδεις Συμβάσεις ΔΟΕ", t:"Συνδικαλισμός, συλλογικές διαπραγματεύσεις κ.λπ.", url:"https://www.ilo.org/"}
+    ]},
+    {g:"📜 Νόμοι", items:[
+      {r:"ΑΝ 539/1945", t:"Ετήσια άδεια με αποδοχές", url:KOD},
+      {r:"Ν. 2112/1920", t:"Καταγγελία σύμβασης & αποζημίωση υπαλλήλων", url:KOD},
+      {r:"Ν. 1876/1990", t:"Συλλογικές Συμβάσεις Εργασίας & διαιτησία", url:KOD},
+      {r:"Ν. 4808/2021", t:"Προστασία εργασίας — ωράριο, ψηφιακή κάρτα, παρενόχληση", url:KOD},
+      {r:"ΠΔ 80/2022", t:"Κωδικοποίηση ατομικού εργατικού δικαίου", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Οδηγία 2003/88/ΕΚ", t:"Οργάνωση του χρόνου εργασίας", url:EU+"32003L0088"},
+      {r:"Οδηγία (ΕΕ) 2019/1152", t:"Διαφανείς & προβλέψιμοι όροι εργασίας", url:EU+"32019L1152"}
+    ]},
+    {g:"📣 Εγκύκλιοι / Υπηρεσίες", items:[
+      {r:"Επιθεώρηση Εργασίας", t:"Οδηγίες & καταγγελίες", url:"https://www.hli.gov.gr/"},
+      {r:"ΕΡΓΑΝΗ", t:"Πληροφοριακό σύστημα εργασίας", url:"https://www.ergani.gov.gr/"}
+    ]}
+  ],
+  oikogeneiako:[
+    {g:"🌍 Διεθνή", items:[
+      {r:"Σύμβαση Χάγης 1980", t:"Διεθνής απαγωγή παιδιών", url:"https://www.hcch.net/"}
+    ]},
+    {g:"📜 Νόμοι", items:[
+      {r:"Αστικός Κώδικας — Οικογενειακό", t:"Γάμος, διαζύγιο, σχέσεις γονέων-τέκνων", url:"https://www.kodiko.gr/nomothesia/document/216337"},
+      {r:"Ν. 1250/1982", t:"Πολιτικός γάμος", url:KOD},
+      {r:"Ν. 4356/2015", t:"Σύμφωνο συμβίωσης", url:KOD},
+      {r:"Ν. 4800/2021", t:"Μεταρρύθμιση σχέσεων γονέων-τέκνων (συνεπιμέλεια)", url:KOD},
+      {r:"Ν. 3500/2006", t:"Ενδοοικογενειακή βία", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Καν. (ΕΕ) 2019/1111", t:"Βρυξέλλες ΙΙβ — γαμικές διαφορές & γονική μέριμνα", url:EU+"32019R1111"}
+    ]}
+  ],
+  katanalotiko:[
+    {g:"📜 Νόμοι", items:[
+      {r:"Ν. 2251/1994", t:"Προστασία των καταναλωτών", url:KOD},
+      {r:"Αστικός Κώδικας (πώληση/εγγύηση)", t:"Ευθύνη πωλητή για ελαττώματα", url:"https://www.kodiko.gr/nomothesia/document/216337"}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Οδηγία 2011/83/ΕΕ", t:"Δικαιώματα των καταναλωτών (υπαναχώρηση 14 ημ.)", url:EU+"32011L0083"},
+      {r:"Οδηγία (ΕΕ) 2019/771", t:"Πώληση αγαθών & νόμιμη εγγύηση", url:EU+"32019L0771"},
+      {r:"Οδηγία 93/13/ΕΟΚ", t:"Καταχρηστικές ρήτρες συμβάσεων", url:EU+"31993L0013"},
+      {r:"Οδηγία 2005/29/ΕΚ", t:"Αθέμιτες εμπορικές πρακτικές", url:EU+"32005L0029"}
+    ]},
+    {g:"📣 Υπηρεσίες", items:[
+      {r:"Συνήγορος Καταναλωτή", t:"Εξωδικαστική επίλυση", url:"https://www.synigoroskatanaloti.gr/"}
+    ]}
+  ],
+  misthoseis:[
+    {g:"📜 Νόμοι", items:[
+      {r:"ΑΚ 574-618", t:"Μίσθωση πράγματος (γενικές διατάξεις)", url:"https://www.kodiko.gr/nomothesia/document/216337"},
+      {r:"Ν. 4242/2014", t:"Μισθώσεις κατοικίας — ελεύθερος καθορισμός/διάρκεια", url:KOD},
+      {r:"ΠΔ 34/1995", t:"Εμπορικές (επαγγελματικές) μισθώσεις", url:KOD},
+      {r:"ΚΠολΔ (άρ. 637 επ.)", t:"Διαταγή απόδοσης μισθίου / έξωση", url:KOD}
+    ]}
+  ],
+  trochaia:[
+    {g:"📜 Νόμοι", items:[
+      {r:"Ν. 2696/1999", t:"Κώδικας Οδικής Κυκλοφορίας (ΚΟΚ)", url:KOD},
+      {r:"ΠΔ 237/1986", t:"Υποχρεωτική ασφάλιση οχημάτων (κωδικοπ. Ν.489/1976)", url:KOD},
+      {r:"ΠΔ 51/2012", t:"Άδειες οδήγησης (εναρμόνιση 2006/126/ΕΚ)", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Οδηγία 2009/103/ΕΚ", t:"Ασφάλιση αστικής ευθύνης αυτοκινήτων", url:EU+"32009L0103"}
+    ]}
+  ],
+  dioikitiko:[
+    {g:"📜 Νόμοι / Κώδικες", items:[
+      {r:"Ν. 2690/1999", t:"Κώδικας Διοικητικής Διαδικασίας", url:KOD},
+      {r:"Ν. 2717/1999", t:"Κώδικας Διοικητικής Δικονομίας", url:KOD},
+      {r:"ΠΔ 18/1989", t:"Οργανισμός & διαδικασία ΣτΕ", url:KOD},
+      {r:"Ν. 1599/1986", t:"Υπεύθυνη δήλωση & σχέσεις πολίτη-Δημοσίου", url:KOD},
+      {r:"Ν. 4622/2019", t:"Επιτελικό Κράτος", url:KOD}
+    ]},
+    {g:"⚖️ Νομολογία / Υπηρεσίες", items:[
+      {r:"Συνήγορος του Πολίτη", t:"Διαμεσολάβηση για κακοδιοίκηση", url:"https://www.synigoros.gr/"},
+      {r:"ΣτΕ / Διοικητικά Δικαστήρια", t:"Νομολογία", url:"https://www.adjustice.gr/"}
+    ]}
+  ],
+  data:[
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Καν. (ΕΕ) 2016/679", t:"GDPR — Γενικός Κανονισμός Προστασίας Δεδομένων", url:EU+"32016R0679"},
+      {r:"Οδηγία 2002/58/ΕΚ", t:"e-Privacy — προσωπικά δεδομένα & ηλεκτρονικές επικοινωνίες", url:EU+"32002L0058"},
+      {r:"Οδηγία (ΕΕ) 2016/680", t:"Δεδομένα σε ποινικές/διωκτικές αρχές", url:EU+"32016L0680"}
+    ]},
+    {g:"📜 Νόμοι", items:[
+      {r:"Ν. 4624/2019", t:"Μέτρα εφαρμογής GDPR & ενσωμάτωση 2016/680", url:KOD},
+      {r:"Ν. 3471/2006", t:"Προστασία δεδομένων στις ηλεκτρονικές επικοινωνίες", url:KOD}
+    ]},
+    {g:"⚖️ Αρχή / Νομολογία", items:[
+      {r:"ΑΠΔΠΧ", t:"Αποφάσεις & κατευθυντήριες γραμμές", url:"https://www.dpa.gr/"}
+    ]}
+  ],
+  forologiko:[
+    {g:"📜 Νόμοι / Κώδικες", items:[
+      {r:"Ν. 4172/2013", t:"Κώδικας Φορολογίας Εισοδήματος (ΚΦΕ)", url:KOD},
+      {r:"Ν. 2859/2000", t:"Κώδικας ΦΠΑ", url:KOD},
+      {r:"Ν. 4987/2022", t:"Κώδικας Φορολογικής Διαδικασίας (ΚΦΔ)", url:KOD},
+      {r:"ΝΔ 356/1974", t:"Κώδικας Είσπραξης Δημοσίων Εσόδων (ΚΕΔΕ)", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Οδηγία 2006/112/ΕΚ", t:"Κοινό σύστημα ΦΠΑ", url:EU+"32006L0112"},
+      {r:"Οδηγία 2011/16/ΕΕ (DAC)", t:"Διοικητική συνεργασία στη φορολογία", url:EU+"32011L0016"}
+    ]},
+    {g:"📣 Εγκύκλιοι / ΠΟΛ / Αποφάσεις", items:[
+      {r:"Η.Β. ΑΑΔΕ — Εγκύκλιοι & ΠΟΛ", t:"Επίσημη αναζήτηση", url:ELIB},
+      {r:"Αποφάσεις ΔΕΔ", t:"Ενδικοφανείς προσφυγές", url:"https://www.aade.gr/"}
+    ]},
+    {g:"⚖️ ΝΣΚ & Νομολογία", items:[
+      {r:"Γνωμοδοτήσεις ΝΣΚ", t:"Τμ. Φορολογικό-Τελωνειακό", url:NSKG},
+      {r:"ΣτΕ (Φορολογικά)", t:"Νομολογία", url:"https://www.adjustice.gr/"}
+    ]}
+  ],
+  trapezika:[
+    {g:"📜 Νόμοι", items:[
+      {r:"Ν. 4738/2020", t:"Εξωδικαστικός μηχανισμός & πτωχευτικός κώδικας", url:KOD},
+      {r:"Ν. 4354/2015", t:"Διαχείριση & μεταβίβαση μη εξυπηρετούμενων δανείων (servicers)", url:KOD},
+      {r:"Ν. 3869/2010", t:"Ρύθμιση οφειλών υπερχρεωμένων (πρώην «Κατσέλη»)", url:KOD},
+      {r:"ΚΠολΔ (αναγκαστική εκτέλεση)", t:"Κατάσχεση, πλειστηριασμός, ανακοπή (άρ. 933)", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Οδηγία 2008/48/ΕΚ", t:"Καταναλωτική πίστη", url:EU+"32008L0048"},
+      {r:"Οδηγία 2014/17/ΕΕ", t:"Στεγαστικά δάνεια", url:EU+"32014L0017"},
+      {r:"Οδηγία (ΕΕ) 2021/2167", t:"Διαχειριστές & αγοραστές NPL", url:EU+"32021L2167"}
+    ]},
+    {g:"📣 Εποπτεία", items:[
+      {r:"Κώδικας Δεοντολογίας Τραπεζών", t:"Τράπεζα της Ελλάδος (ΕΠΑΘ)", url:"https://www.bankofgreece.gr/"}
+    ]}
+  ],
+  asfalistiko:[
+    {g:"📜 Νόμοι", items:[
+      {r:"Ν. 4387/2016", t:"Ενιαίο Σύστημα Κοινωνικής Ασφάλισης (εθνική & ανταποδοτική)", url:KOD},
+      {r:"Ν. 4670/2020", t:"Ασφαλιστική μεταρρύθμιση — ποσοστά αναπλήρωσης, επικουρική", url:KOD},
+      {r:"Ν. 4997/2022", t:"Εξορθολογισμός ασφαλιστικής νομοθεσίας", url:KOD}
+    ]},
+    {g:"🇪🇺 Ενωσιακά", items:[
+      {r:"Καν. (ΕΚ) 883/2004", t:"Συντονισμός συστημάτων κοινωνικής ασφάλισης", url:EU+"32004R0883"}
+    ]},
+    {g:"📣 Εγκύκλιοι", items:[
+      {r:"Εγκύκλιοι e-ΕΦΚΑ", t:"Οδηγίες εφαρμογής", url:"https://www.efka.gov.gr/"}
+    ]}
+  ]
+};
+
+/* ΦΕΚ ανά νομοθέτημα (ενδεικτικά, υψηλής βεβαιότητας — επαλήθευση στο et.gr). Κλειδί: ο αριθμός νόμου/έτος. */
+const FEK = {
+  /* Τελωνειακά / Φορολογικά */
+  "5222/2025":"Α΄134/2025", "2960/2001":"Α΄265/2001", "2859/2000":"Α΄248/2000",
+  "4987/2022":"Α΄206/2022", "4172/2013":"Α΄167/2013", "4174/2013":"Α΄170/2013",
+  "356/1974":"Α΄90/1974",
+  /* Εργατικά / Ασφαλιστικά / Τραπεζικά */
+  "4738/2020":"Α΄207/2020", "4808/2021":"Α΄101/2021", "4387/2016":"Α΄85/2016",
+  "4670/2020":"Α΄43/2020", "4997/2022":"Α΄219/2022", "1876/1990":"Α΄27/1990",
+  "4354/2015":"Α΄176/2015", "3869/2010":"Α΄130/2010",
+  /* Οικογενειακό / Ποινικά */
+  "4800/2021":"Α΄81/2021", "4619/2019":"Α΄95/2019", "4620/2019":"Α΄96/2019",
+  "4356/2015":"Α΄181/2015", "3500/2006":"Α΄232/2006", "4478/2017":"Α΄91/2017",
+  "2776/1999":"Α΄291/1999", "1250/1982":"Α΄46/1982",
+  /* Αστικό / Καταναλωτικό / Μισθώσεις / Τροχαία */
+  "2251/1994":"Α΄191/1994", "456/1984":"Α΄164/1984", "503/1985":"Α΄182/1985",
+  "4242/2014":"Α΄50/2014", "34/1995":"Α΄30/1995", "2696/1999":"Α΄57/1999",
+  "237/1986":"Α΄110/1986",
+  /* Διοικητικό / Δεδομένα / Σύνταγμα-ΕΣΔΑ */
+  "2690/1999":"Α΄45/1999", "2717/1999":"Α΄97/1999", "18/1989":"Α΄8/1989",
+  "1599/1986":"Α΄75/1986", "4622/2019":"Α΄133/2019", "4624/2019":"Α΄137/2019",
+  "3471/2006":"Α΄133/2006", "53/1974":"Α΄256/1974"
+};
+function fekOf(r){ const m=(r||"").match(/(\d{1,4}\/\d{4})/); return m ? (FEK[m[1]]||"") : ""; }
+
+/* ---------- ΣΥΜΒΟΥΛΟΣ — καταστάσεις ---------- */
+const SITUATIONS = [
+{
+  id:"apolysi", cat:"Εργασία", icon:"📄", title:"Με απέλυσαν από τη δουλειά",
+  situation:"Ο εργοδότης κατήγγειλε τη σύμβασή σας.",
+  apply:"Η απόλυση για να είναι έγκυρη πρέπει να είναι έγγραφη, με καταβολή της νόμιμης αποζημίωσης (κλιμακούμενη με τα έτη) και αναγγελία στη ΔΥΠΑ/ΕΡΓΑΝΗ. Απόλυση καταχρηστική ή χωρίς αποζημίωση είναι άκυρη.",
+  steps:[
+    "Ζητήστε το έγγραφο της καταγγελίας και υπολογίστε την αποζημίωση με βάση τα έτη υπηρεσίας & τον μισθό.",
+    "Ελέγξτε αν καταβλήθηκε η αποζημίωση και αν έγινε η αναγγελία στην ΕΡΓΑΝΗ.",
+    "Αν λείπουν στοιχεία ή η απόλυση φαίνεται καταχρηστική, μη δηλώσετε συμφωνία/παραίτηση.",
+    "Υποβάλετε καταγγελία στην Επιθεώρηση Εργασίας και εξετάστε αγωγή (ακυρότητα απόλυσης/μισθοί υπερημερίας) εντός 3 μηνών.",
+    "Δηλώστε ανεργία στη ΔΥΠΑ για το επίδομα."
+  ],
+  deadline:"Προσβολή του κύρους της απόλυσης: 3 μήνες από την κοινοποίηση.",
+  laws:["ergatiko"], who:["Δικηγόρος Εργατικού","Επιθεώρηση Εργασίας","ΔΥΠΑ (ΟΑΕΔ)"], tmpl:"katangelia_ergasias"
+},
+{
+  id:"aplirwtos", cat:"Εργασία", icon:"💶", title:"Δεν μου πληρώνουν τον μισθό",
+  situation:"Ο εργοδότης καθυστερεί δεδουλευμένους μισθούς/δώρα.",
+  apply:"Η μη καταβολή δεδουλευμένων είναι ποινικό αδίκημα (ΑΝ 690/1945). Έχετε δικαίωμα επίσχεσης εργασίας μέχρι εξόφλησης και μπορείτε να θεωρήσετε τη μονομερή βλαπτική μεταβολή ως απόλυση.",
+  steps:[
+    "Καταγράψτε τα οφειλόμενα (μισθοί, δώρα, άδεια, υπερωρίες) — κρατήστε αποδεικτικά (κάρτα εργασίας, εκκαθαριστικά).",
+    "Στείλτε έγγραφη όχληση/εξώδικο ζητώντας εξόφληση εντός προθεσμίας.",
+    "Αν δεν πληρωθείτε, εξετάστε επίσχεση εργασίας με έγγραφη γνωστοποίηση.",
+    "Καταγγελία στην Επιθεώρηση Εργασίας (και μήνυση για μη καταβολή).",
+    "Διεκδίκηση δικαστικά (διαταγή πληρωμής/αγωγή)."
+  ],
+  deadline:"Οι μισθολογικές αξιώσεις παραγράφονται σε 5 έτη (ΑΚ 250).",
+  laws:["ergatiko"], who:["Δικηγόρος Εργατικού","Επιθεώρηση Εργασίας"], tmpl:"exodiko"
+},
+{
+  id:"elattomatiko", cat:"Καταναλωτής", icon:"📦", title:"Αγόρασα ελαττωματικό προϊόν",
+  situation:"Προϊόν που αγοράσατε είναι ελαττωματικό ή χάλασε πρόωρα.",
+  apply:"Ο πωλητής ευθύνεται με τη νόμιμη εγγύηση τουλάχιστον 2 ετών. Δικαιούστε επισκευή, αντικατάσταση, μείωση τιμήματος ή υπαναχώρηση (επιστροφή χρημάτων) — κατ' επιλογή σας κατά κανόνα.",
+  steps:[
+    "Κρατήστε απόδειξη/τιμολόγιο & τυχόν εγγύηση.",
+    "Ενημερώστε εγγράφως τον πωλητή για το ελάττωμα και ζητήστε τη λύση που θέλετε.",
+    "Αν αρνηθεί, στείλτε εξώδικη δήλωση.",
+    "Υποβάλετε αναφορά στη ΓΓ Εμπορίου & Προστ. Καταναλωτή ή στον Συνήγορο του Καταναλωτή.",
+    "Δικαστική διεκδίκηση (μικροδιαφορές) αν χρειαστεί."
+  ],
+  deadline:"Νόμιμη εγγύηση: τουλάχιστον 2 έτη από την παράδοση.",
+  laws:["katanalotiko"], who:["Συνήγορος του Καταναλωτή","ΓΓ Εμπορίου"], tmpl:"katangelia_katanaloti"
+},
+{
+  id:"online", cat:"Καταναλωτής", icon:"🛍️", title:"Θέλω να επιστρέψω online αγορά",
+  situation:"Αγοράσατε κάτι online/τηλεφωνικά και θέλετε να το επιστρέψετε.",
+  apply:"Σε εξ αποστάσεως αγορές έχετε δικαίωμα αναιτιολόγητης υπαναχώρησης εντός 14 ημερών από την παραλαβή, με επιστροφή του τιμήματος (συν αρχικά έξοδα αποστολής).",
+  steps:[
+    "Δηλώστε εγγράφως την υπαναχώρηση εντός 14 ημερών (email/φόρμα).",
+    "Επιστρέψτε το προϊόν εντός 14 ημερών από τη δήλωση.",
+    "Ο έμπορος επιστρέφει τα χρήματα εντός 14 ημερών από τη λήψη της δήλωσης.",
+    "Αν αρνηθεί, αναφορά στη ΓΓ Καταναλωτή."
+  ],
+  deadline:"Υπαναχώρηση: 14 ημερολογιακές ημέρες από την παραλαβή.",
+  laws:["katanalotiko"], who:["Συνήγορος του Καταναλωτή"], tmpl:"ypanaxorisi"
+},
+{
+  id:"exwsi", cat:"Στέγη", icon:"🏚️", title:"Ο ενοικιαστής δεν πληρώνει / θέλω έξωση",
+  situation:"Ως ιδιοκτήτης, ο μισθωτής καθυστερεί ενοίκια.",
+  apply:"Σε δυστροπία μπορείτε να ζητήσετε Διαταγή Απόδοσης Μισθίου (ταχεία διαδικασία) και καταβολή οφειλόμενων μισθωμάτων.",
+  steps:[
+    "Στείλτε εξώδικη όχληση/καταγγελία με προθεσμία εξόφλησης.",
+    "Αν δεν πληρωθεί, δικηγόρος καταθέτει αίτηση Διαταγής Απόδοσης.",
+    "Επίδοση διαταγής — ο μισθωτής έχει προθεσμία να αποχωρήσει/ανακόψει.",
+    "Εκτέλεση (έξωση) με δικαστικό επιμελητή αν δεν συμμορφωθεί."
+  ],
+  deadline:"Ο μισθωτής μπορεί άπαξ να αποτρέψει την έξωση εξοφλώντας εντός της νόμιμης προθεσμίας.",
+  laws:["misthoseis"], who:["Δικηγόρος","Δικαστικός Επιμελητής"], tmpl:"exodiko"
+},
+{
+  id:"egguisi", cat:"Στέγη", icon:"💰", title:"Δεν μου επιστρέφουν την εγγύηση",
+  situation:"Αποχωρήσατε από το ενοίκιο και ο ιδιοκτήτης κρατά την εγγύηση.",
+  apply:"Η εγγύηση επιστρέφεται στο τέλος της μίσθωσης, εφόσον δεν υπάρχουν οφειλές ή φθορές πέραν της συνήθους χρήσης. Αδικαιολόγητη παρακράτηση = αδικαιολόγητος πλουτισμός (ΑΚ 904).",
+  steps:[
+    "Τεκμηριώστε την κατάσταση του ακινήτου κατά την αποχώρηση (φωτογραφίες, πρωτόκολλο).",
+    "Ζητήστε εγγράφως την επιστροφή, τάσσοντας προθεσμία.",
+    "Στείλτε εξώδικο αν αρνηθεί.",
+    "Διεκδίκηση με διαταγή πληρωμής/αγωγή μικροδιαφορών."
+  ],
+  deadline:"Αξίωση επιστροφής: γενική παραγραφή (συνήθως 5-20 έτη).",
+  laws:["misthoseis","astiko"], who:["Δικηγόρος"], tmpl:"exodiko"
+},
+{
+  id:"synykofantia", cat:"Προσωπικά", icon:"🗣️", title:"Με προσέβαλαν / συκοφάντησαν",
+  situation:"Κάποιος σας εξύβρισε ή διέδωσε ψευδή γεγονότα (και online).",
+  apply:"Η εξύβριση & η (συκοφαντική) δυσφήμηση διώκονται κατ' έγκληση (ΠΚ 361-363) και θεμελιώνουν αστική αποζημίωση για ηθική βλάβη (ΑΚ 914, 932, 57-59).",
+  steps:[
+    "Συγκεντρώστε αποδείξεις (screenshots, μάρτυρες, δημοσιεύματα) — με ημερομηνία.",
+    "Υποβάλετε έγκληση στην Εισαγγελία/ΑΤ εντός 3 μηνών από τη γνώση.",
+    "Για online, καταγγελία και στη Δίωξη Ηλεκτρονικού Εγκλήματος.",
+    "Εξετάστε αγωγή αποζημίωσης για ηθική βλάβη και αίτηση διαγραφής/αποκατάστασης."
+  ],
+  deadline:"Έγκληση: 3 μήνες από τότε που μάθατε την πράξη & τον δράστη.",
+  laws:["poiniko","data"], who:["Δικηγόρος","Δίωξη Ηλεκτρονικού Εγκλήματος"], tmpl:"egklisi"
+},
+{
+  id:"diazygio", cat:"Οικογένεια", icon:"💔", title:"Θέλω διαζύγιο",
+  situation:"Επιθυμείτε λύση του γάμου.",
+  apply:"Συναινετικό: με συμφωνία και συμβολαιογραφική πράξη (γρήγορο, χωρίς δικαστήριο). Κατ' αντιδικία: με αγωγή λόγω ισχυρού κλονισμού (τεκμαίρεται μετά 2ετή διάσταση).",
+  steps:[
+    "Αν υπάρχει συμφωνία: δικηγόροι συντάσσουν έγγραφη συμφωνία (και για τέκνα: επιμέλεια/διατροφή/επικοινωνία).",
+    "Υπογραφή ενώπιον συμβολαιογράφου & κατάθεση στο ληξιαρχείο.",
+    "Αν δεν υπάρχει συμφωνία: αγωγή διαζυγίου + ρύθμιση επιμέλειας/διατροφής (ή ασφαλιστικά μέτρα για τα επείγοντα).",
+    "Ενημέρωση ληξιαρχείου/δημοτολογίου μετά την αμετάκλητη λύση."
+  ],
+  deadline:"Στο κατ' αντιδικία, ο κλονισμός τεκμαίρεται μετά 2 έτη διάστασης.",
+  laws:["oikogeneiako"], who:["Δικηγόρος Οικογενειακού","Συμβολαιογράφος"], tmpl:null
+},
+{
+  id:"diatrofi", cat:"Οικογένεια", icon:"🧒", title:"Διατροφή / επιμέλεια τέκνου",
+  situation:"Ζητάτε διατροφή ή ρύθμιση επιμέλειας/επικοινωνίας για το παιδί.",
+  apply:"Και οι δύο γονείς υποχρεούνται σε διατροφή ανάλογα με τις δυνάμεις τους. Η γονική μέριμνα ασκείται από κοινού· επιδιώκεται συμφωνία, αλλιώς δικαστική ρύθμιση.",
+  steps:[
+    "Καταγράψτε ανάγκες τέκνου & εισοδήματα/δυνατότητες γονέων.",
+    "Επιδιώξτε εξώδικη συμφωνία (ή διαμεσολάβηση).",
+    "Για επείγοντα: ασφαλιστικά μέτρα (προσωρινή διατροφή/επιμέλεια).",
+    "Τακτική αγωγή για οριστική ρύθμιση."
+  ],
+  deadline:"Οι ληξιπρόθεσμες δόσεις διατροφής παραγράφονται σε 5 έτη.",
+  laws:["oikogeneiako"], who:["Δικηγόρος Οικογενειακού","Διαμεσολαβητής"], tmpl:null
+},
+{
+  id:"troxaio", cat:"Τροχαία", icon:"🚙", title:"Είχα τροχαίο ατύχημα",
+  situation:"Εμπλακήκατε σε τροχαίο ατύχημα.",
+  apply:"Σε υλικές ζημιές χωρίς διαφωνία, φιλικός διακανονισμός. Σε τραυματισμούς/διαφωνία, κλήση Τροχαίας. Δικαίωμα αποζημίωσης από την ασφαλιστική του υπαιτίου (και του Επικουρικού αν είναι ανασφάλιστος).",
+  steps:[
+    "Ασφάλεια χώρου, πρώτες βοήθειες, κλήση 100/166 αν υπάρχουν τραυματίες.",
+    "Ανταλλαγή στοιχείων & ασφαλιστηρίων· φωτογραφίες & μάρτυρες.",
+    "Συμπλήρωση φιλικής δήλωσης (μόνο υλικές, χωρίς διαφωνία) ή κλήση Τροχαίας.",
+    "Δήλωση ατυχήματος στην ασφαλιστική εντός 8 ημερών.",
+    "Διεκδίκηση αποζημίωσης (και σωματικών βλαβών/ηθικής βλάβης)."
+  ],
+  deadline:"Δήλωση στην ασφαλιστική συνήθως εντός 8 ημερών· αξιώσεις αποζημίωσης: 5ετία.",
+  laws:["trochaia","astiko"], who:["Δικηγόρος","Ασφαλιστική","Τροχαία"], tmpl:null
+},
+{
+  id:"dimosio", cat:"Δημόσιο", icon:"🏛️", title:"Το Δημόσιο δεν μου απαντά / κακοδιοίκηση",
+  situation:"Υπηρεσία καθυστερεί ή αρνείται αίτημά σας αδικαιολόγητα.",
+  apply:"Οι υπηρεσίες οφείλουν να απαντούν εντός 50 ημερών. Η σιωπηρή απόρριψη προσβάλλεται. Ο Συνήγορος του Πολίτη διαμεσολαβεί δωρεάν.",
+  steps:[
+    "Καταθέστε γραπτή αίτηση με αριθμό πρωτοκόλλου (κρατήστε αντίγραφο).",
+    "Αν περάσουν 50 ημέρες χωρίς απάντηση, υποβάλετε υπόμνηση.",
+    "Αναφορά στον Συνήγορο του Πολίτη.",
+    "Ενδικοφανής προσφυγή ή αίτηση ακύρωσης όπου προβλέπεται."
+  ],
+  deadline:"Απάντηση διοίκησης: 50 ημέρες. Αίτηση ακύρωσης: συνήθως 60 ημέρες.",
+  laws:["dioikitiko"], who:["Συνήγορος του Πολίτη","Δικηγόρος Διοικητικού"], tmpl:"aitisi"
+},
+{
+  id:"gdpr", cat:"Ψηφιακά", icon:"🔐", title:"Παραβίαση προσωπικών δεδομένων",
+  situation:"Κάποιος χρησιμοποιεί/διέρρευσε τα δεδομένα σας χωρίς άδεια.",
+  apply:"Το GDPR σας δίνει δικαιώματα πρόσβασης, διόρθωσης, διαγραφής & εναντίωσης. Σε παραβίαση δικαιούστε καταγγελία στην ΑΠΔΠΧ και αποζημίωση.",
+  steps:[
+    "Ασκήστε εγγράφως τα δικαιώματά σας προς τον υπεύθυνο επεξεργασίας (απάντηση εντός 1 μήνα).",
+    "Αν δεν συμμορφωθεί, υποβάλετε καταγγελία στην ΑΠΔΠΧ.",
+    "Για ποινικά στοιχεία (π.χ. δημοσίευση εικόνων), Δίωξη Ηλεκτρονικού Εγκλήματος.",
+    "Εξετάστε αγωγή αποζημίωσης (και ηθικής βλάβης)."
+  ],
+  deadline:"Απάντηση υπευθύνου: 1 μήνας. Καταγγελία ΑΠΔΠΧ: χωρίς αυστηρή προθεσμία.",
+  laws:["data"], who:["ΑΠΔΠΧ","Δικηγόρος","Δίωξη Ηλεκτρονικού Εγκλήματος"], tmpl:null
+},
+{
+  id:"klironomia", cat:"Κληρονομιά", icon:"📜", title:"Θέματα κληρονομιάς / διαθήκης",
+  situation:"Πρέπει να αποδεχθείτε ή να αποποιηθείτε κληρονομιά, ή υπάρχει διαθήκη.",
+  apply:"Με τον θάνατο η κληρονομιά επάγεται στους κληρονόμους. Μπορείτε να αποποιηθείτε εντός 4 μηνών (σιωπή = αποδοχή). Οι μεριδούχοι έχουν νόμιμη μοίρα (½ της εξ αδιαθέτου).",
+  steps:[
+    "Εντοπίστε αν υπάρχει διαθήκη (Ειρηνοδικείο/συμβολαιογράφος) — δημοσίευση.",
+    "Αν η κληρονομιά έχει χρέη, εξετάστε αποποίηση (4 μήνες) ή αποδοχή με ευεργέτημα απογραφής.",
+    "Για αποδοχή: συμβολαιογραφική πράξη & μεταγραφή/κτηματολόγιο για ακίνητα.",
+    "Δήλωση φόρου κληρονομιάς στην ΑΑΔΕ.",
+    "Αν θίγεται η νόμιμη μοίρα σας, αγωγή περί κλήρου/μέμψη."
+  ],
+  deadline:"Αποποίηση: 4 μήνες (1 έτος αν κάτοικος εξωτερικού) από τη γνώση της επαγωγής.",
+  laws:["astiko"], who:["Συμβολαιογράφος","Δικηγόρος Κληρονομικού"], tmpl:null
+},
+{
+  id:"forologikos_elegxos", cat:"Φόροι", icon:"💰", title:"Φορολογικός έλεγχος / πρόστιμο ΑΑΔΕ",
+  situation:"Δέχεστε έλεγχο ή σας κοινοποιήθηκε πράξη προσδιορισμού φόρου/προστίμου.",
+  apply:"Έχετε δικαίωμα προηγούμενης ακρόασης (έγγραφες απόψεις πριν την πράξη) και, μετά την πράξη, υποχρεωτική ενδικοφανή προσφυγή στη ΔΕΔ εντός 30 ημερών πριν το δικαστήριο.",
+  steps:[
+    "Ζητήστε & μελετήστε τον φάκελο και το σημείωμα διαπιστώσεων.",
+    "Καταθέστε εμπρόθεσμα έγγραφες απόψεις (δικαίωμα ακρόασης) με τα αποδεικτικά σας.",
+    "Αν εκδοθεί καταλογιστική πράξη, ασκήστε ενδικοφανή προσφυγή στη ΔΕΔ εντός 30 ημερών.",
+    "Αν χρειάζεται, ζητήστε αναστολή καταβολής (50%).",
+    "Επί απόρριψης/σιωπηρής απόρριψης (120 ημέρες), προσφυγή στο Διοικητικό Πρωτοδικείο.",
+    "Εξετάστε ρύθμιση οφειλής σε δόσεις παράλληλα."
+  ],
+  deadline:"Ενδικοφανής προσφυγή ΔΕΔ: 30 ημέρες. Απόφαση ΔΕΔ: 120 ημέρες.",
+  laws:["forologiko"], who:["Λογιστής/Φοροτεχνικός","Δικηγόρος Φορολογικού"], tmpl:"endikofani"
+},
+{
+  id:"kokkino_daneio", cat:"Χρήματα", icon:"🏦", title:"Δεν μπορώ να πληρώσω δάνειο (κόκκινο)",
+  situation:"Έχετε ληξιπρόθεσμη οφειλή σε τράπεζα/servicer ή κίνδυνο πλειστηριασμού.",
+  apply:"Πριν από αναγκαστικά μέτρα ισχύει ο Κώδικας Δεοντολογίας (πρόταση ρύθμισης). Μπορείτε να υπαχθείτε στον Εξωδικαστικό Μηχανισμό (Ν.4738/2020) και, ως ευάλωτος, σε ειδική προστασία κατοικίας.",
+  steps:[
+    "Απαντήστε εγγράφως & εμπρόθεσμα στην τράπεζα/servicer ώστε να θεωρηθείτε «συνεργάσιμος».",
+    "Ελέγξτε επιλεξιμότητα & υποβάλετε αίτηση στον Εξωδικαστικό Μηχανισμό (gov.gr).",
+    "Αν είστε ευάλωτος, εξετάστε επίδομα στέγασης & φορέα απόκτησης-επαναμίσθωσης.",
+    "Ζητήστε αναλυτική κατάσταση οφειλής & νομιμοποίηση του servicer.",
+    "Σε επιταγή/κατάσχεση/πλειστηριασμό: άμεσα δικηγόρος για ανακοπή & αναστολή (σύντομες προθεσμίες)."
+  ],
+  deadline:"Ανακοπή κατά εκτέλεσης & αίτηση αναστολής: σύντομες προθεσμίες — ενεργήστε άμεσα.",
+  laws:["trapezika"], who:["Δικηγόρος","Εξωδικαστικός Μηχανισμός","Σύμβουλος αναδιάρθρωσης"], tmpl:null
+},
+{
+  id:"syntaxi", cat:"Συντάξεις", icon:"👵", title:"Σύνταξη — πότε & πόσο / αίτηση",
+  situation:"Θέλετε να μάθετε πότε δικαιούστε σύνταξη ή η αίτησή σας καθυστερεί/απορρίφθηκε.",
+  apply:"Η σύνταξη γήρατος εξαρτάται από ηλικία & έτη ασφάλισης (π.χ. 67 με 15 έτη ή 62 με 40 έτη). Η κύρια σύνταξη = εθνική + ανταποδοτική. Κατά απόφασης ΕΦΚΑ ασκείται ένσταση.",
+  steps:[
+    "Συγκεντρώστε ασφαλιστικό βιογραφικό (ένσημα/έτη) από όλα τα ταμεία.",
+    "Ελέγξτε προϋποθέσεις ορίου ηλικίας & ετών (και ειδικές: βαρέα, μητέρες, ΑμεΑ).",
+    "Εξετάστε εξαγορά πλασματικού χρόνου & διαδοχική ασφάλιση.",
+    "Υποβάλετε αίτηση συνταξιοδότησης στον ΕΦΚΑ (ή προσωρινή σύνταξη).",
+    "Επί απόρριψης/λάθους ποσού: ένσταση στην ΤΔΕ και μετά προσφυγή στο Διοικητικό Δικαστήριο."
+  ],
+  deadline:"Ένσταση στην ΤΔΕ εντός της προβλεπόμενης προθεσμίας από την κοινοποίηση.",
+  laws:["asfalistiko"], who:["ΕΦΚΑ","Δικηγόρος Ασφαλιστικού","Σύμβουλος συντάξεων"], tmpl:null
+},
+{
+  id:"teloneiaki_paravasi", cat:"Τελωνεία", icon:"🛃", title:"Τελωνειακή παράβαση / πολλαπλό τέλος",
+  situation:"Σας καταλογίστηκε τελωνειακή παράβαση, πολλαπλό τέλος ή έγινε κατάσχεση.",
+  apply:"Με τον Ν.5222/2025, η τελωνειακή αρχή διενεργεί διοικητική ανάκριση και εκδίδει καταλογιστική πράξη (με δικαίωμα ακρόασης). Το πολλαπλό τέλος είναι διοικητική κύρωση, διακριτή από την τυχόν ποινική ευθύνη λαθρεμπορίας.",
+  steps:[
+    "Ζητήστε τον πλήρη φάκελο & την αιτιολογία της καταλογιστικής πράξης.",
+    "Ασκήστε το δικαίωμα προηγούμενης ακρόασης με έγγραφες απόψεις & αποδεικτικά.",
+    "Κατά της πράξης: προσφυγή στο αρμόδιο Διοικητικό Δικαστήριο εντός της προθεσμίας.",
+    "Για κατασχεθέντα: αίτημα απόδοσης/εξετάστε εγγυοδοσία.",
+    "Αν υπάρχει και ποινική διάσταση (λαθρεμπορία), αναθέστε σε δικηγόρο τον συντονισμό διοικητικής & ποινικής υπεράσπισης."
+  ],
+  deadline:"Προσφυγή κατά καταλογιστικής πράξης: εντός της νόμιμης προθεσμίας από την κοινοποίηση.",
+  laws:["teloneiako","poiniki_dikonomia"], who:["Δικηγόρος Τελωνειακού/Διοικητικού","Τελωνειακός σύμβουλος"], tmpl:null
+},
+{
+  id:"katigoroumenos", cat:"Ποινικά", icon:"👨‍⚖️", title:"Κλήθηκα ως κατηγορούμενος",
+  situation:"Σας ασκήθηκε ποινική δίωξη ή κληθήκατε για απολογία/κατάθεση.",
+  apply:"Έχετε τεκμήριο αθωότητας, δικαίωμα σε συνήγορο & διερμηνέα, πλήρη γνώση της δικογραφίας, προθεσμία για την απολογία σας και δικαίωμα σιωπής.",
+  steps:[
+    "ΜΗΝ καταθέσετε/απολογηθείτε χωρίς να έχετε μελετήσει τη δικογραφία & χωρίς δικηγόρο.",
+    "Ζητήστε αντίγραφο της δικογραφίας και, αν χρειάζεται, προθεσμία.",
+    "Με τον συνήγορο, προετοιμάστε απολογητικό υπόμνημα & αποδεικτικά/μάρτυρες.",
+    "Τηρήστε τυχόν περιοριστικούς όρους.",
+    "Σε καταδίκη: εξετάστε έφεση/αναίρεση εντός των προθεσμιών (και αναστολή/μετατροπή ποινής)."
+  ],
+  deadline:"Έφεση: συνήθως 10-30 ημέρες κατά περίπτωση από την απόφαση/επίδοση.",
+  laws:["poiniki_dikonomia","poiniko"], who:["Δικηγόρος Ποινικολόγος"], tmpl:null
+}
+];
+
+/* ---------- ΠΡΟΤΥΠΑ ---------- */
+const TEMPLATES = [
+{ id:"exodiko", icon:"📨", title:"Εξώδικη δήλωση / όχληση", cat:"Γενικό",
+  body:`ΕΝΩΠΙΟΝ ΠΑΝΤΟΣ ΑΡΜΟΔΙΟΥ ΔΙΚΑΣΤΗΡΙΟΥ ΚΑΙ ΑΡΧΗΣ
+
+ΕΞΩΔΙΚΗ ΔΗΛΩΣΗ – ΠΡΟΣΚΛΗΣΗ – ΔΙΑΜΑΡΤΥΡΙΑ
+
+Του/Της ......................................... (ονοματεπώνυμο),
+κατοίκου ........................., οδός ........................., ΑΦΜ ...............
+
+ΠΡΟΣ
+Τον/Την ......................................... (ονοματεπώνυμο/επωνυμία),
+κάτοικο/έδρα .........................
+
+    Με την παρούσα σας γνωστοποιώ ότι ...................................................
+.............................................................................................
+(σύντομη περιγραφή των πραγματικών περιστατικών και της οφειλής/παράβασης).
+
+    Επειδή η ανωτέρω συμπεριφορά/οφειλή είναι παράνομη και με ζημιώνει,
+
+ΣΑΣ ΚΑΛΩ
+
+να ......................................................... (π.χ. καταβάλετε το ποσό των
+............ €, αποκαταστήσετε τη ζημία, συμμορφωθείτε) εντός ....... ημερών από την
+επίδοση της παρούσας.
+
+    Σε διαφορετική περίπτωση, επιφυλάσσομαι ρητά κάθε νόμιμου δικαιώματός μου,
+αστικού και ποινικού, για τη διεκδίκηση των αξιώσεών μου και της αποκατάστασης
+κάθε θετικής και αποθετικής ζημίας, καθώς και της ηθικής βλάβης.
+
+Αρμόδιος δικαστικός επιμελητής παραγγέλλεται να επιδώσει νόμιμα την παρούσα.
+
+..................... (τόπος), ....../....../20....
+
+Ο/Η Δηλών/-ούσα
+(υπογραφή)` },
+
+{ id:"katangelia_ergasias", icon:"⚖️", title:"Καταγγελία στην Επιθεώρηση Εργασίας", cat:"Εργασία",
+  body:`ΠΡΟΣ: Επιθεώρηση Εργασίας (ΕΠ.Α.Ε.) – Τμήμα .........................
+
+ΚΑΤΑΓΓΕΛΙΑ
+
+Στοιχεία εργαζομένου: ......................................... ΑΦΜ ...............
+Τηλ.: .................  Email: .................
+
+Στοιχεία εργοδότη/επιχείρησης: .........................................
+Έδρα: .........................  ΑΦΜ: ...............
+
+Αντικείμενο καταγγελίας (σημειώστε):
+[ ] Μη καταβολή δεδουλευμένων/δώρων/επιδόματος αδείας
+[ ] Μη νόμιμη απόλυση / μη καταβολή αποζημίωσης
+[ ] Υπερωρίες χωρίς αμοιβή / παραβίαση ωραρίου
+[ ] Παρενόχληση / βία στην εργασία
+[ ] Άλλο: .........................
+
+Περιγραφή περιστατικών (ημερομηνίες, ποσά, γεγονότα):
+.............................................................................................
+.............................................................................................
+
+Αιτούμαι τον έλεγχο της επιχείρησης και την αποκατάσταση των δικαιωμάτων μου.
+
+Συνημμένα: (συμβάσεις, εκκαθαριστικά, κάρτα εργασίας, μηνύματα κ.λπ.)
+
+Ημερομηνία: ....../....../20....         Υπογραφή: .................` },
+
+{ id:"katangelia_katanaloti", icon:"🛒", title:"Αναφορά στη Γ.Γ. Καταναλωτή", cat:"Καταναλωτής",
+  body:`ΠΡΟΣ: Γενική Γραμματεία Εμπορίου & Προστασίας Καταναλωτή /
+      Συνήγορος του Καταναλωτή
+
+ΑΝΑΦΟΡΑ ΚΑΤΑΝΑΛΩΤΗ
+
+Στοιχεία καταναλωτή: .........................................
+Τηλ.: .................  Email: .................
+
+Στοιχεία προμηθευτή/καταστήματος: .........................................
+
+Προϊόν/Υπηρεσία: .........................  Ημ/νία αγοράς: ....../....../20....
+Ποσό: ............ €   Απόδειξη/Τιμολόγιο Νο: .................
+
+Περιγραφή προβλήματος:
+.............................................................................................
+.............................................................................................
+
+Τι ζητώ (σημειώστε):
+[ ] Επισκευή   [ ] Αντικατάσταση   [ ] Επιστροφή χρημάτων   [ ] Μείωση τιμής
+
+Ενέργειες που έχω κάνει προς τον προμηθευτή:
+.............................................................................................
+
+Συνημμένα: απόδειξη, φωτογραφίες, επικοινωνία.
+
+Ημερομηνία: ....../....../20....         Υπογραφή: .................` },
+
+{ id:"ypanaxorisi", icon:"↩️", title:"Δήλωση υπαναχώρησης (14 ημερών)", cat:"Καταναλωτής",
+  body:`ΠΡΟΣ: ......................................... (επωνυμία e-shop/εμπόρου)
+Email/Διεύθυνση: .........................
+
+ΔΗΛΩΣΗ ΥΠΑΝΑΧΩΡΗΣΗΣ
+
+Με την παρούσα δηλώνω ότι υπαναχωρώ από τη σύμβαση πώλησης των κάτωθι
+αγαθών, που συνήφθη εξ αποστάσεως:
+
+Προϊόν/-τα: .........................................
+Αριθμός παραγγελίας: .................
+Ημερομηνία παραγγελίας: ....../....../20....
+Ημερομηνία παραλαβής: ....../....../20....
+
+Ασκώ το δικαίωμα αναιτιολόγητης υπαναχώρησης εντός 14 ημερών (άρ. 3θ Ν.2251/1994)
+και ζητώ την επιστροφή του συνολικού ποσού των ............ €, συμπεριλαμβανομένων
+των αρχικών εξόδων αποστολής, στον λογαριασμό/μέσο πληρωμής μου.
+
+Στοιχεία καταναλωτή: .........................................
+IBAN (για επιστροφή): .................................
+
+Ημερομηνία: ....../....../20....         Υπογραφή: .................` },
+
+{ id:"egklisi", icon:"🗣️", title:"Έγκληση / Μήνυση", cat:"Ποινικό",
+  body:`ΠΡΟΣ: Τον κ. Εισαγγελέα Πλημμελειοδικών ......................... /
+      Αστυνομικό Τμήμα .........................
+
+ΕΓΚΛΗΣΗ
+
+ΕΓΚΑΛΩΝ: ......................................... (ονοματεπώνυμο),
+κάτοικος ........................., ΑΔΤ ..............., τηλ. .................
+
+ΚΑΤΑ: ......................................... (ή "αγνώστου")
+
+    Εκθέτω τα ακόλουθα πραγματικά περιστατικά:
+Την ....../....../20...., ώρα ........, στ.........................,
+ο ανωτέρω .........................................................................
+.............................................................................................
+(αναλυτική περιγραφή της πράξης – τι, πού, πότε, πώς, μάρτυρες).
+
+    Οι πράξεις αυτές συνιστούν κατά την άποψή μου τα αδικήματα του/της
+......................................... (π.χ. εξύβρισης/απειλής/απάτης).
+
+    Δηλώνω ότι επιθυμώ την ποινική δίωξη του υπαιτίου και παρίσταμαι
+προς υποστήριξη της κατηγορίας.
+
+Μάρτυρες: 1) .........................  2) .........................
+Συνημμένα αποδεικτικά: .........................
+
+..................... (τόπος), ....../....../20....
+Ο/Η Εγκαλών/-ούσα
+(υπογραφή)
+
+[Προσοχή: η έγκληση για κατ' έγκληση αδικήματα υποβάλλεται εντός 3 μηνών
+από τη γνώση της πράξης και του δράστη.]` },
+
+{ id:"aitisi", icon:"🏛️", title:"Αίτηση προς Δημόσια Υπηρεσία", cat:"Δημόσιο",
+  body:`ΠΡΟΣ: ......................................... (Υπηρεσία/Φορέας)
+
+ΑΙΤΗΣΗ
+
+ΣΤΟΙΧΕΙΑ ΑΙΤΟΥΝΤΟΣ
+Ονοματεπώνυμο: .........................................
+Πατρώνυμο: .................  ΑΦΜ: ...............  ΑΔΤ: ...............
+Διεύθυνση: .........................  Τηλ.: .................  Email: .................
+
+ΘΕΜΑ: .........................................
+
+    Παρακαλώ όπως ...................................................................
+.............................................................................................
+(σαφής διατύπωση του αιτήματος και σύντομη αιτιολόγηση).
+
+Συνημμένα δικαιολογητικά:
+1) .........................
+2) .........................
+
+Παρακαλώ για τις ενέργειές σας εντός της νόμιμης προθεσμίας (50 ημερών,
+άρ. 4 Ν.2690/1999) και για την έγγραφη ενημέρωσή μου.
+
+Ημερομηνία: ....../....../20....
+Ο/Η Αιτών/-ούσα
+(υπογραφή)
+
+Αρ. Πρωτοκόλλου (συμπληρώνεται από την υπηρεσία): .................` },
+
+{ id:"endikofani", icon:"💰", title:"Ενδικοφανής προσφυγή (ΔΕΔ)", cat:"Φόροι",
+  body:`ΠΡΟΣ: Τη Διεύθυνση Επίλυσης Διαφορών (ΔΕΔ) της ΑΑΔΕ
+(μέσω της αρχής που εξέδωσε την πράξη)
+
+ΕΝΔΙΚΟΦΑΝΗΣ ΠΡΟΣΦΥΓΗ (άρθρο 63 Ν.4987/2022 – ΚΦΔ)
+
+ΠΡΟΣΦΕΥΓΩΝ: ......................................... (ονοματεπώνυμο/επωνυμία)
+ΑΦΜ: ...............  ΔΟΥ: .........................
+Διεύθυνση: .........................  Τηλ./Email: .........................
+
+ΚΑΤΑ της υπ' αριθ. ......................... πράξης
+(π.χ. πράξη προσδιορισμού φόρου / επιβολής προστίμου)
+της .........................  που μου κοινοποιήθηκε την ....../....../20....
+
+ΑΙΤΟΥΜΑΙ την ακύρωση/τροποποίηση της ανωτέρω πράξης, για τους εξής λόγους:
+
+1) .............................................................................................
+2) .............................................................................................
+3) .............................................................................................
+(νομικοί & πραγματικοί λόγοι – παραγραφή, εσφαλμένη εκτίμηση, παράβαση
+ουσιώδους τύπου/δικαιώματος ακρόασης κ.λπ.)
+
+[ ] Υποβάλλω παράλληλα ΑΙΤΗΜΑ ΑΝΑΣΤΟΛΗΣ καταβολής του 50% κατ' άρθρο 63 ΚΦΔ,
+    διότι η άμεση καταβολή θα μου προκαλέσει ανεπανόρθωτη βλάβη.
+
+Συνημμένα αποδεικτικά:
+1) .........................   2) .........................
+
+Ημερομηνία: ....../....../20....
+Ο/Η Προσφεύγων/-ουσα
+(υπογραφή)
+
+[Προθεσμία: 30 ημέρες από την κοινοποίηση της πράξης. Η ΔΕΔ αποφασίζει
+εντός 120 ημερών· η άπρακτη πάροδος ισοδυναμεί με σιωπηρή απόρριψη.]` }
+];
+
+/* ---------- ΠΟΙΟΝ ΝΑ ΒΡΩ ---------- */
+const PEOPLE = [
+{icon:"⚖️", name:"Δικηγόρος", when:"Νομικές συμβουλές, σύνταξη εγγράφων, εκπροσώπηση σε δικαστήριο & εξώδικες ενέργειες.", how:"Δικηγορικοί Σύλλογοι (π.χ. ΔΣΑ). Πολλοί προσφέρουν πρώτη ενημερωτική συνάντηση."},
+{icon:"📜", name:"Συμβολαιογράφος", when:"Συμβόλαια (αγοραπωλησίες, γονικές, δωρεές), αποδοχή κληρονομιάς, σύμφωνο συμβίωσης, συναινετικό διαζύγιο.", how:"Συλλογή Συμβολαιογράφων / τοπικός σύλλογος."},
+{icon:"🏃", name:"Δικαστικός Επιμελητής", when:"Επίδοση εξωδίκων/αγωγών/διαταγών, εκτέλεση αποφάσεων (έξωση, κατάσχεση).", how:"Σύλλογοι Δικαστικών Επιμελητών ανά Εφετείο."},
+{icon:"🤝", name:"Διαμεσολαβητής", when:"Εξωδικαστική επίλυση αστικών/εμπορικών/οικογενειακών διαφορών, ταχύτερα & φθηνότερα από δίκη.", how:"Μητρώο Διαμεσολαβητών Υπ. Δικαιοσύνης."},
+{icon:"👥", name:"Συνήγορος του Πολίτη", when:"Κακοδιοίκηση, καθυστερήσεις & παραβιάσεις δικαιωμάτων από το Δημόσιο.", how:"Δωρεάν αναφορά online: synigoros.gr"},
+{icon:"🛒", name:"Συνήγορος του Καταναλωτή", when:"Διαφορές με προμηθευτές/εταιρείες (τράπεζες, τηλεπικοινωνίες, e-shops).", how:"Δωρεάν αναφορά: synigoroskatanaloti.gr"},
+{icon:"👷", name:"Επιθεώρηση Εργασίας", when:"Εργασιακές παραβάσεις: μισθοί, ωράρια, απολύσεις, παρενόχληση, ασφάλεια.", how:"Καταγγελία online: hli.gov.gr"},
+{icon:"🔒", name:"ΑΠΔΠΧ", when:"Παραβιάσεις προσωπικών δεδομένων (GDPR).", how:"Καταγγελία: dpa.gr"},
+{icon:"💻", name:"Δίωξη Ηλεκτρονικού Εγκλήματος", when:"Διαδικτυακή απάτη, εκβιασμός, προσβολή, παράνομη δημοσίευση εικόνων.", how:"astynomia.gr — γραμμή καταγγελιών."},
+{icon:"🆘", name:"Νομική Βοήθεια / Δωρεάν νομική συνδρομή", when:"Πολίτες χαμηλού εισοδήματος: δωρεάν δικηγόρος & απαλλαγή εξόδων (Ν.3226/2004).", how:"Αίτηση στο αρμόδιο δικαστήριο με εκκαθαριστικό."},
+{icon:"📞", name:"Γραμμή SOS 15900", when:"Ενδοοικογενειακή/έμφυλη βία — 24ωρη υποστήριξη & καθοδήγηση.", how:"Τηλ. 15900 (δωρεάν, 24/7)."}
+];
+
+/* ---------- ΛΕΞΙΚΟ ---------- */
+const GLOSSARY = [
+{t:"Αγωγή", d:"Το εισαγωγικό δικόγραφο με το οποίο ξεκινά μια πολιτική δίκη — ο ενάγων ζητά κάτι από τον εναγόμενο."},
+{t:"Ασφαλιστικά μέτρα", d:"Ταχεία προσωρινή δικαστική προστασία για επείγοντα (π.χ. προσωρινή διατροφή, συντηρητική κατάσχεση)."},
+{t:"Διαταγή πληρωμής", d:"Ταχύς εκτελεστός τίτλος για βέβαιη & εκκαθαρισμένη χρηματική οφειλή αποδεικνυόμενη εγγράφως."},
+{t:"Εξώδικο", d:"Έγγραφη, επίσημη γνωστοποίηση/όχληση προς κάποιον, συνήθως πριν από δικαστικές ενέργειες, με επιφύλαξη δικαιωμάτων."},
+{t:"Έγκληση", d:"Δήλωση του παθόντος ότι επιθυμεί ποινική δίωξη — απαραίτητη στα κατ' έγκληση αδικήματα (προθεσμία 3 μήνες)."},
+{t:"Μήνυση", d:"Αναφορά αξιόποινης πράξης στις αρχές, από οποιονδήποτε, για αδικήματα που διώκονται αυτεπαγγέλτως."},
+{t:"Κατ' έγκληση αδίκημα", d:"Αδίκημα που διώκεται μόνο αν το ζητήσει ο παθών (π.χ. εξύβριση, απειλή, απλή σωματική βλάβη)."},
+{t:"Αυτεπάγγελτη δίωξη", d:"Η Εισαγγελία διώκει το αδίκημα χωρίς να χρειάζεται έγκληση του παθόντος (σοβαρά αδικήματα)."},
+{t:"Παραγραφή", d:"Το χρονικό όριο μετά το οποίο μια αξίωση δεν μπορεί πλέον να διεκδικηθεί δικαστικά ή ένα έγκλημα να διωχθεί."},
+{t:"Νόμιμη μοίρα", d:"Το ελάχιστο ποσοστό κληρονομιάς (½ της εξ αδιαθέτου μερίδας) που δικαιούνται οι μεριδούχοι, ανεξαρτήτως διαθήκης."},
+{t:"Αδικοπραξία", d:"Παράνομη & υπαίτια πράξη που ζημιώνει άλλον και γεννά υποχρέωση αποζημίωσης (ΑΚ 914)."},
+{t:"Ηθική βλάβη", d:"Μη περιουσιακή ζημία (ψυχική οδύνη, προσβολή τιμής) για την οποία επιδικάζεται χρηματική ικανοποίηση."},
+{t:"Υπαναχώρηση", d:"Η μονομερής λύση σύμβασης όταν ο νόμος ή η σύμβαση το επιτρέπει (π.χ. 14 ημέρες σε online αγορές)."},
+{t:"Ενδικοφανής προσφυγή", d:"Υποχρεωτική (όπου προβλέπεται) προσφυγή σε ανώτερο διοικητικό όργανο πριν το δικαστήριο."},
+{t:"Αίτηση ακύρωσης", d:"Ένδικο βοήθημα κατά παράνομης διοικητικής πράξης (ΣτΕ / Διοικητικά Εφετεία)."},
+{t:"Επίσχεση εργασίας", d:"Το δικαίωμα του εργαζομένου να μην παρέχει εργασία όταν ο εργοδότης δεν εκπληρώνει τις υποχρεώσεις του."},
+{t:"Χρησικτησία", d:"Απόκτηση κυριότητας με μακρόχρονη νομή (τακτική 10 έτη με τίτλο, έκτακτη 20 έτη)."},
+{t:"Ασφαλιστική αποζημίωση", d:"Η καταβολή από την ασφαλιστική εταιρεία για ζημία που καλύπτεται από το ασφαλιστήριο."},
+{t:"Διαμεσολάβηση", d:"Εξωδικαστική διαδικασία επίλυσης διαφορών με ουδέτερο τρίτο· γρήγορη & εμπιστευτική."},
+{t:"Έννομο συμφέρον", d:"Το προσωπικό & άμεσο συμφέρον που πρέπει να έχει κανείς για να ασκήσει ένα δικαίωμα/ένδικο βοήθημα."}
+];
+
+/* ---------- ΠΗΓΕΣ ---------- */
+const SOURCES = [
+{name:"Εθνικό Τυπογραφείο (et.gr)", url:"https://www.et.gr/", desc:"Επίσημη πηγή ΦΕΚ — αναζήτηση & δωρεάν λήψη Φύλλων Εφημερίδας της Κυβερνήσεως."},
+{name:"kodiko.gr", url:"https://www.kodiko.gr/", desc:"Μηχανή αναζήτησης ελληνικής νομοθεσίας: νόμοι, ΠΔ, κώδικες, εγκύκλιοι, αποφάσεις."},
+{name:"Ισοκράτης (ΔΣΑ)", url:"https://www.dsanet.gr/", desc:"Τράπεζα Νομικών Πληροφοριών του Δικηγορικού Συλλόγου Αθηνών — νομοθεσία & νομολογία."},
+{name:"Βουλή των Ελλήνων — Σύνταγμα", url:"https://www.hellenicparliament.gr/Vouli-ton-Ellinon/To-Politevma/Syntagma/", desc:"Το πλήρες, επίσημο κείμενο του Συντάγματος."},
+{name:"Νομικό Συμβούλιο του Κράτους", url:"https://www.nsk.gr/", desc:"Γνωμοδοτήσεις & νομολογία του ΝΣΚ."},
+{name:"Άρειος Πάγος", url:"https://www.areiospagos.gr/", desc:"Αποφάσεις του Ανώτατου Πολιτικού & Ποινικού Δικαστηρίου."},
+{name:"Συμβούλιο της Επικρατείας", url:"https://www.adjustice.gr/", desc:"Νομολογία διοικητικής δικαιοσύνης (ΣτΕ & διοικητικά δικαστήρια)."},
+{name:"EUR-Lex", url:"https://eur-lex.europa.eu/homepage.html?locale=el", desc:"Επίσημη πύλη δικαίου της ΕΕ — κανονισμοί, οδηγίες, αποφάσεις (και στα ελληνικά)."},
+{name:"gov.gr", url:"https://www.gov.gr/", desc:"Ενιαία ψηφιακή πύλη Δημοσίου — υπηρεσίες, υπεύθυνες δηλώσεις, εξουσιοδοτήσεις."},
+{name:"Νομική Σχολή ΑΠΘ — Ελεύθερη πρόσβαση", url:"https://law.auth.gr/news/free_access/", desc:"Οδηγός δωρεάν πρόσβασης σε κώδικες, νομοθεσία & νομολογία."},
+{name:"Η.Β. ΑΑΔΕ (elib) — Εγκύκλιοι/ΠΟΛ/Αποφάσεις", url:"http://elib.aade.gr/elib", desc:"Ηλεκτρονική Βιβλιοθήκη ΑΑΔΕ: επίσημη αναζήτηση εγκυκλίων, ΠΟΛ, ΑΥΟ, ΔΕΦΚ/ΔΤΔ."},
+{name:"ΝΣΚ — Αναζήτηση Γνωμοδοτήσεων", url:"https://www.nsk.gr/web/nsk/anazitisi-gnomodoteseon", desc:"Γνωμοδοτήσεις Νομικού Συμβουλίου του Κράτους (Τμ. Φορολογικό-Τελωνειακό)."},
+{name:"🎯 C.O.S.M.O.S. — Εργαλείο Ελέγχου (τοπικό)", url:"http://localhost:5173", desc:"Το δικό σας εργαλείο τελωνειακού/φορολογικού ελέγχου. Ανοίγει όταν τρέχει ο τοπικός server (θύρα 5173)."}
+];
+
+/* ============================================================
+   ROUTER & RENDER
+   ============================================================ */
+const TABS = [
+  {id:"home", label:"Αρχική", icon:"🏠"},
+  {id:"search", label:"Αναζήτηση", icon:"🔎"},
+  {id:"law", label:"Νομοθεσία", icon:"📚"},
+  {id:"wizard", label:"Οδηγός", icon:"❓"},
+  {id:"advisor", label:"Σύμβουλος", icon:"🧭"},
+  {id:"templates", label:"Πρότυπα", icon:"📝"},
+  {id:"people", label:"Ποιον να βρω", icon:"👥"},
+  {id:"glossary", label:"Λεξικό", icon:"📖"},
+  {id:"sources", label:"Πηγές", icon:"🔗"}
+];
+
+let curTab="home";
+function el(id){return document.getElementById(id);}
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function renderTabs(){
+  el("tabs").innerHTML = TABS.map(t=>
+    `<button data-t="${t.id}" class="${t.id===curTab?'active':''}" onclick="go('${t.id}')"><span>${t.icon}</span>${t.label}</button>`
+  ).join("");
+}
+function go(t){
+  curTab=t;
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  el("view-"+t).classList.add("active");
+  renderTabs();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+const DISCLAIMER = `<div class="disclaimer"><span>⚠️</span><div><b>Ενημερωτικό υλικό — όχι νομική συμβουλή.</b> Η εφαρμογή δίνει γενική καθοδήγηση & παραπομπές στη νομοθεσία. Κάθε υπόθεση είναι μοναδική· οι νόμοι αλλάζουν. Για ενέργειες με νομικές συνέπειες συμβουλευτείτε δικηγόρο και το επίσημο κείμενο (δείτε «Πηγές»).</div></div>`;
+
+/* ---- HOME ---- */
+function renderHome(){
+  const areaTiles = LAW_AREAS.map(a=>
+    `<div class="tile" onclick="go('law');setTimeout(()=>openArea('${a.id}'),60)">
+       <div class="big">${a.icon}</div><h4>${a.name}</h4><p>${a.desc}</p></div>`).join("");
+  el("view-home").innerHTML = `
+    <div class="hero">
+      <h2>🧭 ΝΟΜΟΠΥΞΙΔΑ 360°</h2>
+      <p>Ο προσωπικός σας νομικός οδηγός. Ρωτήστε με απλά λόγια, βρείτε τη σχετική νομοθεσία, δείτε βήμα-βήμα τι να κάνετε, κατεβάστε έτοιμα πρότυπα εγγράφων — και συνδεθείτε με τις επίσημες ανοιχτές πηγές για το πλήρες κείμενο.</p>
+      <div class="searchbar">
+        <input id="homeq" placeholder="π.χ. απόλυση, ελαττωματικό προϊόν, διαζύγιο, εγγύηση, GDPR…" onkeydown="if(event.key==='Enter')homeSearch()">
+        <button class="btn primary" onclick="homeSearch()">🔎 Αναζήτηση</button>
+      </div>
+      <div style="margin-top:12px;position:relative"><button class="btn ghost" onclick="go('wizard')">❓ Δεν ξέρετε από πού να ξεκινήσετε; Οδηγός βήμα-βήμα →</button></div>
+      ${DISCLAIMER}
+    </div>
+
+    <div class="sectitle">🧭 Έχω ένα πρόβλημα… <small>δείτε τι ισχύει & τι να κάνετε</small></div>
+    <div class="grid g4">
+      ${SITUATIONS.slice(0,8).map(s=>`<div class="tile" onclick="go('advisor');setTimeout(()=>openSituation('${s.id}'),60)"><div class="big">${s.icon}</div><h4>${esc(s.title)}</h4><p>${esc(s.cat)}</p></div>`).join("")}
+    </div>
+    <div style="margin-top:12px"><button class="btn ghost" onclick="go('advisor')">Όλες οι καταστάσεις →</button></div>
+
+    <div class="sectitle">📚 Κλάδοι Δικαίου <small>περιηγηθείτε στη βάση νομοθεσίας</small></div>
+    <div class="grid g4">${areaTiles}</div>
+  `;
+}
+function homeSearch(){
+  const q=el("homeq").value.trim();
+  go('search');
+  el("mainq").value=q;
+  doSearch();
+}
+
+/* ---- SEARCH ---- */
+function buildIndex(){
+  const idx=[];
+  LAW_AREAS.forEach(a=>a.items.forEach(it=>{
+    idx.push({kind:"Νομοθεσία — "+a.name, title:it.n+" — "+it.t, text:it.x, act:`go('law');setTimeout(()=>openArea('${a.id}',true),60)`, hay:(a.name+" "+it.n+" "+it.t+" "+it.x).toLowerCase()});
+  }));
+  LAW_AREAS.forEach(a=>(LEGAL_REFS[a.id]||[]).forEach(gp=>gp.items.forEach(it=>{
+    const act = it.url ? `window.open('${it.url}','_blank','noopener')` : `go('law');setTimeout(()=>openArea('${a.id}',true),60)`;
+    idx.push({kind:"Πηγή δικαίου — "+a.name, title:it.r+" — "+it.t, text:gp.g+" · "+a.name, act:act, hay:(a.name+" "+it.r+" "+it.t+" "+gp.g).toLowerCase()});
+  })));
+  SITUATIONS.forEach(s=>{
+    idx.push({kind:"Σύμβουλος — "+s.cat, title:s.title, text:s.apply, act:`go('advisor');setTimeout(()=>openSituation('${s.id}'),60)`, hay:(s.title+" "+s.cat+" "+s.situation+" "+s.apply+" "+s.steps.join(" ")).toLowerCase()});
+  });
+  TEMPLATES.forEach(t=>{
+    idx.push({kind:"Πρότυπο — "+t.cat, title:t.title, text:"Έτοιμο πρότυπο εγγράφου προς συμπλήρωση.", act:`go('templates');setTimeout(()=>openTemplate('${t.id}'),60)`, hay:(t.title+" "+t.cat+" "+t.body).toLowerCase()});
+  });
+  GLOSSARY.forEach(g=>{
+    idx.push({kind:"Λεξικό", title:g.t, text:g.d, act:`go('glossary')`, hay:(g.t+" "+g.d).toLowerCase()});
+  });
+  return idx;
+}
+let SEARCH_INDEX=null;
+function renderSearch(){
+  el("view-search").innerHTML=`
+    <div class="hero" style="padding:24px">
+      <h2 style="font-size:24px">🔎 Έξυπνη Αναζήτηση</h2>
+      <p>Αναζητήστε σε ολόκληρη τη βάση: νομοθεσία, καταστάσεις, πρότυπα & όρους. Γράψτε λέξεις-κλειδιά στα ελληνικά.</p>
+      <div class="searchbar">
+        <input id="mainq" placeholder="Πληκτρολογήστε π.χ. «αποζημίωση απόλυσης», «παραγραφή», «εγγύηση προϊόντος»…" oninput="doSearch()">
+        <button class="btn primary" onclick="doSearch()">Αναζήτηση</button>
+      </div>
+    </div>
+    <div class="filterbar" id="skinds"></div>
+    <div id="results"></div>`;
+  const kinds=["Όλα","Νομοθεσία","Σύμβουλος","Πρότυπο","Λεξικό"];
+  el("skinds").innerHTML=kinds.map((k,i)=>`<button class="${i===0?'active':''}" data-k="${k}" onclick="setKind('${k}',this)">${k}</button>`).join("");
+  doSearch();
+}
+let curKind="Όλα";
+function setKind(k,btn){curKind=k;document.querySelectorAll('#skinds button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');doSearch();}
+function hilite(text,terms){
+  let t=esc(text);
+  terms.forEach(term=>{ if(term.length<2)return; const re=new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'); t=t.replace(re,'<mark>$1</mark>');});
+  return t;
+}
+function doSearch(){
+  if(!SEARCH_INDEX) SEARCH_INDEX=buildIndex();
+  const q=(el("mainq").value||"").trim().toLowerCase();
+  const box=el("results");
+  const terms=q.split(/\s+/).filter(Boolean);
+  let list=SEARCH_INDEX;
+  if(curKind!=="Όλα") list=list.filter(r=>r.kind.startsWith(curKind));
+  if(q){
+    list=list.map(r=>{
+      let score=0; terms.forEach(t=>{ if(r.hay.includes(t)) score+= (r.title.toLowerCase().includes(t)?3:1); });
+      return {r,score};
+    }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).map(x=>x.r);
+  }
+  if(!q && curKind==="Όλα"){ box.innerHTML=`<div class="empty">✍️ Γράψτε κάτι για να ξεκινήσει η αναζήτηση — ή περιηγηθείτε από τις καρτέλες.</div>`; return; }
+  if(!list.length){ box.innerHTML=`<div class="empty">😕 Δεν βρέθηκε κάτι για «${esc(q)}». Δοκιμάστε άλλη λέξη-κλειδί ή δείτε τους «Κλάδους Δικαίου».</div>`; return; }
+  box.innerHTML=list.slice(0,40).map(r=>
+    `<div class="res" onclick="${r.act}">
+       <div class="kind">${esc(r.kind)}</div>
+       <h4>${hilite(r.title,terms)}</h4>
+       <p>${hilite(r.text.slice(0,220)+(r.text.length>220?'…':''),terms)}</p>
+     </div>`).join("");
+}
+
+/* ---- LAW ---- */
+function renderRefs(id){
+  const groups=LEGAL_REFS[id]; if(!groups||!groups.length) return "";
+  const total=groups.reduce((s,g)=>s+g.items.length,0);
+  return `<details class="srcbox">
+    <summary>Πηγές Δικαίου — νόμοι, κανονισμοί, εγκύκλιοι, ΝΣΚ (${total})</summary>
+    ${groups.map(g=>`<div class="srcg"><h5>${esc(g.g)}</h5>${g.items.map(it=>{
+      const f=fekOf(it.r);
+      return `<div class="srcrow">
+        ${it.url?`<a class="rr" href="${it.url}" target="_blank" rel="noopener">${esc(it.r)}</a>`:`<span class="rr">${esc(it.r)}</span>`}
+        ${f?`<a class="fekchip" href="https://www.et.gr/" target="_blank" rel="noopener" title="Επαλήθευση στο Εθνικό Τυπογραφείο (ενδεικτικό)">${esc(f)}</a>`:''}
+        <span class="rt">— ${esc(it.t)}</span>
+      </div>`;}).join("")}</div>`).join("")}
+    <div class="srcnote">ⓘ Τα ΦΕΚ είναι ενδεικτικά — επαληθεύστε στο <a href="https://www.et.gr/" target="_blank" rel="noopener">et.gr</a>. Οι εγκύκλιοι/ΑΥΟ ενημερώνονται συχνά (αναζήτηση στην Η.Β. ΑΑΔΕ).</div>
+  </details>`;
+}
+function renderLaw(){
+  el("view-law").innerHTML=`
+    <div class="sectitle">📚 Νομοθεσία ανά Κλάδο Δικαίου <small>πατήστε για να ανοίξετε τα άρθρα</small></div>
+    ${DISCLAIMER}
+    <div id="areas" style="margin-top:16px"></div>`;
+  el("areas").innerHTML=LAW_AREAS.map(a=>`
+    <div class="acc" id="area-${a.id}">
+      <div class="head" onclick="toggleArea('${a.id}')">
+        <div class="ic">${a.icon}</div>
+        <div class="t"><h3>${a.name}</h3><p>${esc(a.desc)}</p></div>
+        <div class="chev">▶</div>
+      </div>
+      <div class="body">
+        ${a.items.map(it=>`
+          <div class="art">
+            <div class="num">${esc(it.n)}</div>
+            <h4>${esc(it.t)}</h4>
+            <p>${esc(it.x)}</p>
+          </div>`).join("")}
+        ${renderRefs(a.id)}
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          ${a.links.map(l=>`<a class="btn ghost sm" href="${l.url}" target="_blank" rel="noopener">🔗 ${esc(l.label)}</a>`).join("")}
+        </div>
+      </div>
+    </div>`).join("");
+}
+function toggleArea(id){ el("area-"+id).classList.toggle("open"); }
+function openArea(id){ document.querySelectorAll('.acc').forEach(a=>a.classList.remove('open')); const a=el("area-"+id); if(a){a.classList.add("open"); a.scrollIntoView({behavior:"smooth",block:"start"});} }
+
+/* ---- ADVISOR ---- */
+let advCat="Όλες";
+function renderAdvisor(){
+  const cats=["Όλες",...Array.from(new Set(SITUATIONS.map(s=>s.cat)))];
+  el("view-advisor").innerHTML=`
+    <div class="sectitle">🧭 Σύμβουλος — «Έχω ένα πρόβλημα…» <small>επιλέξτε την κατάσταση που σας αφορά</small></div>
+    ${DISCLAIMER}
+    <div class="filterbar" id="advcats">${cats.map((c,i)=>`<button class="${i===0?'active':''}" onclick="setAdvCat('${c}',this)">${c}</button>`).join("")}</div>
+    <div id="situations"></div>
+    <div id="sitDetail"></div>`;
+  listSituations();
+}
+function setAdvCat(c,btn){advCat=c;document.querySelectorAll('#advcats button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');listSituations();}
+function listSituations(){
+  el("sitDetail").innerHTML="";
+  const list=SITUATIONS.filter(s=>advCat==="Όλες"||s.cat===advCat);
+  el("situations").innerHTML=`<div class="grid g3">${list.map(s=>
+    `<div class="tile" onclick="openSituation('${s.id}')"><div class="big">${s.icon}</div><h4>${esc(s.title)}</h4><p>${esc(s.situation)}</p></div>`).join("")}</div>`;
+}
+function openSituation(id){
+  const s=SITUATIONS.find(x=>x.id===id); if(!s)return;
+  el("situations").innerHTML="";
+  const lawrefs=s.laws.map(lid=>{const a=LAW_AREAS.find(x=>x.id===lid);return a?`<span class="lawref" onclick="go('law');setTimeout(()=>openArea('${a.id}'),60)">${a.icon} ${a.name}</span>`:"";}).join("");
+  const tmplBtn = s.tmpl ? `<button class="btn primary sm" onclick="go('templates');setTimeout(()=>openTemplate('${s.tmpl}'),60)">📝 Σχετικό πρότυπο</button>` : "";
+  el("sitDetail").innerHTML=`
+    <div class="back" onclick="listSituations()">← Πίσω στη λίστα</div>
+    <div class="card">
+      <h3>${s.icon} ${esc(s.title)}</h3>
+      <p style="color:var(--muted);margin-top:4px">${esc(s.situation)}</p>
+      <div class="art" style="margin-top:14px"><div class="num">Τι ισχύει</div><p>${esc(s.apply)}</p></div>
+      <h4 style="margin-top:16px">✅ Τι να κάνετε — βήμα βήμα</h4>
+      <ol class="steps">${s.steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+      <div class="kv"><div class="k">⏰ Προθεσμίες</div><div class="v">${esc(s.deadline)}</div></div>
+      <div class="kv"><div class="k">👥 Ποιον να βρω</div><div class="v">${s.who.map(w=>esc(w)).join(" · ")}</div></div>
+      <div style="margin-top:10px"><div class="k" style="color:var(--gold);font-weight:600;margin-bottom:4px">📚 Σχετική νομοθεσία</div>${lawrefs}</div>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">${tmplBtn}<button class="btn ghost sm" onclick="go('people')">👥 Ποιον να βρω</button></div>
+    </div>
+    ${DISCLAIMER}`;
+  el("sitDetail").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ---- TEMPLATES ---- */
+function renderTemplates(){
+  el("view-templates").innerHTML=`
+    <div class="sectitle">📝 Πρότυπα Εγγράφων <small>έτοιμα κείμενα — αντιγράψτε/εκτυπώστε & συμπληρώστε</small></div>
+    ${DISCLAIMER}
+    <div class="grid g3" id="tmplList" style="margin-top:16px"></div>
+    <div id="tmplDetail"></div>`;
+  el("tmplList").innerHTML=TEMPLATES.map(t=>
+    `<div class="tile" onclick="openTemplate('${t.id}')"><div class="big">${t.icon}</div><h4>${esc(t.title)}</h4><p>${esc(t.cat)}</p></div>`).join("");
+}
+function openTemplate(id){
+  const t=TEMPLATES.find(x=>x.id===id); if(!t)return;
+  el("tmplList").innerHTML="";
+  el("tmplDetail").innerHTML=`
+    <div class="back" onclick="renderTemplates()">← Όλα τα πρότυπα</div>
+    <div class="card">
+      <h3>${t.icon} ${esc(t.title)} <span class="chip">${esc(t.cat)}</span></h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+        <button class="btn primary sm" onclick="copyTmpl('${t.id}')">📋 Αντιγραφή</button>
+        <button class="btn ghost sm" onclick="printTmpl('${t.id}')">🖨️ Εκτύπωση / PDF</button>
+        <button class="btn ghost sm" onclick="downloadTmpl('${t.id}')">⬇️ Λήψη .txt</button>
+      </div>
+      <div class="tmpl-body" id="tb-${t.id}">${esc(t.body)}</div>
+    </div>
+    <div class="disclaimer"><span>⚠️</span><div>Τα πρότυπα είναι <b>γενικά υποδείγματα</b>. Προσαρμόστε τα στην περίπτωσή σας και, για επίσημες/δικαστικές ενέργειες, ζητήστε δικηγόρο.</div></div>`;
+  el("tmplDetail").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function copyTmpl(id){const t=TEMPLATES.find(x=>x.id===id);navigator.clipboard.writeText(t.body).then(()=>{const b=event.target;const o=b.textContent;b.textContent="✓ Αντιγράφηκε";setTimeout(()=>b.textContent=o,1500);});}
+function downloadTmpl(id){const t=TEMPLATES.find(x=>x.id===id);const blob=new Blob([t.body],{type:"text/plain;charset=utf-8"});const u=URL.createObjectURL(blob);const a=document.createElement("a");a.href=u;a.download=t.title.replace(/[^\wα-ωΑ-Ω]+/g,"_")+".txt";a.click();URL.revokeObjectURL(u);}
+function printTmpl(id){const t=TEMPLATES.find(x=>x.id===id);const w=window.open("","_blank");w.document.write(`<html><head><meta charset="utf-8"><title>${esc(t.title)}</title><style>body{font-family:'Courier New',monospace;white-space:pre-wrap;padding:40px;font-size:13px;line-height:1.7}</style></head><body>${esc(t.body)}</body></html>`);w.document.close();w.print();}
+
+/* ---- PEOPLE ---- */
+function renderPeople(){
+  el("view-people").innerHTML=`
+    <div class="sectitle">👥 Ποιον να βρω <small>ο σωστός επαγγελματίας/υπηρεσία ανά ανάγκη</small></div>
+    <div class="grid g2" style="margin-top:16px">
+      ${PEOPLE.map(p=>`<div class="card"><div class="person">
+        <div class="pic">${p.icon}</div>
+        <div><h4>${esc(p.name)}</h4><p>${esc(p.when)}</p><div class="how">➜ ${esc(p.how)}</div></div>
+      </div></div>`).join("")}
+    </div>
+    ${DISCLAIMER}`;
+}
+
+/* ---- GLOSSARY ---- */
+function renderGlossary(){
+  el("view-glossary").innerHTML=`
+    <div class="sectitle">📖 Νομικό Λεξικό <small>βασικοί όροι σε απλά ελληνικά</small></div>
+    <div class="searchbar" style="margin:0 0 16px"><input id="glq" placeholder="Αναζήτηση όρου…" oninput="filterGl()"></div>
+    <div id="glList"></div>`;
+  filterGl();
+}
+function filterGl(){
+  const q=(el("glq").value||"").toLowerCase().trim();
+  const list=GLOSSARY.filter(g=>!q||g.t.toLowerCase().includes(q)||g.d.toLowerCase().includes(q)).sort((a,b)=>a.t.localeCompare(b.t,'el'));
+  el("glList").innerHTML=list.length?list.map(g=>`<details class="gl"><summary>${esc(g.t)}</summary><p>${esc(g.d)}</p></details>`).join(""):`<div class="empty">Δεν βρέθηκε όρος.</div>`;
+}
+
+/* ---- SOURCES ---- */
+function renderSources(){
+  el("view-sources").innerHTML=`
+    <div class="sectitle">🔗 Ανοιχτές & Επίσημες Πηγές <small>για το πλήρες, ενημερωμένο κείμενο</small></div>
+    <div class="disclaimer" style="background:rgba(61,155,224,.08);border-color:rgba(61,155,224,.35);color:#bfe0f6"><span>ℹ️</span><div>Η εφαρμογή λειτουργεί <b>offline</b> με δομημένη βάση των ουσιωδών κανόνων. Για το <b>πλήρες & ενημερωμένο</b> κείμενο νόμων και για νομολογία, χρησιμοποιήστε τις παρακάτω επίσημες/ανοιχτές πηγές (απαιτούν σύνδεση στο διαδίκτυο).</div></div>
+    <div class="grid g2" style="margin-top:16px">
+      ${SOURCES.map(s=>`<a class="card" href="${s.url}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block">
+        <h3>🔗 ${esc(s.name)}</h3><p style="color:var(--muted);margin-top:4px">${esc(s.desc)}</p>
+        <div style="color:var(--amber2);font-size:12px;margin-top:8px;word-break:break-all">${esc(s.url)}</div></a>`).join("")}
+    </div>
+    <div class="foot">
+      ΝΟΜΟΠΥΞΙΔΑ 360° · offline νομικός οδηγός<br>
+      Ενημερωτικό υλικό — δεν υποκαθιστά τη νομική συμβουλή. Επαληθεύετε πάντα στο επίσημο κείμενο.<br>
+      <span style="color:var(--muted);font-weight:600">© by Chronis Makris</span>
+    </div>`;
+}
+
+/* ---- WIZARD (οδηγός ερωταπαντήσεων) ---- */
+const WIZARD = {
+  root:{ crumb:"Αρχή", q:"Ποιο θέμα σας απασχολεί;", opts:[
+    {oi:"💼", label:"Δουλειά & μισθός", small:"απόλυση, απλήρωτος, παρενόχληση", node:"w_work"},
+    {oi:"🛒", label:"Αγορές & καταναλωτής", small:"ελαττωματικό, online επιστροφή", node:"w_cons"},
+    {oi:"🏠", label:"Σπίτι & ενοίκιο", small:"έξωση, εγγύηση, μίσθωση", node:"w_home"},
+    {oi:"👨‍👩‍👧", label:"Οικογένεια", small:"διαζύγιο, διατροφή, κληρονομιά", node:"w_fam"},
+    {oi:"💶", label:"Χρήματα, δάνεια & φόροι", small:"κόκκινο δάνειο, εφορία", node:"w_money"},
+    {oi:"⚖️", label:"Προσβολή & ποινικά", small:"συκοφαντία, μήνυση, κατηγορούμενος", node:"w_crim"},
+    {oi:"🚗", label:"Αυτοκίνητο & τροχαίο", small:"ατύχημα, κλήση, ασφάλεια", sit:"troxaio"},
+    {oi:"🏛️", label:"Δημόσιο & συντάξεις", small:"κακοδιοίκηση, ΕΦΚΑ", node:"w_public"},
+    {oi:"🔒", label:"Ίντερνετ & δεδομένα", small:"GDPR, online προσβολή", node:"w_data"},
+    {oi:"🛃", label:"Τελωνειακά", small:"παράβαση, πολλαπλό τέλος, λαθρεμπορία", sit:"teloneiaki_paravasi"}
+  ]},
+  w_work:{ crumb:"Δουλειά", q:"Τι συμβαίνει με την εργασία σας;", opts:[
+    {oi:"📄", label:"Με απέλυσαν", sit:"apolysi"},
+    {oi:"💶", label:"Δεν μου πληρώνουν μισθό/δώρα", sit:"aplirwtos"},
+    {oi:"⚠️", label:"Παρενόχληση ή άλλο εργασιακό", small:"δείτε τον κλάδο Εργατικού", area:"ergatiko"}
+  ]},
+  w_cons:{ crumb:"Καταναλωτής", q:"Τι πρόβλημα έχετε ως καταναλωτής;", opts:[
+    {oi:"📦", label:"Αγόρασα ελαττωματικό προϊόν", sit:"elattomatiko"},
+    {oi:"🛍️", label:"Θέλω να επιστρέψω online αγορά", sit:"online"},
+    {oi:"🏢", label:"Άλλη διαφορά με εταιρεία", small:"τράπεζα, τηλεπικοινωνίες κ.λπ.", area:"katanalotiko"}
+  ]},
+  w_home:{ crumb:"Σπίτι", q:"Τι αφορά το ακίνητο;", opts:[
+    {oi:"🏚️", label:"Ιδιοκτήτης: δεν πληρώνει ο ενοικιαστής", sit:"exwsi"},
+    {oi:"💰", label:"Ενοικιαστής: δεν μου δίνουν την εγγύηση", sit:"egguisi"},
+    {oi:"📋", label:"Άλλο θέμα μίσθωσης", area:"misthoseis"}
+  ]},
+  w_fam:{ crumb:"Οικογένεια", q:"Τι αφορά;", opts:[
+    {oi:"💔", label:"Θέλω διαζύγιο", sit:"diazygio"},
+    {oi:"🧒", label:"Διατροφή / επιμέλεια τέκνου", sit:"diatrofi"},
+    {oi:"📜", label:"Κληρονομιά / διαθήκη", sit:"klironomia"}
+  ]},
+  w_money:{ crumb:"Χρήματα", q:"Τι αφορά;", opts:[
+    {oi:"🏦", label:"Δεν μπορώ να πληρώσω δάνειο (κόκκινο)", sit:"kokkino_daneio"},
+    {oi:"💰", label:"Φορολογικός έλεγχος / πρόστιμο ΑΑΔΕ", sit:"forologikos_elegxos"},
+    {oi:"📉", label:"Άλλο τραπεζικό/χρέη", small:"servicers, πλειστηριασμός, όροι", area:"trapezika"}
+  ]},
+  w_crim:{ crumb:"Ποινικά", q:"Τι συνέβη;", opts:[
+    {oi:"🗣️", label:"Με προσέβαλαν / συκοφάντησαν", sit:"synykofantia"},
+    {oi:"👨‍⚖️", label:"Κλήθηκα ως κατηγορούμενος", sit:"katigoroumenos"},
+    {oi:"📝", label:"Θέλω να κάνω μήνυση / έγκληση", small:"δείτε πρότυπο & διαδικασία", area:"poiniko"}
+  ]},
+  w_public:{ crumb:"Δημόσιο", q:"Τι αφορά;", opts:[
+    {oi:"🏛️", label:"Το Δημόσιο δεν απαντά / κακοδιοίκηση", sit:"dimosio"},
+    {oi:"👵", label:"Σύνταξη (πότε/πόσο/αίτηση)", sit:"syntaxi"},
+    {oi:"📄", label:"Άλλο διοικητικό θέμα", area:"dioikitiko"}
+  ]},
+  w_data:{ crumb:"Δεδομένα", q:"Τι αφορά;", opts:[
+    {oi:"🔐", label:"Παραβίαση των δεδομένων μου", sit:"gdpr"},
+    {oi:"💻", label:"Προσβολή / δημοσίευση στο ίντερνετ", sit:"synykofantia"},
+    {oi:"ℹ️", label:"Γενικά για GDPR & δικαιώματα", area:"data"}
+  ]}
+};
+let wizStack=["root"];
+function renderWizard(){
+  el("view-wizard").innerHTML=`
+    <div class="sectitle">❓ Οδηγός — «Βρες τι ισχύει για σένα» <small>απάντησε σε λίγες ερωτήσεις</small></div>
+    <div id="wizCrumbs" class="crumbs"></div>
+    <div id="wizBox"></div>
+    ${DISCLAIMER}`;
+  wizStack=["root"]; drawWiz();
+}
+function drawWiz(){
+  const id=wizStack[wizStack.length-1]; const n=WIZARD[id]; if(!n)return;
+  el("wizCrumbs").innerHTML = wizStack.map((x,i)=>`<span class="${i===wizStack.length-1?'cur':''}" onclick="wizJump(${i})" style="cursor:pointer">${esc(WIZARD[x].crumb)}</span>`).join(' <span style="border:none;background:none;padding:0">→</span> ');
+  el("wizBox").innerHTML=`
+    <div class="wiz-q">
+      ${wizStack.length>1?`<div class="back" onclick="wizBack()">← Προηγούμενη ερώτηση</div>`:''}
+      <h3>${esc(n.q)}</h3>
+      ${n.opts.map((o,i)=>`<button class="opt" onclick="wizPick(${i})">
+        <span class="oi">${o.oi||'▸'}</span>
+        <span>${esc(o.label)}${o.small?`<small>${esc(o.small)}</small>`:''}</span>
+      </button>`).join("")}
+    </div>`;
+  el("wizBox").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function wizPick(i){
+  const n=WIZARD[wizStack[wizStack.length-1]]; const o=n.opts[i];
+  if(o.node){ wizStack.push(o.node); drawWiz(); }
+  else if(o.sit){ go('advisor'); setTimeout(()=>openSituation(o.sit),60); }
+  else if(o.area){ go('law'); setTimeout(()=>openArea(o.area),60); }
+}
+function wizBack(){ if(wizStack.length>1){wizStack.pop(); drawWiz();} }
+function wizJump(i){ wizStack=wizStack.slice(0,i+1); drawWiz(); }
+
+/* ---- INIT ---- */
+function init(){
+  renderTabs();
+  renderHome(); renderSearch(); renderLaw(); renderWizard(); renderAdvisor();
+  renderTemplates(); renderPeople(); renderGlossary(); renderSources();
+  go("home");
+}
+init();
+</script>
+
+<button id="installBtn">⬇️ Εγκατάσταση εφαρμογής</button>
+<script>
+/* PWA: install prompt + service worker */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='inline-flex';});
+window.addEventListener('appinstalled',()=>{const b=document.getElementById('installBtn');if(b)b.style.display='none';deferredPrompt=null;});
+document.addEventListener('click',ev=>{
+  if(ev.target && ev.target.id==='installBtn' && deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.finally(()=>{deferredPrompt=null; const b=document.getElementById('installBtn'); if(b) b.style.display='none';});
+  }
+});
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
+</script>
+</body>
+</html>
