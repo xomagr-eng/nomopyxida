@@ -105,6 +105,22 @@
   .g3{grid-template-columns:repeat(3,1fr)}
   .g4{grid-template-columns:repeat(4,1fr)}
   @media(max-width:920px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  /* Οριζόντια θέση (landscape) κινητού/τάμπλετ: αξιοποίηση πλάτους — μεγαλύτερη διάταξη */
+  @media (orientation:landscape) and (max-width:1000px){
+    .g2{grid-template-columns:repeat(2,1fr)}
+    .g3{grid-template-columns:repeat(2,1fr)}
+    .g4{grid-template-columns:repeat(2,1fr)}
+    .hero{margin-top:14px;padding:20px}
+    .hero h2{font-size:24px}
+    .hero p{font-size:14px}
+    section.view{max-width:100%}
+  }
+  @media (orientation:landscape) and (min-width:820px) and (max-width:1000px){
+    .g3{grid-template-columns:repeat(3,1fr)}
+    .g4{grid-template-columns:repeat(3,1fr)}
+  }
+  /* Μεγάλες οθόνες / τάμπλετ landscape: πιο πλατύ περιεχόμενο */
+  @media (min-width:1500px){ .wrap{max-width:1440px} }
 
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
   .card h3{font-size:16.5px;display:flex;align-items:center;gap:9px}
@@ -1371,6 +1387,7 @@ function go(t){
   el("view-"+t).classList.add("active");
   renderTabs();
   window.scrollTo({top:0,behavior:"smooth"});
+  try{ localStorage.setItem('np_tab', t); }catch(e){}
 }
 const DISCLAIMER = `<div class="disclaimer"><span>⚠️</span><div><b>Ενημερωτικό υλικό — όχι νομική συμβουλή.</b> Η εφαρμογή δίνει γενική καθοδήγηση & παραπομπές στη νομοθεσία. Κάθε υπόθεση είναι μοναδική· οι νόμοι αλλάζουν. Για ενέργειες με νομικές συνέπειες συμβουλευτείτε δικηγόρο και το επίσημο κείμενο (δείτε «Πηγές»).</div></div>`;
 
@@ -1589,7 +1606,14 @@ function openTemplate(id){
     <div class="disclaimer"><span>⚠️</span><div>Τα πρότυπα είναι <b>γενικά υποδείγματα</b>. Προσαρμόστε τα στην περίπτωσή σας και, για επίσημες/δικαστικές ενέργειες, ζητήστε δικηγόρο.</div></div>`;
   el("tmplDetail").scrollIntoView({behavior:"smooth",block:"start"});
 }
-function copyTmpl(id){const t=TEMPLATES.find(x=>x.id===id);navigator.clipboard.writeText(t.body).then(()=>{const b=event.target;const o=b.textContent;b.textContent="✓ Αντιγράφηκε";setTimeout(()=>b.textContent=o,1500);});}
+function copyTmpl(id){
+  const t=TEMPLATES.find(x=>x.id===id); if(!t)return;
+  const btn=(typeof event!=='undefined'&&event)?event.target:null;
+  const flash=(msg)=>{ if(btn){const o=btn.textContent;btn.textContent=msg;setTimeout(()=>btn.textContent=o,1600);} };
+  const fallback=()=>{ try{const ta=document.createElement('textarea');ta.value=t.body;ta.style.position='fixed';ta.style.top='-1000px';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');document.body.removeChild(ta);flash("✓ Αντιγράφηκε");}catch(e){flash("⚠ Επιλέξτε χειροκίνητα");} };
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t.body).then(()=>flash("✓ Αντιγράφηκε")).catch(fallback); }
+  else { fallback(); }
+}
 function downloadTmpl(id){const t=TEMPLATES.find(x=>x.id===id);const blob=new Blob([t.body],{type:"text/plain;charset=utf-8"});const u=URL.createObjectURL(blob);const a=document.createElement("a");a.href=u;a.download=t.title.replace(/[^\wα-ωΑ-Ω]+/g,"_")+".txt";a.click();URL.revokeObjectURL(u);}
 function printTmpl(id){const t=TEMPLATES.find(x=>x.id===id);const w=window.open("","_blank");w.document.write(`<html><head><meta charset="utf-8"><title>${esc(t.title)}</title><style>body{font-family:'Courier New',monospace;white-space:pre-wrap;padding:40px;font-size:13px;line-height:1.7}</style></head><body>${esc(t.body)}</body></html>`);w.document.close();w.print();}
 
@@ -1729,7 +1753,9 @@ function init(){
   renderTabs();
   renderHome(); renderSearch(); renderLaw(); renderWizard(); renderAdvisor();
   renderTemplates(); renderPeople(); renderGlossary(); renderSources();
-  go("home");
+  let start='home';
+  try{ const s=localStorage.getItem('np_tab'); if(s && document.getElementById('view-'+s)) start=s; }catch(e){}
+  go(start);
 }
 init();
 </script>
