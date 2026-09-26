@@ -1983,6 +1983,16 @@ function init(){
   go(start);
 }
 init();
+/* === Συνδεδεμένες εφαρμογές & deep links (#q=...) === */
+(function(){
+  const GKISE='https://xomagr-eng.github.io/gkise-360/', GK='https://xomagr-eng.github.io/gi-klironomia-360/';
+  function deep(){const h=decodeURIComponent(location.hash.slice(1));const m=h.match(/^q=(.+)$/);if(m){go('search');const i=el('mainq');if(i){i.value=m[1];doSearch();}}}
+  const home=document.getElementById('view-home');
+  if(home) home.insertAdjacentHTML('beforeend',`<div class="card" style="margin-top:14px"><h3 style="margin-top:0">🔗 Συνδεδεμένες εφαρμογές</h3>
+   <p><a href="${GKISE}" target="_blank" rel="noopener"><b>🏛️ ΓΚΙΣΕ 360°</b></a> — κάθε γκισέ (ΚΕΠ, εφορία, ΕΦΚΑ, τράπεζα, δικαστήρια, κτηματολόγιο, δήμος…): δικαιολογητικά, κόστος, βήματα, έντυπα, εργαλεία.</p>
+   <p><a href="${GK}" target="_blank" rel="noopener"><b>🌾 ΓΗ &amp; ΚΛΗΡΟΝΟΜΙΑ 360°</b></a> — κτηματολόγιο, γονική/δωρεά, διαθήκη, κληρονομιά, δίοδος, όρια, με υπολογιστές.</p></div>`);
+  deep(); window.addEventListener('hashchange',deep);
+})();
 </script>
 
 <button id="installBtn">⬇️ Εγκατάσταση εφαρμογής</button>

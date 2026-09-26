@@ -1,5 +1,5 @@
 /* ΝΟΜΟΠΥΞΙΔΑ 360° — Service Worker (offline app shell) */
-const CACHE = 'nomopyxida-360-v1';
+const CACHE = 'nomopyxida-360-v2';
 const ASSETS = [
   './',
   './index.html',
