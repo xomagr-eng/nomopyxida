@@ -250,6 +250,22 @@
   .fekchip:hover{border-color:var(--red);text-decoration:none}
   .srcnote{padding:9px 16px 13px;font-size:11.5px;color:var(--dim);border-top:1px solid var(--line);margin-top:4px}
   .srcnote a{color:var(--amber2)}
+
+  /* αγαπημένα / calculators / δικά μου */
+  .favstar{cursor:pointer;color:var(--dim);font-size:20px;user-select:none;margin-left:8px;line-height:1}
+  .favstar.on,.favstar:hover{color:var(--amber2)}
+  .calc-in{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+  .calc-in label{font-size:12.5px;color:var(--muted);font-weight:600}
+  .calc-in input,.calc-in select{background:var(--bg2);border:1px solid var(--line2);color:var(--txt);padding:11px 13px;border-radius:10px;font-size:15px;outline:none;width:100%}
+  .calc-in input:focus,.calc-in select:focus{border-color:var(--red)}
+  .calc-row{display:flex;gap:10px;flex-wrap:wrap}
+  .calc-row>*{flex:1;min-width:120px}
+  .calc-chk{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--txt);margin:6px 0;cursor:pointer}
+  .calc-chk input{width:auto}
+  .calc-res{margin-top:12px;background:var(--bg2);border:1px solid var(--line2);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:13px 15px;font-size:14px}
+  .calc-res b{color:var(--red2)}
+  .calc-res .big{font-size:22px;font-weight:800;color:var(--txt);display:block;margin-top:2px}
+  .calc-note{font-size:11.5px;color:var(--dim);margin-top:8px}
 </style>
 </head>
 <body>
@@ -279,6 +295,8 @@
 
 <div class="wrap">
   <section class="view" id="view-home"></section>
+  <section class="view" id="view-mine"></section>
+  <section class="view" id="view-calc"></section>
   <section class="view" id="view-search"></section>
   <section class="view" id="view-law"></section>
   <section class="view" id="view-wizard"></section>
@@ -1362,10 +1380,12 @@ const SOURCES = [
    ============================================================ */
 const TABS = [
   {id:"home", label:"Αρχική", icon:"🏠"},
+  {id:"mine", label:"Δικά μου", icon:"⭐"},
   {id:"search", label:"Αναζήτηση", icon:"🔎"},
   {id:"law", label:"Νομοθεσία", icon:"📚"},
   {id:"wizard", label:"Οδηγός", icon:"❓"},
   {id:"advisor", label:"Σύμβουλος", icon:"🧭"},
+  {id:"calc", label:"Υπολογιστές", icon:"🧮"},
   {id:"templates", label:"Πρότυπα", icon:"📝"},
   {id:"people", label:"Ποιον να βρω", icon:"👥"},
   {id:"glossary", label:"Λεξικό", icon:"📖"},
@@ -1519,6 +1539,7 @@ function renderLaw(){
       <div class="head" onclick="toggleArea('${a.id}')">
         <div class="ic">${a.icon}</div>
         <div class="t"><h3>${a.name}</h3><p>${esc(a.desc)}</p></div>
+        ${starHTML('area',a.id)}
         <div class="chev">▶</div>
       </div>
       <div class="body">
@@ -1536,7 +1557,7 @@ function renderLaw(){
     </div>`).join("");
 }
 function toggleArea(id){ el("area-"+id).classList.toggle("open"); }
-function openArea(id){ document.querySelectorAll('.acc').forEach(a=>a.classList.remove('open')); const a=el("area-"+id); if(a){a.classList.add("open"); a.scrollIntoView({behavior:"smooth",block:"start"});} }
+function openArea(id){ pushRecent('area',id); document.querySelectorAll('.acc').forEach(a=>a.classList.remove('open')); const a=el("area-"+id); if(a){a.classList.add("open"); a.scrollIntoView({behavior:"smooth",block:"start"});} }
 
 /* ---- ADVISOR ---- */
 let advCat="Όλες";
@@ -1559,13 +1580,14 @@ function listSituations(){
 }
 function openSituation(id){
   const s=SITUATIONS.find(x=>x.id===id); if(!s)return;
+  pushRecent('sit',id);
   el("situations").innerHTML="";
   const lawrefs=s.laws.map(lid=>{const a=LAW_AREAS.find(x=>x.id===lid);return a?`<span class="lawref" onclick="go('law');setTimeout(()=>openArea('${a.id}'),60)">${a.icon} ${a.name}</span>`:"";}).join("");
   const tmplBtn = s.tmpl ? `<button class="btn primary sm" onclick="go('templates');setTimeout(()=>openTemplate('${s.tmpl}'),60)">📝 Σχετικό πρότυπο</button>` : "";
   el("sitDetail").innerHTML=`
     <div class="back" onclick="listSituations()">← Πίσω στη λίστα</div>
     <div class="card">
-      <h3>${s.icon} ${esc(s.title)}</h3>
+      <h3>${s.icon} ${esc(s.title)} ${starHTML('sit',s.id)}</h3>
       <p style="color:var(--muted);margin-top:4px">${esc(s.situation)}</p>
       <div class="art" style="margin-top:14px"><div class="num">Τι ισχύει</div><p>${esc(s.apply)}</p></div>
       <h4 style="margin-top:16px">✅ Τι να κάνετε — βήμα βήμα</h4>
@@ -1591,11 +1613,12 @@ function renderTemplates(){
 }
 function openTemplate(id){
   const t=TEMPLATES.find(x=>x.id===id); if(!t)return;
+  pushRecent('tmpl',id);
   el("tmplList").innerHTML="";
   el("tmplDetail").innerHTML=`
     <div class="back" onclick="renderTemplates()">← Όλα τα πρότυπα</div>
     <div class="card">
-      <h3>${t.icon} ${esc(t.title)} <span class="chip">${esc(t.cat)}</span></h3>
+      <h3>${t.icon} ${esc(t.title)} <span class="chip">${esc(t.cat)}</span> ${starHTML('tmpl',t.id)}</h3>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
         <button class="btn primary sm" onclick="copyTmpl('${t.id}')">📋 Αντιγραφή</button>
         <button class="btn ghost sm" onclick="printTmpl('${t.id}')">🖨️ Εκτύπωση / PDF</button>
@@ -1748,11 +1771,213 @@ function wizPick(i){
 function wizBack(){ if(wizStack.length>1){wizStack.pop(); drawWiz();} }
 function wizJump(i){ wizStack=wizStack.slice(0,i+1); drawWiz(); }
 
+/* ---- ΑΓΑΠΗΜΕΝΑ / ΠΡΟΣΦΑΤΑ ---- */
+function lsGet(k,def){try{return JSON.parse(localStorage.getItem(k))||def}catch(e){return def}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let FAV = lsGet('np_fav',[]);
+let RECENT = lsGet('np_recent',[]);
+function fk(kind,id){return kind+':'+id}
+function titleOf(kind,id){
+  if(kind==='sit'){const x=SITUATIONS.find(s=>s.id===id);return x?x.title:id}
+  if(kind==='tmpl'){const x=TEMPLATES.find(s=>s.id===id);return x?x.title:id}
+  if(kind==='area'){const x=LAW_AREAS.find(s=>s.id===id);return x?x.name:id}
+  return id;
+}
+const KINDLBL={sit:'Σύμβουλος',tmpl:'Πρότυπο',area:'Νομοθεσία'};
+const KINDIC={sit:'🧭',tmpl:'📝',area:'📚'};
+function isFav(kind,id){return FAV.some(f=>f.k===fk(kind,id))}
+function toggleFav(kind,id){
+  const k=fk(kind,id), i=FAV.findIndex(f=>f.k===k);
+  if(i>=0)FAV.splice(i,1); else FAV.unshift({k,kind,id,t:Date.now()});
+  lsSet('np_fav',FAV);
+}
+function pushRecent(kind,id){
+  const k=fk(kind,id);
+  RECENT=RECENT.filter(r=>r.k!==k);
+  RECENT.unshift({k,kind,id,t:Date.now()});
+  if(RECENT.length>24)RECENT=RECENT.slice(0,24);
+  lsSet('np_recent',RECENT);
+}
+function openFav(kind,id){
+  if(kind==='sit'){go('advisor');setTimeout(()=>openSituation(id),60);}
+  else if(kind==='tmpl'){go('templates');setTimeout(()=>openTemplate(id),60);}
+  else if(kind==='area'){go('law');setTimeout(()=>openArea(id),60);}
+}
+function toggleFavBtn(el,kind,id){
+  if(typeof event!=='undefined'&&event)event.stopPropagation();
+  toggleFav(kind,id);
+  const on=isFav(kind,id);
+  el.textContent=on?'★':'☆'; el.classList.toggle('on',on);
+  if(curTab==='mine')renderMine();
+}
+function starHTML(kind,id){return `<span class="favstar ${isFav(kind,id)?'on':''}" title="Αγαπημένο" onclick="toggleFavBtn(this,'${kind}','${id}')">${isFav(kind,id)?'★':'☆'}</span>`;}
+
+function renderMine(){
+  const card=(r)=>`<div class="res" onclick="openFav('${r.kind}','${r.id}')">
+      <div class="kind">${KINDIC[r.kind]||''} ${esc(KINDLBL[r.kind]||'')}</div>
+      <h4>${esc(titleOf(r.kind,r.id))}</h4></div>`;
+  const favHTML = FAV.length ? FAV.map(card).join("") : `<div class="empty">Δεν έχετε αγαπημένα ακόμη. Πατήστε το ☆ σε μια κατάσταση, πρότυπο ή κλάδο νομοθεσίας.</div>`;
+  const recHTML = RECENT.length ? RECENT.map(card).join("") : `<div class="empty">Δεν υπάρχει ιστορικό ακόμη.</div>`;
+  el("view-mine").innerHTML=`
+    <div class="sectitle">⭐ Τα Αγαπημένα μου <small>${FAV.length} αποθηκευμένα</small>
+      ${FAV.length?`<button class="btn ghost sm" style="margin-left:auto" onclick="if(confirm('Καθαρισμός αγαπημένων;')){FAV=[];lsSet(\'np_fav\',FAV);renderMine();}">🗑 Καθαρισμός</button>`:''}
+    </div>
+    ${favHTML}
+    <div class="sectitle">🕘 Πρόσφατα <small>${RECENT.length}</small>
+      ${RECENT.length?`<button class="btn ghost sm" style="margin-left:auto" onclick="RECENT=[];lsSet('np_recent',RECENT);renderMine();">🗑 Καθαρισμός</button>`:''}
+    </div>
+    ${recHTML}`;
+}
+
+/* ---- ΥΠΟΛΟΓΙΣΤΕΣ ---- */
+function eur(x){return (isFinite(x)?x:0).toLocaleString('el-GR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function apozMonths(y){
+  if(y<1)return 0; if(y<4)return 2; if(y<6)return 3; if(y<8)return 4; if(y<10)return 5;
+  if(y<11)return 6; if(y<12)return 7; if(y<13)return 8; if(y<14)return 9; if(y<15)return 10; if(y<16)return 11; return 12;
+}
+const GRDAYS=['Κυριακή','Δευτέρα','Τρίτη','Τετάρτη','Πέμπτη','Παρασκευή','Σάββατο'];
+function fmtDate(d){return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+' ('+GRDAYS[d.getDay()]+')';}
+const PD_PRESETS=[
+  {v:'3|m', t:'Έγκληση (κατ\' έγκληση αδικήματα) — 3 μήνες'},
+  {v:'30|d', t:'Ενδικοφανής προσφυγή ΔΕΔ — 30 ημέρες'},
+  {v:'120|d', t:'Απόφαση ΔΕΔ (σιωπηρή απόρριψη) — 120 ημέρες'},
+  {v:'4|m', t:'Αποποίηση κληρονομιάς — 4 μήνες'},
+  {v:'14|d', t:'Υπαναχώρηση (online αγορά) — 14 ημέρες'},
+  {v:'8|d', t:'Δήλωση τροχαίου στην ασφαλιστική — 8 ημέρες'},
+  {v:'50|d', t:'Απάντηση Δημόσιας Διοίκησης — 50 ημέρες'},
+  {v:'60|d', t:'Αίτηση ακύρωσης / προσφυγή — 60 ημέρες'},
+  {v:'5|y', t:'Παραγραφή (5ετής — μισθοί, ενοίκια, διατροφή)'},
+  {v:'20|y', t:'Παραγραφή αξιώσεων (γενική — 20ετής)'}
+];
+function addPeriod(d,n,u){const x=new Date(d.getTime()); if(u==='d')x.setDate(x.getDate()+n); else if(u==='m')x.setMonth(x.getMonth()+n); else x.setFullYear(x.getFullYear()+n); return x;}
+
+function renderCalc(){
+  el("view-calc").innerHTML=`
+    <div class="sectitle">🧮 Υπολογιστές <small>πρακτικά εργαλεία — ενδεικτικά, επαληθεύστε</small></div>
+    ${DISCLAIMER}
+    <div class="grid g2" style="margin-top:16px">
+
+      <div class="card">
+        <h3>💼 Αποζημίωση απόλυσης</h3>
+        <p style="color:var(--muted);font-size:13px;margin:2px 0 6px">Υπάλληλος αορίστου (Ν.2112/1920, όπως ισχύει). Κλίμακα βάσει ετών στον ίδιο εργοδότη.</p>
+        <div class="calc-row">
+          <div class="calc-in"><label>Μηνιαίος μικτός μισθός (€)</label><input id="axSal" type="number" min="0" step="50" value="1000" oninput="calcApoz()"></div>
+          <div class="calc-in"><label>Έτη υπηρεσίας</label><input id="axYr" type="number" min="0" step="1" value="5" oninput="calcApoz()"></div>
+        </div>
+        <label class="calc-chk"><input id="axDora" type="checkbox" checked onchange="calcApoz()"> Συνυπολογισμός δώρων (×14/12)</label>
+        <label class="calc-chk"><input id="axNotice" type="checkbox" onchange="calcApoz()"> Με προειδοποίηση (αποζημίωση στο μισό)</label>
+        <div class="calc-res" id="axRes"></div>
+        <div class="calc-note">Για προσληφθέντες πριν 12/11/2012 ισχύει επιπλέον προσαύξηση (>12 μισθοί). Οι εργάτες/ημερομίσθιοι έχουν διαφορετικό καθεστώς. Συμβουλευτείτε δικηγόρο.</div>
+      </div>
+
+      <div class="card">
+        <h3>📅 Προθεσμίες & Παραγραφή</h3>
+        <p style="color:var(--muted);font-size:13px;margin:2px 0 6px">Υπολογισμός ημερομηνίας λήξης από την αφετηρία.</p>
+        <div class="calc-in"><label>Ημερομηνία αφετηρίας</label><input id="pdDate" type="date" oninput="calcPd()"></div>
+        <div class="calc-in"><label>Προθεσμία</label><select id="pdPreset" onchange="calcPd()">
+          ${PD_PRESETS.map(p=>`<option value="${p.v}">${esc(p.t)}</option>`).join("")}
+          <option value="custom">— Προσαρμογή —</option>
+        </select></div>
+        <div class="calc-row" id="pdCustom" style="display:none">
+          <div class="calc-in"><label>Αριθμός</label><input id="pdNum" type="number" min="1" value="10" oninput="calcPd()"></div>
+          <div class="calc-in"><label>Μονάδα</label><select id="pdUnit" onchange="calcPd()"><option value="d">ημέρες</option><option value="m">μήνες</option><option value="y">έτη</option></select></div>
+        </div>
+        <div class="calc-res" id="pdRes"></div>
+        <div class="calc-note">Ενδεικτικός ημερολογιακός υπολογισμός. Ειδικοί κανόνες (αργίες, αναστολές, τρόπος υπολογισμού) μπορεί να ισχύουν.</div>
+      </div>
+
+      <div class="card">
+        <h3>💶 Τόκοι υπερημερίας</h3>
+        <p style="color:var(--muted);font-size:13px;margin:2px 0 6px">Απλός τόκος επί ληξιπρόθεσμης οφειλής.</p>
+        <div class="calc-in"><label>Κεφάλαιο (€)</label><input id="tkKef" type="number" min="0" step="100" value="1000" oninput="calcTok()"></div>
+        <div class="calc-row">
+          <div class="calc-in"><label>Από</label><input id="tkFrom" type="date" oninput="calcTok()"></div>
+          <div class="calc-in"><label>Έως</label><input id="tkTo" type="date" oninput="calcTok()"></div>
+        </div>
+        <div class="calc-in"><label>Ετήσιο επιτόκιο υπερημερίας (%)</label><input id="tkRate" type="number" min="0" step="0.25" value="12" oninput="calcTok()"></div>
+        <div class="calc-res" id="tkRes"></div>
+        <div class="calc-note">Το νόμιμο επιτόκιο υπερημερίας ορίζεται από την ΤτΕ και μεταβάλλεται — συμπληρώστε το ισχύον. Υπολογισμός 365 ημέρες/έτος.</div>
+      </div>
+
+      <div class="card">
+        <h3>🧾 ΦΠΑ (καθαρό ↔ μικτό)</h3>
+        <div class="calc-in"><label>Ποσό (€)</label><input id="fpAmt" type="number" min="0" step="1" value="100" oninput="calcFpa()"></div>
+        <div class="calc-row">
+          <div class="calc-in"><label>Συντελεστής</label><select id="fpRate" onchange="calcFpa()"><option value="24">24%</option><option value="13">13%</option><option value="6">6%</option></select></div>
+          <div class="calc-in"><label>Το ποσό είναι</label><select id="fpType" onchange="calcFpa()"><option value="net">Καθαρό (χωρίς ΦΠΑ)</option><option value="gross">Μικτό (με ΦΠΑ)</option></select></div>
+        </div>
+        <div class="calc-res" id="fpRes"></div>
+      </div>
+
+      <div class="card">
+        <h3>🎁 Δώρα εορτών</h3>
+        <p style="color:var(--muted);font-size:13px;margin:2px 0 6px">Αναλογία βάσει ημερών εργασίας στο αντίστοιχο διάστημα.</p>
+        <div class="calc-in"><label>Μηνιαίος μικτός μισθός (€)</label><input id="drSal" type="number" min="0" step="50" value="1000" oninput="calcDora()"></div>
+        <div class="calc-row">
+          <div class="calc-in"><label>Δώρο</label><select id="drType" onchange="calcDora()"><option value="xmas">Χριστουγέννων (1/5–31/12)</option><option value="easter">Πάσχα (1/1–30/4)</option></select></div>
+          <div class="calc-in"><label>Ημέρες εργασίας στο διάστημα</label><input id="drDays" type="number" min="0" step="1" value="245" oninput="calcDora()"></div>
+        </div>
+        <div class="calc-res" id="drRes"></div>
+        <div class="calc-note">Πλήρες Δ.Χριστουγέννων = 1 μισθός (≈245 ημέρες)· πλήρες Δ.Πάσχα = ½ μισθού (≈120 ημέρες). Προσαυξάνεται με αναλογία επιδόματος αδείας.</div>
+      </div>
+
+    </div>`;
+  // αρχικές τιμές
+  const t=new Date(); const iso=t.toISOString().slice(0,10);
+  el("pdDate").value=iso; el("tkFrom").value=iso; el("tkTo").value=iso;
+  calcApoz(); calcPd(); calcTok(); calcFpa(); calcDora();
+}
+function calcApoz(){
+  const sal=+el("axSal").value||0, yr=+el("axYr").value||0;
+  const m=apozMonths(yr);
+  let amt=m*sal;
+  if(el("axDora").checked)amt*=14/12;
+  if(el("axNotice").checked)amt*=0.5;
+  el("axRes").innerHTML= yr<1
+    ? `Με λιγότερο από 1 έτος δεν θεμελιώνεται τακτική αποζημίωση καταγγελίας (πλην ειδικών περιπτώσεων).`
+    : `Μισθοί αποζημίωσης: <b>${m}</b>${el("axNotice").checked?' (×½ λόγω προειδοποίησης)':''}<span class="big">${eur(amt)}</span>`;
+}
+function calcPd(){
+  const v=el("pdDate").value; const preset=el("pdPreset").value;
+  el("pdCustom").style.display = preset==='custom' ? 'flex':'none';
+  if(!v){el("pdRes").textContent='Επιλέξτε ημερομηνία αφετηρίας.';return;}
+  let n,u;
+  if(preset==='custom'){ n=+el("pdNum").value||0; u=el("pdUnit").value; }
+  else { const p=preset.split('|'); n=+p[0]; u=p[1]; }
+  const start=new Date(v+'T00:00:00'); const end=addPeriod(start,n,u);
+  const unitLbl=u==='d'?'ημέρες':u==='m'?'μήνες':'έτη';
+  el("pdRes").innerHTML=`Λήξη προθεσμίας (${n} ${unitLbl}):<span class="big">${fmtDate(end)}</span>`;
+}
+function calcTok(){
+  const kef=+el("tkKef").value||0, rate=+el("tkRate").value||0;
+  const f=el("tkFrom").value, t=el("tkTo").value;
+  let days=0;
+  if(f&&t){ days=Math.round((new Date(t)-new Date(f))/86400000); }
+  if(days<0){el("tkRes").innerHTML='Η ημερομηνία «Έως» είναι πριν το «Από».';return;}
+  const tok=kef*(rate/100)*(days/365);
+  el("tkRes").innerHTML=`Ημέρες: <b>${days}</b> · Τόκοι: <span class="big">${eur(tok)}</span>Σύνολο με κεφάλαιο: <b>${eur(kef+tok)}</b>`;
+}
+function calcFpa(){
+  const amt=+el("fpAmt").value||0, r=+el("fpRate").value/100, type=el("fpType").value;
+  let net,vat,gross;
+  if(type==='net'){ net=amt; vat=amt*r; gross=amt+vat; }
+  else { gross=amt; net=amt/(1+r); vat=gross-net; }
+  el("fpRes").innerHTML=`Καθαρό: <b>${eur(net)}</b> · ΦΠΑ: <b>${eur(vat)}</b><span class="big">Μικτό: ${eur(gross)}</span>`;
+}
+function calcDora(){
+  const sal=+el("drSal").value||0, days=+el("drDays").value||0, type=el("drType").value;
+  let amt, full;
+  if(type==='xmas'){ amt=Math.min(sal, days/19*(2/25)*sal); full='1 μισθός'; }
+  else { amt=Math.min(sal/2, days/8*(sal/30)); full='½ μισθού'; }
+  el("drRes").innerHTML=`Αναλογία δώρου (πλήρες = ${full}):<span class="big">${eur(amt)}</span>`;
+}
+
 /* ---- INIT ---- */
 function init(){
   renderTabs();
   renderHome(); renderSearch(); renderLaw(); renderWizard(); renderAdvisor();
   renderTemplates(); renderPeople(); renderGlossary(); renderSources();
+  renderCalc(); renderMine();
   let start='home';
   try{ const s=localStorage.getItem('np_tab'); if(s && document.getElementById('view-'+s)) start=s; }catch(e){}
   go(start);
